@@ -294,11 +294,19 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
 .consumer-modal-scroll::-webkit-scrollbar-track{background:rgba(193,154,107,0.12);border-radius:999px;}
 .consumer-modal-scroll::-webkit-scrollbar-thumb{background:${COLORS.accent};border-radius:999px;border:3px solid #fdfaf6;}
 .consumer-modal-scroll::-webkit-scrollbar-thumb:hover{background:${COLORS.accent2};}
+.consumer-modal-aside-scroll{scrollbar-width:thin;scrollbar-color:${COLORS.accent} rgba(193,154,107,0.18);}
+.consumer-modal-aside-scroll::-webkit-scrollbar{width:10px;}
+.consumer-modal-aside-scroll::-webkit-scrollbar-track{background:rgba(193,154,107,0.12);border-radius:999px;}
+.consumer-modal-aside-scroll::-webkit-scrollbar-thumb{background:${COLORS.accent};border-radius:999px;border:3px solid rgba(32,24,18,0.55);}
+.consumer-modal-aside-scroll::-webkit-scrollbar-thumb:hover{background:${COLORS.accent2};}
 @media (max-width: 767px){
   .consumer-modal-scroll{max-height:calc(100vh - 3.5rem);}
 }
 @media (min-width: 1024px){
   .consumer-modal-scroll{max-height:calc(92vh - 2.25rem);}
+}
+@media (min-width: 768px){
+  .consumer-modal-aside-scroll{max-height:calc(92vh - 4rem);}
 }
 `}</style>
 
@@ -812,13 +820,13 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                 aria-hidden
               ></div>
               <div className="relative flex h-full flex-col md:flex-row" style={{ minHeight: '60vh' }}>
-                <aside className="relative flex flex-shrink-0 flex-col gap-6 bg-gradient-to-br from-[#1f1d1b] via-[#2b2118] to-[#5a3d23] px-7 py-8 text-white md:w-[320px] lg:w-[360px]">
+                <aside className="relative flex w-full flex-shrink-0 flex-col bg-gradient-to-br from-[#1f1d1b] via-[#2b2118] to-[#5a3d23] px-7 py-8 text-white md:w-[320px] md:max-h-[calc(92vh-3rem)] md:overflow-hidden lg:w-[360px]">
                   <div
                     className="absolute inset-0 opacity-30"
                     style={{ backgroundImage: 'radial-gradient(circle at 15% 20%, rgba(255,255,255,0.25) 0, transparent 55%)' }}
                     aria-hidden
                   ></div>
-                  <div className="relative z-10 flex h-full flex-col gap-6">
+                  <div className="consumer-modal-aside-scroll relative z-10 flex min-h-full flex-col gap-6 overflow-y-auto overscroll-contain pr-1 sm:pr-2 pb-6">
                     <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-white/80">
                       Defesa do Consumidor
                     </span>
