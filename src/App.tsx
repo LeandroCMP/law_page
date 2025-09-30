@@ -139,18 +139,34 @@ export default function LawFirmLanding() {
     name: "Edimara Aparecida dos Santos Duran",
     role: "CEO - Sócia do escritório Edimara Duran Advocacia e Assessoria Jurídica",
     registration: "OAB/SP 526.456",
+    tagline: "Especialista em Direito de Família, Sucessório e Consumidor",
     summary: [
-      "Somos um escritório 100% online, oferecendo praticidade, comodidade e soluções jurídicas personalizadas com uso estratégico de tecnologia.",
-      "Atuamos com transparência, acolhimento e atenção constante para construir relações de confiança em todas as etapas do processo jurídico.",
-      "Nosso compromisso é com um atendimento humanizado, priorizando cuidado, empatia e excelência na condução de cada demanda.",
+      "Advogada inscrita na OAB/SP 526.456 e responsável pela condução estratégica das áreas de Família, Sucessões, Consumidor e demandas cíveis do escritório.",
+      "Graduada em Direito pelo Centro Universitário de Santa Fé do Sul – Unifunec, com pós-graduação em Direito de Família e Sucessões, pós-graduação em Direito do Consumidor e especialização em Prática em Direito Sucessório.",
+      "Atua de forma 100% online para oferecer praticidade, acolhimento e acompanhamento contínuo a clientes em todo o Brasil.",
+      "Combina tecnologia e atendimento humanizado para garantir transparência, segurança e confiança em cada etapa do processo jurídico.",
     ],
-    specializations: [
+    formations: [
       "Graduada em Direito pelo Centro Universitário de Santa Fé do Sul – Unifunec.",
       "Pós-graduada em Direito de Família e Sucessões.",
       "Pós-graduada em Direito do Consumidor.",
       "Especialista em Prática em Direito Sucessório.",
     ],
-    location: "O escritório presta serviços 100% online, atendendo clientes em todo o Brasil com a mesma dedicação e proximidade.",
+    pillars: [
+      {
+        title: "Atendimento humanizado",
+        text: "Prioriza acolhimento, cuidado e linguagem acessível, mantendo o cliente informado em todas as etapas do processo.",
+      },
+      {
+        title: "Tecnologia como aliada",
+        text: "Escritório 100% online que utiliza recursos digitais para agilizar rotinas, simplificar a comunicação e oferecer acompanhamento próximo, independentemente da cidade do cliente.",
+      },
+      {
+        title: "Estratégia e personalização",
+        text: "Cada demanda é analisada de forma individualizada para construir soluções jurídicas eficazes e alinhadas aos objetivos de quem procura o escritório.",
+      },
+    ],
+    closing: "Conte com a condução pessoal da Dra. Edimara para um atendimento prático, transparente e dedicado na defesa dos seus direitos.",
   } as const;
 
   const practiceCards: { icon: JSX.Element; title: string; desc: string; modal?: PracticeModalKey }[] = [
@@ -944,16 +960,22 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                   style={{ background: COLORS.black, color: COLORS.bg1 }}
                   onClick={() => setAboutModalOpen(true)}
                 >
-                  Sobre Edimara Duran
+                  Sobre
                 </Button>
-              </div>
-            </motion.div>
+            </div>
+          </motion.div>
             <img
               src={fallbackAsset(CONFIG.PORTRAIT_URL)}
               alt="Foto da Responsável"
               loading="lazy"
-              className="mx-auto w-full max-w-[240px] sm:max-w-[300px] lg:max-w-[340px] rounded-[28px] shadow-[0_24px_48px_rgba(17,17,17,0.18)]"
-              style={{ aspectRatio: '3 / 4', objectFit: 'contain', background: '#fffefb' }}
+              className="mx-auto w-full max-w-[240px] sm:max-w-[300px] lg:max-w-[340px] rounded-[28px] ring-1 ring-[rgba(193,154,107,0.38)] shadow-[0_28px_52px_rgba(17,17,17,0.22)]"
+              style={{
+                aspectRatio: '3 / 4',
+                objectFit: 'contain',
+                background: 'transparent',
+                padding: '12px',
+                boxShadow: '0 28px 52px rgba(17,17,17,0.22), 0 12px 30px rgba(193,154,107,0.25)'
+              }}
             />
           </div>
         </div>
@@ -1187,14 +1209,15 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               aria-modal="true"
               aria-labelledby={aboutModalTitleId}
               aria-describedby={aboutModalDescriptionId}
-              className="relative w-full max-w-3xl overflow-hidden rounded-[32px] bg-white shadow-2xl"
+              className="relative w-full max-w-4xl overflow-hidden rounded-[36px] bg-white shadow-2xl"
+              style={{ maxHeight: "min(92vh, 820px)" }}
               initial={{ scale: 0.94, opacity: 0, y: 30 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.94, opacity: 0, y: 30 }}
               transition={{ duration: 0.28, ease: "easeOut" }}
             >
-              <div className="absolute -top-32 -right-24 h-72 w-72 rounded-full bg-[rgba(193,154,107,0.18)] blur-3xl" aria-hidden></div>
-              <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 18% 18%, rgba(193,154,107,.5) 0, transparent 55%)" }} aria-hidden></div>
+              <div className="absolute -top-36 -right-24 h-80 w-80 rounded-full bg-[rgba(193,154,107,0.22)] blur-3xl" aria-hidden></div>
+              <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 20% 20%, rgba(193,154,107,.55) 0, transparent 60%)" }} aria-hidden></div>
               <button
                 type="button"
                 aria-label="Fechar modal Sobre"
@@ -1204,46 +1227,59 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               >
                 <X size={18} />
               </button>
-              <div className="relative z-10 flex flex-col gap-6 p-6 sm:p-10">
-                <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[rgba(193,154,107,0.1)] px-4 py-1 text-xs font-semibold uppercase tracking-[0.24em]" style={{ color: COLORS.accent }}>
-                  Sobre a advogada
-                </span>
-                <div>
-                  <h3 id={aboutModalTitleId} className="text-2xl font-bold text-[#111111] md:text-[30px]">
+              <div className="relative z-10 flex h-full flex-col">
+                <div className="relative bg-gradient-to-r from-[#1b1712] via-[#2f2418] to-[#735030] px-7 py-10 text-white sm:px-10">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em]">
+                    Sobre a advogada
+                  </span>
+                  <h3 id={aboutModalTitleId} className="mt-5 text-3xl font-bold sm:text-[34px]">
                     {aboutModalContent.name}
                   </h3>
-                  <p className="mt-2 text-sm font-semibold text-[#4a4a4a] md:text-base">{aboutModalContent.role}</p>
-                  <p className="mt-1 text-sm text-[#7a7a7a]">{aboutModalContent.registration}</p>
+                  <p className="mt-2 text-sm font-semibold text-white/85 sm:text-base">{aboutModalContent.role}</p>
+                  <p className="mt-1 text-sm text-white/70">{aboutModalContent.registration}</p>
+                  <p className="mt-4 max-w-2xl text-sm text-white/85 sm:text-base">{aboutModalContent.tagline}</p>
                 </div>
                 <div
                   id={aboutModalDescriptionId}
-                  className="space-y-4 text-sm leading-relaxed md:text-base"
+                  className="flex-1 space-y-8 overflow-y-auto px-6 py-8 sm:px-10"
                   style={{ color: COLORS.inkSoft }}
                 >
-                  {aboutModalContent.summary.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                </div>
-                <div className="rounded-3xl border p-6" style={{ borderColor: COLORS.border, background: "#fdf8f1" }}>
-                  <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
-                    Formação e especializações
-                  </h4>
-                  <ul className="mt-4 space-y-3 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
-                    {aboutModalContent.specializations.map((item) => (
-                      <li key={item} className="flex items-start gap-3">
-                        <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
-                        <span>{item}</span>
-                      </li>
+                  <div className="space-y-4 text-sm leading-relaxed sm:text-base">
+                    {aboutModalContent.summary.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
                     ))}
-                  </ul>
-                </div>
-                <div className="rounded-3xl border p-6" style={{ borderColor: COLORS.border, background: "#ffffff" }}>
-                  <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
-                    Atendimento em todo o Brasil
-                  </h4>
-                  <p className="mt-3 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
-                    {aboutModalContent.location}
-                  </p>
+                  </div>
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <div className="rounded-3xl border bg-[#fdf8f1] p-6 shadow-sm" style={{ borderColor: COLORS.border }}>
+                      <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                        Formação e titulações
+                      </h4>
+                      <ul className="mt-4 space-y-3 text-sm leading-relaxed sm:text-base">
+                        {aboutModalContent.formations.map((item) => (
+                          <li key={item} className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="rounded-3xl border bg-white p-6 shadow-sm" style={{ borderColor: COLORS.border }}>
+                      <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                        Como conduz o atendimento
+                      </h4>
+                      <ul className="mt-4 space-y-3 text-sm leading-relaxed sm:text-base">
+                        {aboutModalContent.pillars.map((pillar) => (
+                          <li key={pillar.title}>
+                            <span className="block font-semibold" style={{ color: COLORS.ink }}>{pillar.title}</span>
+                            <span>{pillar.text}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="rounded-3xl border bg-white p-6 text-sm leading-relaxed shadow-sm sm:text-base" style={{ borderColor: COLORS.border }}>
+                    <p>{aboutModalContent.closing}</p>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -1269,39 +1305,82 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                  style={{ transform: `translateX(calc(-${teamIndex*100}% + ${dragDelta}px))` }}
                  onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}
                  onTouchStart={onPointerDown} onTouchMove={onPointerMove} onTouchEnd={onPointerUp}>
-              {team.map((m, idx) => (
-                <div key={idx} className="min-w-full">
-                  <div className="grid md:grid-cols-2 gap-10 items-stretch p-6">
-                    <div className="flex justify-center">
-                      <div
-                        className="relative aspect-[3/4] w-full max-w-[240px] sm:max-w-[280px] md:max-w-[320px] lg:max-w-[340px] overflow-hidden rounded-[28px] shadow-[0_24px_48px_rgba(17,17,17,0.22)]"
-                        style={{ background: '#fffefb' }}
-                      >
-                        <img
-                          src={m.photo}
-                          alt={m.name}
-                          loading={m.name==='Júlia Bellussi' ? 'eager' : undefined}
-                          referrerPolicy={m.name==='Júlia Bellussi' ? 'no-referrer' : undefined}
-                          crossOrigin={m.name==='Júlia Bellussi' ? 'anonymous' : undefined}
-                          onError={(e)=>{ const el=e.currentTarget as HTMLImageElement; if(m.name==='Júlia Bellussi'){ if(!el.dataset.triedcdn){ el.dataset.triedcdn='1'; el.src = CONFIG.TEAM_PHOTO_JULIA; } else if(!el.dataset.triedclean){ el.dataset.triedclean='1'; el.src = fallbackAsset(CONFIG.TEAM_PHOTO_JULIA); } } else { if(!el.dataset.fallback){ el.dataset.fallback='1'; el.src = fallbackAsset(m.photo); } } }}
-                          className="absolute inset-0 h-full w-full object-contain"
-                          style={{ display: 'block' }}
-                        />
+              {team.map((m, idx) => {
+                const isEdimara = m.name === 'Edimara Duran';
+                return (
+                  <div key={idx} className="min-w-full">
+                    <div className="grid items-stretch gap-10 p-6 md:grid-cols-2">
+                      <div className="flex justify-center">
+                        <div
+                          className={`group relative aspect-[3/4] w-full max-w-[240px] sm:max-w-[280px] md:max-w-[320px] lg:max-w-[340px] overflow-hidden rounded-[28px] shadow-[0_26px_54px_rgba(17,17,17,0.24)] ring-1 ${isEdimara ? 'ring-[rgba(193,154,107,0.55)]' : 'ring-[rgba(255,255,255,0.14)]'}`}
+                          style={{
+                            background: isEdimara
+                              ? 'radial-gradient(circle at 18% 18%, rgba(193,154,107,0.26) 0%, rgba(17,17,17,0.78) 100%)'
+                              : 'transparent',
+                          }}
+                        >
+                          {isEdimara && (
+                            <div
+                              aria-hidden
+                              className="pointer-events-none absolute inset-0 opacity-70"
+                              style={{
+                                background:
+                                  'linear-gradient(140deg, rgba(255,255,255,0.14) 0%, rgba(193,154,107,0.25) 28%, rgba(17,17,17,0.65) 100%)',
+                                mixBlendMode: 'screen',
+                              }}
+                            ></div>
+                          )}
+                          <img
+                            src={m.photo}
+                            alt={m.name}
+                            loading={m.name==='Júlia Bellussi' ? 'eager' : undefined}
+                            referrerPolicy={m.name==='Júlia Bellussi' ? 'no-referrer' : undefined}
+                            crossOrigin={m.name==='Júlia Bellussi' ? 'anonymous' : undefined}
+                            onError={(e)=>{ const el=e.currentTarget as HTMLImageElement; if(m.name==='Júlia Bellussi'){ if(!el.dataset.triedcdn){ el.dataset.triedcdn='1'; el.src = CONFIG.TEAM_PHOTO_JULIA; } else if(!el.dataset.triedclean){ el.dataset.triedclean='1'; el.src = fallbackAsset(CONFIG.TEAM_PHOTO_JULIA); } } else { if(!el.dataset.fallback){ el.dataset.fallback='1'; el.src = fallbackAsset(m.photo); } } }}
+                            className="relative z-10 h-full w-full object-contain transition duration-500 ease-out group-hover:scale-[1.03] group-hover:saturate-[1.18]"
+                            style={{
+                              display: 'block',
+                              filter: isEdimara ? 'drop-shadow(0 20px 26px rgba(0,0,0,0.38))' : undefined,
+                              padding: isEdimara ? '10px' : undefined,
+                            }}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex flex-col justify-center h-full md:pr-4">
-                      <h3 className="text-2xl font-bold">{m.name}</h3>
-                      <p className="mt-1 text-white/70">{m.oab}</p>
-                      <p className="mt-4 text-white/80 max-w-prose">{m.name === 'Júlia Bellussi' ? 'Especialista em Direito Previdenciário, com foco em planejamentos de aposentadoria, análise de contribuições e estratégias para garantir o acesso aos direitos dos clientes.' : 'Atuação dedicada em Direito de Família, Sucessões e Direito Civil. Atendimento humano, estratégico e transparente para cada caso.'}</p>
-                      <div className="mt-6 flex flex-col sm:flex-row gap-3 sm:items-center">
-                        <div className="flex items-center gap-3">
+                      <motion.div
+                        initial={{opacity:0,y:24}}
+                        whileInView={{opacity:1,y:0}}
+                        viewport={{amount:0.6}}
+                        transition={{duration:.6}}
+                        className="flex flex-col justify-center gap-6 md:pr-4"
+                      >
+                        <div className="space-y-2">
+                          <span className="text-xs font-semibold uppercase tracking-[0.32em] text-white/60">{m.oab}</span>
+                          <h3 className="text-2xl font-bold text-white md:text-[28px]">{m.name}</h3>
+                          <p className="text-sm leading-relaxed text-white/75">
+                            {isEdimara
+                              ? 'CEO e sócia-fundadora do escritório, com atuação estratégica à frente das áreas de Família, Sucessões, Consumidor e demandas cíveis.'
+                              : 'Advogada associada que soma ao time com atuação dedicada nas frentes consultivas e contenciosas.'}
+                          </p>
+                        </div>
+                        {isEdimara ? (
+                          <ul className="space-y-2 text-sm text-white/75">
+                            <li>• Inscrita na OAB/SP 526.456 e graduada em Direito pelo Centro Universitário de Santa Fé do Sul – Unifunec.</li>
+                            <li>• Pós-graduada em Direito de Família e Sucessões, Direito do Consumidor e especialista em Prática em Direito Sucessório.</li>
+                            <li>• Lidera um atendimento 100% online, acolhedor e personalizado para clientes em todo o Brasil.</li>
+                          </ul>
+                        ) : (
+                          <p className="text-sm text-white/70">
+                            Especialista em planejamento previdenciário, construindo análises detalhadas para identificar o melhor cenário de aposentadoria dos clientes.
+                          </p>
+                        )}
+                        <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center">
                           <a
                             href={waLink()}
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="Chamar no WhatsApp"
                             title="Chamar no WhatsApp"
-                            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border transition-all duration-200 hover:-translate-y-[1px] hover:shadow-sm hover:bg-black/90 px-5"
+                            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border px-5 transition-all duration-200 hover:-translate-y-[1px] hover:bg-black/90 hover:shadow-sm"
                             style={{
                               background: COLORS.black,
                               borderColor: "rgba(17,17,17,0.85)",
@@ -1312,10 +1391,10 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                             <span className="text-sm font-medium tracking-wide">Chamar no WhatsApp</span>
                           </a>
                           <Button
-                            className="cursor-pointer transition-all duration-200 hover:opacity-100 hover:bg-[rgba(193,154,107,.12)] hover:border-[rgba(193,154,107,.8)] hover:shadow-sm hover:-translate-y-[1px] min-h-[44px] px-5 rounded-xl border-2"
+                            className="cursor-pointer min-h-[44px] rounded-xl border-2 px-5 transition-all duration-200 hover:-translate-y-[1px] hover:border-[rgba(193,154,107,.8)] hover:bg-[rgba(193,154,107,.12)] hover:shadow-sm"
                             style={{ background: "transparent", color: COLORS.accent, borderColor: COLORS.accent }}
                             onClick={() => {
-                              if (m.name === 'Edimara Duran') {
+                              if (isEdimara) {
                                 setAboutModalOpen(true);
                               } else {
                                 scrollToId('#sobre');
@@ -1325,11 +1404,11 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                             Sobre
                           </Button>
                         </div>
-                      </div>
+                      </motion.div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           <div className="flex items-center justify-center gap-2 mt-4">
