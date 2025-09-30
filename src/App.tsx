@@ -527,18 +527,18 @@ html,body{margin:0;overflow-x:hidden}
 *{box-sizing:border-box}
 body{font-family:'Merriweather', serif;}
 h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2px}
-.consumer-modal-shell{--modal-max: min(92vh, 720px);max-height:var(--modal-max);}
+.consumer-modal-shell{--modal-max:min(92svh,780px);max-height:var(--modal-max);}
 .consumer-modal-scroll,.consumer-modal-aside-scroll{scrollbar-width:thin;scrollbar-color:${COLORS.accent} rgba(193,154,107,0.18);scrollbar-gutter:stable both-edges;overscroll-behavior:contain;}
 .consumer-modal-scroll::-webkit-scrollbar,.consumer-modal-aside-scroll::-webkit-scrollbar{width:12px;background:transparent;}
 .consumer-modal-scroll::-webkit-scrollbar-track,.consumer-modal-aside-scroll::-webkit-scrollbar-track{background:linear-gradient(180deg,rgba(193,154,107,0.14)0%,rgba(193,154,107,0.06)100%);border-radius:999px;}
 .consumer-modal-scroll::-webkit-scrollbar-thumb,.consumer-modal-aside-scroll::-webkit-scrollbar-thumb{background:${COLORS.accent};border-radius:999px;border:3px solid rgba(255,255,255,0.8);box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);}
 .consumer-modal-scroll::-webkit-scrollbar-thumb:hover,.consumer-modal-aside-scroll::-webkit-scrollbar-thumb:hover{background:${COLORS.accent2};}
 @media (max-width: 767px){
-  .consumer-modal-shell{--modal-max: min(96vh, 720px);}
+  .consumer-modal-shell{--modal-max:min(96svh,760px);}
   .consumer-modal-scroll::-webkit-scrollbar,.consumer-modal-aside-scroll::-webkit-scrollbar{width:10px;}
 }
 @media (min-width: 1280px){
-  .consumer-modal-shell{--modal-max: min(88vh, 760px);}
+  .consumer-modal-shell{--modal-max:min(88svh,840px);}
 }
 `}</style>
 
@@ -757,8 +757,8 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               aria-modal="true"
               aria-labelledby={modalTitleId}
               aria-describedby={modalDescriptionId}
-              className="consumer-modal-shell relative flex w-full max-w-5xl flex-col overflow-hidden rounded-[32px] bg-white shadow-2xl"
-              style={{ maxHeight: "min(92vh, 820px)" }}
+              className="consumer-modal-shell relative flex w-full max-w-5xl flex-col overflow-y-auto rounded-[32px] bg-white shadow-2xl md:overflow-hidden"
+              style={{ maxHeight: "var(--modal-max)" }}
               initial={{ scale: 0.92, opacity: 0, y: 24 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.92, opacity: 0, y: 24 }}
@@ -770,14 +770,23 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                 style={{ backgroundImage: "radial-gradient(circle at 20% 20%, rgba(193,154,107,.6) 0, rgba(193,154,107,0) 55%)" }}
                 aria-hidden
               ></div>
-              <div className="relative flex h-full min-h-0 flex-col md:flex-row" style={{ minHeight: "60vh" }}>
-                <aside className={`relative flex min-h-0 w-full flex-shrink-0 flex-col bg-gradient-to-br ${activeModalData.gradient} px-7 py-8 text-white md:w-[320px] md:overflow-hidden lg:w-[360px]`}>
+              <button
+                type="button"
+                aria-label="Fechar modal"
+                className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full border bg-white/85 text-sm text-[#111111] shadow-sm backdrop-blur transition hover:bg-white md:right-5 md:top-5"
+                style={{ borderColor: COLORS.border }}
+                onClick={() => setActivePracticeModal(null)}
+              >
+                <X size={18} />
+              </button>
+              <div className="relative flex h-full min-h-0 flex-col gap-6 md:flex-row md:gap-0" style={{ minHeight: "60vh" }}>
+                <aside className={`relative flex min-h-0 w-full flex-shrink-0 flex-col bg-gradient-to-br ${activeModalData.gradient} px-6 py-8 text-white sm:px-7 md:w-[320px] md:overflow-hidden lg:w-[360px]`}>
                   <div
                     className="absolute inset-0 opacity-30"
                     style={{ backgroundImage: "radial-gradient(circle at 15% 20%, rgba(255,255,255,0.25) 0, transparent 55%)" }}
                     aria-hidden
                   ></div>
-                  <div className="consumer-modal-aside-scroll relative z-10 flex h-full flex-col gap-6 overflow-y-auto pr-1 pb-6 sm:pr-2">
+                  <div className="consumer-modal-aside-scroll relative z-10 flex h-full flex-col gap-6 pr-1 pb-6 sm:pr-2 md:overflow-y-auto">
                     <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-white/80">
                       {activeModalData.tag}
                     </span>
@@ -821,16 +830,7 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                   </div>
                 </aside>
                 <div className="relative flex flex-1 flex-col bg-white">
-                  <button
-                    type="button"
-                    aria-label="Fechar modal"
-                    className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border bg-white/80 text-sm text-[#111111] shadow-sm transition hover:bg-white"
-                    style={{ borderColor: COLORS.border }}
-                    onClick={() => setActivePracticeModal(null)}
-                  >
-                    <X size={18} />
-                  </button>
-                  <div className="consumer-modal-scroll relative flex-1 overflow-y-auto px-7 py-10 sm:px-9 md:px-12 md:py-12">
+                  <div className="consumer-modal-scroll relative flex-1 px-6 py-9 sm:px-9 md:flex-1 md:overflow-y-auto md:px-12 md:py-12">
                     <div className="mx-auto flex w-full max-w-2xl flex-col gap-10 md:gap-12">
                       <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border, background: activeModalData.bulletSection.background ?? "#ffffff" }}>
                         <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
@@ -969,10 +969,19 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                   <div className="grid md:grid-cols-2 gap-10 items-stretch p-6">
                     <div className="flex justify-center">
                       <div className="rounded-2xl p-2" style={{ background: `linear-gradient(135deg, ${COLORS.accent}40, ${COLORS.accent2}26)` }}>
-                        <div
-                          className={`rounded-2xl overflow-hidden bg-white shadow-xl flex items-center justify-center ${idx === 0 ? 'w-[320px] h-[420px] sm:w-[360px] sm:h-[480px]' : 'w-[280px] h-[360px] sm:w-[320px] sm:h-[420px]'}`}
-                        >
-                          <img src={m.photo} alt={m.name} loading={m.name==='Júlia Bellussi' ? 'eager' : undefined} referrerPolicy={m.name==='Júlia Bellussi' ? 'no-referrer' : undefined} crossOrigin={m.name==='Júlia Bellussi' ? 'anonymous' : undefined} onError={(e)=>{ const el=e.currentTarget as HTMLImageElement; if(m.name==='Júlia Bellussi'){ if(!el.dataset.triedcdn){ el.dataset.triedcdn='1'; el.src = CONFIG.TEAM_PHOTO_JULIA; } else if(!el.dataset.triedclean){ el.dataset.triedclean='1'; el.src = fallbackAsset(CONFIG.TEAM_PHOTO_JULIA); } } else { if(!el.dataset.fallback){ el.dataset.fallback='1'; el.src = fallbackAsset(m.photo); } } }} className="object-cover w-full h-full" />
+                        <div className="relative w-[240px] sm:w-[280px] md:w-[320px] lg:w-[360px]">
+                          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[26px] bg-white shadow-xl">
+                            <img
+                              src={m.photo}
+                              alt={m.name}
+                              loading={m.name==='Júlia Bellussi' ? 'eager' : undefined}
+                              referrerPolicy={m.name==='Júlia Bellussi' ? 'no-referrer' : undefined}
+                              crossOrigin={m.name==='Júlia Bellussi' ? 'anonymous' : undefined}
+                              onError={(e)=>{ const el=e.currentTarget as HTMLImageElement; if(m.name==='Júlia Bellussi'){ if(!el.dataset.triedcdn){ el.dataset.triedcdn='1'; el.src = CONFIG.TEAM_PHOTO_JULIA; } else if(!el.dataset.triedclean){ el.dataset.triedclean='1'; el.src = fallbackAsset(CONFIG.TEAM_PHOTO_JULIA); } } else { if(!el.dataset.fallback){ el.dataset.fallback='1'; el.src = fallbackAsset(m.photo); } } }}
+                              className="h-full w-full object-contain p-3 sm:p-4"
+                              style={{ background: '#ffffff' }}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
