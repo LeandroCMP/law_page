@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "./components/src/ui/button";
 import { Card, CardContent } from "./components/src/ui/card";
 
@@ -8,12 +8,14 @@ import {
   Scale,
   Gavel,
   ShieldCheck,
+  CheckCircle2,
   FileText,
   Handshake,
   Building2,
   Instagram,
   Linkedin,
   Clock3,
+  X,
 } from "lucide-react";
 import { useEffect, useState, useRef, type JSX } from "react";
 
@@ -54,6 +56,24 @@ const COLORS = {
   border: "#ecebe9",
 } as const;
 
+type PracticeModalKey = "consumer" | "family" | "succession";
+
+type PracticeModalContent = {
+  tag: string;
+  gradient: string;
+  highlightColor: string;
+  title: string;
+  description: string;
+  highlights: { title: string; description: string }[];
+  bulletSection: { title: string; intro: string; bullets: string[]; background?: string };
+  steps: { icon: JSX.Element; title: string; description: string }[];
+  stepsTitle: string;
+  stepsIntro?: string;
+  stepsBackground?: string;
+  columns: { title: string; bullets: string[]; background?: string }[];
+  closing: { paragraphs: string[] };
+};
+
 // Ícone WhatsApp inline (usado fora do menu)
 function WhatsappIcon(props: { size?: number; color?: string }) {
   const { size = 18, color = "currentColor" } = props || {};
@@ -75,6 +95,7 @@ export default function LawFirmLanding() {
   const [parallax, setParallax] = useState(0);
   const [teamIndex, setTeamIndex] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activePracticeModal, setActivePracticeModal] = useState<PracticeModalKey | null>(null);
   // fallback funcional para sticky
   const [fixHeader, setFixHeader] = useState(false);
   const [headerH, setHeaderH] = useState(0);
@@ -108,6 +129,198 @@ export default function LawFirmLanding() {
     { name: "Júlia Bellussi", oab: "OAB/SP 495.591", photo: fallbackAsset(CONFIG.TEAM_PHOTO_JULIA) },
   ];
 
+  const practiceCards: { icon: JSX.Element; title: string; desc: string; modal?: PracticeModalKey }[] = [
+    { icon: <Scale />, title: "Direito de Família", desc: "Divórcios, guarda, alimentos e partilha.", modal: "family" },
+    { icon: <Gavel />, title: "Direito Sucessório", desc: "Inventários, testamentos e regularização patrimonial.", modal: "succession" },
+    { icon: <ShieldCheck />, title: "Direito do Consumidor", desc: "Defesa contra práticas abusivas, cobranças e contratos.", modal: "consumer" },
+    { icon: <FileText />, title: "Contratos e Direito Civil", desc: "Elaboração, revisão e execução contratual." },
+    { icon: <Building2 />, title: "Direito Imobiliário", desc: "Compra, venda, locação e disputas possessórias." },
+    { icon: <Handshake />, title: "Mediação e Acordos", desc: "Soluções consensuais com segurança jurídica." },
+  ];
+
+  const practiceModals: Record<PracticeModalKey, PracticeModalContent> = {
+    consumer: {
+      tag: "Direito do Consumidor",
+      gradient: "from-[#1f1d1b] via-[#2b2118] to-[#5a3d23]",
+      highlightColor: "#f9d8aa",
+      title: "Representação estratégica para proteger seus direitos de consumo",
+      description:
+        "Atuamos para equilibrar a relação entre consumidores e fornecedores, combatendo abusos, recuperando prejuízos e negociando acordos vantajosos.",
+      highlights: [
+        { title: "Resposta ágil", description: "Diagnóstico inicial e medidas de urgência com retorno em até 24 horas úteis." },
+        { title: "Acompanhamento contínuo", description: "Atualizações claras em cada etapa, com linguagem acessível e canal direto com a equipe." },
+        { title: "Negociação estratégica", description: "Buscamos resolver conflitos com rapidez, priorizando acordos eficazes antes de acionar o Judiciário." },
+      ],
+      bulletSection: {
+        title: "Soluções jurídicas completas",
+        intro:
+          "Avaliamos cada cenário com rigor técnico para definir a estratégia adequada, atuando tanto na esfera judicial quanto na administrativa.",
+        bullets: [
+          "Indenizações por danos morais e materiais em fraudes, atrasos, vícios ou entregas não realizadas.",
+          "Contestação de cobranças indevidas, juros abusivos e cláusulas que ferem o Código de Defesa do Consumidor.",
+          "Acordos e ações contra bancos, financeiras, operadoras de telefonia, planos de saúde e e-commerce.",
+          "Revisão de contratos com falta de transparência, cobranças ocultas ou cláusulas abusivas.",
+          "Defesa administrativa junto a Procon, Senacon e demais órgãos de proteção ao consumidor.",
+        ],
+        background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`
+      },
+      steps: [
+        { icon: <Phone size={18} />, title: "Diagnóstico", description: "Coleta detalhada de documentos e cronologia para mapear riscos e urgências." },
+        { icon: <FileText size={18} />, title: "Estratégia", description: "Definição das medidas cabíveis, estimativa de prazos e alinhamento com o cliente." },
+        { icon: <Handshake size={18} />, title: "Execução", description: "Negociações firmes e protocolos ágeis para alcançar a reparação mais eficiente." },
+      ],
+      stepsTitle: "Como guiamos sua demanda",
+      stepsBackground: "#fefbf7",
+      columns: [
+        {
+          title: "Diferenciais",
+          bullets: [
+            "Atendimento personalizado, humanizado e totalmente online.",
+            "Comunicação constante sobre cada etapa do processo.",
+            "Ações preventivas para reduzir riscos e fortalecer negociações.",
+          ],
+        },
+        {
+          title: "Casos recorrentes",
+          bullets: [
+            "Cancelamentos de viagens, compras on-line e entregas não realizadas.",
+            "Falhas em serviços bancários, financiamentos, seguros e cartões.",
+            "Planos de saúde que negam coberturas essenciais ou limitam tratamentos.",
+          ],
+          background: "rgba(17,17,17,0.03)",
+        },
+      ],
+      closing: {
+        paragraphs: [
+          "Cada estratégia é pensada para evitar desgastes, acelerar resultados e garantir que o fornecedor seja responsabilizado com base no Código de Defesa do Consumidor.",
+          "Trabalhamos com transparência, estimando valores recuperáveis, prazos médios e alternativas viáveis para que você tome decisões com segurança.",
+        ],
+      },
+    },
+    family: {
+      tag: "Direito de Família",
+      gradient: "from-[#1c1825] via-[#2a1c33] to-[#503154]",
+      highlightColor: "#f4c6d6",
+      title: "Cuidado jurídico para equilibrar direitos, deveres e vínculos familiares",
+      description:
+        "Apoiamos famílias em divórcios, guarda, alimentos, uniões estáveis e planejamento patrimonial, sempre guiados pelo melhor interesse das partes envolvidas.",
+      highlights: [
+        { title: "Atendimento humanizado", description: "Escuta ativa para compreender a história familiar e reduzir conflitos emocionais." },
+        { title: "Acordos equilibrados", description: "Priorizamos soluções consensuais que preservam vínculos e respeitam todos os envolvidos." },
+        { title: "Proteção patrimonial", description: "Estruturamos partilhas e medidas preventivas para evitar prejuízos futuros." },
+      ],
+      bulletSection: {
+        title: "Demandas que conduzimos",
+        intro: "Com base na legislação de família, estruturamos medidas adequadas para cada realidade familiar.",
+        bullets: [
+          "Divórcio consensual ou litigioso com definição de bens e deveres.",
+          "Reconhecimento e dissolução de união estável.",
+          "Guarda, convivência e direito de visitas, inclusive guarda compartilhada.",
+          "Pensão alimentícia: fixação, revisão, execução e exoneração.",
+          "Partilha de bens em casamentos e uniões estáveis.",
+          "Investigação ou reconhecimento de paternidade e regularização registral.",
+        ],
+        background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`
+      },
+      steps: [
+        { icon: <Phone size={18} />, title: "Escuta acolhedora", description: "Reunião inicial para mapear necessidades, prioridades e urgências da família." },
+        { icon: <FileText size={18} />, title: "Planejamento jurídico", description: "Organização de documentos, avaliação de riscos e desenho de acordos ou medidas judiciais." },
+        { icon: <Handshake size={18} />, title: "Acompanhamento contínuo", description: "Suporte na homologação, audiências e cumprimento das decisões com comunicação transparente." },
+      ],
+      stepsTitle: "Como conduzimos o seu caso",
+      stepsIntro: "Combinamos acolhimento e firmeza técnica para que cada decisão seja tomada com confiança.",
+      stepsBackground: "#fdf7fb",
+      columns: [
+        {
+          title: "Diferenciais",
+          bullets: [
+            "Atuação orientada pelo melhor interesse de crianças e adolescentes.",
+            "Comunicação empática e objetiva para facilitar decisões em momentos sensíveis.",
+            "Rede de apoio multidisciplinar quando o caso exige perícias ou mediação especializada.",
+          ],
+        },
+        {
+          title: "Situações frequentes",
+          bullets: [
+            "Definição de guarda compartilhada e convivência equilibrada.",
+            "Divórcios com partilha de imóveis, empresas e investimentos.",
+            "Acordos pré-nupciais, pós-nupciais e planejamento patrimonial familiar.",
+          ],
+          background: "rgba(80,49,84,0.08)",
+        },
+      ],
+      closing: {
+        paragraphs: [
+          "Cada família recebe análise sensível para equilibrar direitos, deveres e o bem-estar emocional de todos.",
+          "Auxiliamos na documentação, nas negociações e na execução das decisões para que as mudanças ocorram com segurança jurídica.",
+        ],
+      },
+    },
+    succession: {
+      tag: "Direito Sucessório",
+      gradient: "from-[#18222a] via-[#1f303c] to-[#2f5669]",
+      highlightColor: "#b7d4e6",
+      title: "Planejamento sucessório e inventários conduzidos com estratégia e respeito",
+      description:
+        "Apoiamos famílias na transmissão de patrimônio, elaboração de testamentos e resolução de inventários para garantir segurança e harmonia entre herdeiros.",
+      highlights: [
+        { title: "Planejamento preventivo", description: "Estruturamos soluções para antecipar conflitos e proteger o patrimônio." },
+        { title: "Inventário eficiente", description: "Condução judicial ou extrajudicial com foco em celeridade e organização." },
+        { title: "Suporte aos herdeiros", description: "Orientação próxima para tomada de decisões e cumprimento das vontades do falecido." },
+      ],
+      bulletSection: {
+        title: "Como atuamos",
+        intro: "Cuidamos de todas as etapas da sucessão patrimonial, respeitando a legislação e a vontade do falecido.",
+        bullets: [
+          "Inventário judicial e extrajudicial com levantamento completo de bens e dívidas.",
+          "Partilha de bens entre herdeiros, incluindo avaliação e equalização de quinhões.",
+          "Elaboração, revisão e registro de testamentos e codicilos.",
+          "Anulação de testamentos ou cláusulas inválidas e defesa de herdeiros prejudicados.",
+          "Planejamento sucessório para prevenir litígios e proteger empresas e imóveis familiares.",
+          "Reconhecimento ou exclusão de herdeiros em disputas complexas.",
+        ],
+        background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`
+      },
+      steps: [
+        { icon: <Phone size={18} />, title: "Avaliação inicial", description: "Entendimento da estrutura familiar, patrimônio e prazos legais." },
+        { icon: <FileText size={18} />, title: "Plano sucessório", description: "Organização documental, definição de estratégias e estimativa de custos e tributos." },
+        { icon: <Handshake size={18} />, title: "Execução acompanhada", description: "Condução de escrituras, petições e audiências com atualização constante aos herdeiros." },
+      ],
+      stepsTitle: "Etapas do acompanhamento",
+      stepsIntro: "Criamos um cronograma claro para que todas as obrigações e prazos sucessórios sejam cumpridos sem surpresas.",
+      stepsBackground: "#f4f7fb",
+      columns: [
+        {
+          title: "Diferenciais",
+          bullets: [
+            "Rigor técnico para assegurar a validade dos atos sucessórios.",
+            "Mediação de conflitos para preservar relações familiares em momentos de luto.",
+            "Articulação com contadores e avaliadores para mensurar bens e tributos com precisão.",
+          ],
+        },
+        {
+          title: "Demandas frequentes",
+          bullets: [
+            "Inventários com bens em diferentes estados ou com pendências documentais.",
+            "Testamentos com cláusulas de usufruto, incomunicabilidade ou fideicomisso.",
+            "Planejamento patrimonial para empresas familiares e holdings sucessórias.",
+          ],
+          background: "rgba(30,86,105,0.08)",
+        },
+      ],
+      closing: {
+        paragraphs: [
+          "Trabalhamos para que a partilha ocorra com serenidade, respeitando direitos, afetos e a vontade de quem partiu.",
+          "Nossa assessoria acompanha prazos, tributos e formalidades, garantindo segurança jurídica em cada decisão sucessória.",
+        ],
+      },
+    },
+  };
+
+  const activeModalData = activePracticeModal ? practiceModals[activePracticeModal] : null;
+  const modalTitleId = activePracticeModal ? `${activePracticeModal}-modal-title` : undefined;
+  const modalDescriptionId = activePracticeModal ? `${activePracticeModal}-modal-description` : undefined;
+
   const containerCls = "max-w-6xl mx-auto px-4 sm:px-6";
 
   // --- Preload e Parallax ---
@@ -117,6 +330,20 @@ export default function LawFirmLanding() {
     img.onerror = () => setHeroReady(true);
     img.src = CONFIG.HERO_BG_URL;
   }, []);
+
+
+  useEffect(() => {
+    if (!activePracticeModal) return;
+    const { body, documentElement } = document;
+    const prevBodyOverflow = body.style.overflow;
+    const prevHtmlOverflow = documentElement.style.overflow;
+    body.style.overflow = "hidden";
+    documentElement.style.overflow = "hidden";
+    return () => {
+      body.style.overflow = prevBodyOverflow;
+      documentElement.style.overflow = prevHtmlOverflow;
+    };
+  }, [activePracticeModal]);
 
   
 
@@ -272,6 +499,19 @@ html,body{margin:0;overflow-x:hidden}
 *{box-sizing:border-box}
 body{font-family:'Merriweather', serif;}
 h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2px}
+.consumer-modal-shell{--modal-max:min(92svh,780px);max-height:var(--modal-max);}
+.consumer-modal-scroll,.consumer-modal-aside-scroll{scrollbar-width:thin;scrollbar-color:${COLORS.accent} rgba(193,154,107,0.18);scrollbar-gutter:stable both-edges;overscroll-behavior:contain;}
+.consumer-modal-scroll::-webkit-scrollbar,.consumer-modal-aside-scroll::-webkit-scrollbar{width:12px;background:transparent;}
+.consumer-modal-scroll::-webkit-scrollbar-track,.consumer-modal-aside-scroll::-webkit-scrollbar-track{background:linear-gradient(180deg,rgba(193,154,107,0.14)0%,rgba(193,154,107,0.06)100%);border-radius:999px;}
+.consumer-modal-scroll::-webkit-scrollbar-thumb,.consumer-modal-aside-scroll::-webkit-scrollbar-thumb{background:${COLORS.accent};border-radius:999px;border:3px solid rgba(255,255,255,0.8);box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);}
+.consumer-modal-scroll::-webkit-scrollbar-thumb:hover,.consumer-modal-aside-scroll::-webkit-scrollbar-thumb:hover{background:${COLORS.accent2};}
+@media (max-width: 767px){
+  .consumer-modal-shell{--modal-max:min(96svh,760px);}
+  .consumer-modal-scroll::-webkit-scrollbar,.consumer-modal-aside-scroll::-webkit-scrollbar{width:10px;}
+}
+@media (min-width: 1280px){
+  .consumer-modal-shell{--modal-max:min(88svh,840px);}
+}
 `}</style>
 
       {/* CAPA */}
@@ -308,8 +548,51 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
           <span className="font-bold text-lg md:text-xl" style={{ color: COLORS.ink }}>Advocacia Duran</span>
         </button>
         {/* Botão mobile */}
-        <button aria-label="Abrir menu" className="md:hidden p-2 rounded-lg border cursor-pointer" style={{ borderColor: COLORS.border }} onClick={()=>setMobileOpen(v=>!v)}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+        <button
+          aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
+          aria-expanded={mobileOpen}
+          className="md:hidden p-2 rounded-lg border cursor-pointer transition-colors"
+          style={{ borderColor: COLORS.border }}
+          onClick={()=>setMobileOpen(v=>!v)}
+        >
+          <motion.svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <motion.path
+              d="M4 7h16"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              animate={{
+                d: mobileOpen ? "M6 6l12 12" : "M4 7h16",
+              }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+            />
+            <motion.path
+              d="M4 12h16"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              animate={{
+                opacity: mobileOpen ? 0 : 1,
+              }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+            />
+            <motion.path
+              d="M4 17h16"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              animate={{
+                d: mobileOpen ? "M6 18L18 6" : "M4 17h16",
+              }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+            />
+          </motion.svg>
         </button>
         <nav role="navigation" className="hidden md:flex gap-6 font-medium items-center">
           <button onClick={() => scrollToId('#sobre')} className="cursor-pointer transition-colors hover:text-[#c19a6b]">Sobre</button>
@@ -322,21 +605,33 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
       {fixHeader && <div style={{height: headerH}} aria-hidden></div>}
       {/* Menu mobile */}
       
-      {mobileOpen && (
-        <div className="md:hidden border-b bg-white/95 backdrop-blur-sm px-4 sm:px-6 py-3 flex flex-col gap-2" style={{ borderColor: COLORS.border }}>
-          <button onClick={() => { scrollToId('#sobre'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Sobre</button>
-          <button onClick={() => { scrollToId('#areas'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Áreas</button>
-          <button onClick={() => { scrollToId('#equipe'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Equipe</button>
-          <button onClick={() => { scrollToId('#contato'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Contato</button>
-        </div>
-      )}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.nav
+            key="mobile-nav"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="md:hidden border-b bg-white/95 backdrop-blur-sm px-4 sm:px-6 overflow-hidden"
+            style={{ borderColor: COLORS.border }}
+          >
+            <div className="py-3 flex flex-col gap-1">
+              <button onClick={() => { scrollToId('#sobre'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Sobre</button>
+              <button onClick={() => { scrollToId('#areas'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Áreas</button>
+              <button onClick={() => { scrollToId('#equipe'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Equipe</button>
+              <button onClick={() => { scrollToId('#contato'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Contato</button>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
 
       {/* SOBRE + EXCELÊNCIA */}
       <section id="sobre" ref={combinedRef} className="relative py-16 md:py-24" style={{ background: `linear-gradient(180deg, ${COLORS.bg1} 0%, rgba(193,154,107,.08) 100%)` }}>
         {/* textura */}
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[.12]" style={{backgroundImage:'radial-gradient(rgba(0,0,0,.08) 1px, transparent 1px)', backgroundSize:'6px 6px', zIndex:0}} />
         <div className={containerCls + " relative z-10"}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+          <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-12">
             <motion.div initial={{opacity:0,x:-40}} whileInView={{opacity:1,x:0}} viewport={{amount:0.3}} transition={{duration:.7}}>
               <h2 className="text-3xl md:text-5xl font-extrabold inline-block pb-2" style={{ position:'relative' }}>
                 Excelência em Direito
@@ -345,15 +640,18 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               <div className="mt-3 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm" style={{ background: 'rgba(17,17,17,.06)', border: `1px solid ${COLORS.border}`, color: COLORS.ink }}>
                 Escritório 100% online • Atendimento em todo o Brasil
               </div>
-              <p className="mt-6 text-[17px] leading-relaxed max-w-prose" style={{ color: COLORS.inkSoft }}>Atuação estratégica e humanizada com foco em resultados. Atendimento digital em todo o Brasil, sem perder a proximidade: conduzimos cada etapa com transparência, linguagem acessível e atualização constante do cliente.</p>
-              <p className="mt-4 text-[17px] leading-relaxed max-w-prose" style={{ color: COLORS.inkSoft }}>Referência em Direito de Família e Sucessões, além de Direito do Consumidor e Civil. Do primeiro contato à solução final, priorizamos eficiência, sigilo e acolhimento.</p>
-              <div className="mt-8 flex gap-4 items-center">
-                <a href={waLink()} target="_blank" rel="noopener noreferrer"><Button className="cursor-pointer transition-opacity hover:opacity-90 min-h-[48px] px-5 rounded-xl" style={{ background: COLORS.black, color: COLORS.bg1 }}>Contato WhatsApp</Button></a>
-                <Button className="cursor-pointer transition-all duration-200 hover:opacity-100 hover:bg-[rgba(193,154,107,.12)] hover:border-[rgba(193,154,107,.8)] hover:shadow-sm hover:-translate-y-[1px] min-h-[48px] px-5 rounded-xl border-2" style={{ background:'transparent', color: COLORS.accent, borderColor: COLORS.accent }} onClick={() => scrollToId('#sobre')}>Sobre</Button>
+              <p className="mt-6 text-[17px] leading-relaxed max-w-prose" style={{ color: COLORS.inkSoft }}>
+                Atuação estratégica e humanizada com foco em resultados. Atendimento digital em todo o Brasil, sem perder a proximidade: conduzimos cada etapa com transparência, linguagem acessível e atualização constante do cliente.
+              </p>
+              <p className="mt-4 text-[17px] leading-relaxed max-w-prose" style={{ color: COLORS.inkSoft }}>
+                Referência em Direito de Família, Sucessões, Consumidor e Civil. Do primeiro contato à solução final, priorizamos eficiência, sigilo e acolhimento.
+              </p>
+              <div className="mt-8 text-sm" style={{ color: COLORS.inkSoft }}>
+                Entre em contato pelos canais abaixo ou agende uma consulta na seção de contato.
               </div>
             </motion.div>
             <motion.div initial={{opacity:0,scale:.95}} whileInView={{opacity:1,scale:1}} viewport={{amount:0.3}} transition={{duration:.7}} className="flex justify-center">
-              <img src={CONFIG.PORTRAIT_URL} alt="Foto da Responsável" className="rounded-2xl shadow-2xl w-full max-w-xs sm:max-w-sm object-cover" style={{ aspectRatio: '3 / 4' }} />
+              <img src={CONFIG.PORTRAIT_URL} alt="Foto da Responsável" className="rounded-2xl shadow-2xl w-full max-w-sm sm:max-w-md lg:max-w-lg object-cover" style={{ aspectRatio: '3 / 4' }} />
             </motion.div>
           </div>
         </div>
@@ -368,21 +666,33 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
             Áreas de Atuação
             <span style={{ position:'absolute', left:'50%', transform:'translateX(-50%)', bottom:0, width:72, height:2, background: COLORS.accent }} />
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { icon: <Scale />, title: 'Direito de Família', desc: 'Divórcios, guarda, alimentos e partilha.' },
-              { icon: <Gavel />, title: 'Direito Sucessório', desc: 'Inventários, testamentos e partilhas.' },
-              { icon: <ShieldCheck />, title: 'Direito do Consumidor', desc: 'Defesa contra práticas abusivas e contratos.' },
-              { icon: <FileText />, title: 'Contratos e Direito Civil', desc: 'Elaboração e revisão de contratos.' },
-              { icon: <Building2 />, title: 'Direito Imobiliário', desc: 'Compra, venda e locação de imóveis.' },
-              { icon: <Handshake />, title: 'Mediação e Acordos', desc: 'Soluções consensuais rápidas.' },
-            ].map((item, i) => (
-              <motion.div key={i} initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} viewport={{amount:0.2}} transition={{delay:i*.08}}>
-                <Card role="button" tabIndex={0} className="rounded-2xl shadow-md hover:shadow-xl transition cursor-pointer" style={{ border: `1px solid ${COLORS.border}` }} onClick={() => scrollToId('#contato')} onKeyDown={(e) => { if (e.key === 'Enter') scrollToId('#contato'); }}>
-                  <CardContent className="p-6 text-center flex flex-col items-center gap-4">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {practiceCards.map((item, i) => (
+              <motion.div key={item.title} initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} viewport={{amount:0.2}} transition={{delay:i*.08}}>
+                <Card
+                  role="button"
+                  tabIndex={0}
+                  aria-haspopup={item.modal ? 'dialog' : undefined}
+                  className="rounded-2xl border bg-white/90 shadow-md transition hover:-translate-y-[2px] hover:shadow-xl"
+                  style={{ border: `1px solid ${COLORS.border}` }}
+                  onClick={() => {
+                    if (item.modal) setActivePracticeModal(item.modal);
+                    else scrollToId('#contato');
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      if (item.modal) setActivePracticeModal(item.modal);
+                      else scrollToId('#contato');
+                    }
+                  }}
+                >
+                  <CardContent className="flex flex-col items-center gap-4 p-6 text-center">
                     {cardIcon(item.icon)}
-                    <h3 className="font-semibold text-xl">{item.title}</h3>
+                    <h3 className="text-xl font-semibold" style={{ color: COLORS.ink }}>{item.title}</h3>
                     <p className="text-sm" style={{ color: COLORS.inkSoft }}>{item.desc}</p>
+                    <span className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: COLORS.accent }}>
+                      {item.modal ? 'Saiba mais' : 'Solicitar contato'}
+                    </span>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -390,6 +700,161 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
           </div>
         </div>
       </section>
+
+
+      <AnimatePresence>
+        {activeModalData && (
+          <motion.div
+            key="practice-modal"
+            className="fixed inset-0 z-[11000] flex items-center justify-center px-4 py-8 md:py-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <button
+              type="button"
+              aria-label="Fechar modal"
+              className="absolute inset-0 bg-black/65"
+              onClick={() => setActivePracticeModal(null)}
+            ></button>
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={modalTitleId}
+              aria-describedby={modalDescriptionId}
+              className="consumer-modal-shell relative flex w-full max-w-5xl flex-col overflow-y-auto rounded-[32px] bg-white shadow-2xl md:overflow-hidden"
+              style={{ maxHeight: "var(--modal-max)" }}
+              initial={{ scale: 0.92, opacity: 0, y: 24 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.92, opacity: 0, y: 24 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+            >
+              <div className="absolute -top-32 -right-24 h-72 w-72 rounded-full bg-[rgba(193,154,107,0.18)] blur-3xl" aria-hidden></div>
+              <div
+                className="absolute inset-0 opacity-[0.04]"
+                style={{ backgroundImage: "radial-gradient(circle at 20% 20%, rgba(193,154,107,.6) 0, rgba(193,154,107,0) 55%)" }}
+                aria-hidden
+              ></div>
+              <button
+                type="button"
+                aria-label="Fechar modal"
+                className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full border bg-white/85 text-sm text-[#111111] shadow-sm backdrop-blur transition hover:bg-white md:right-5 md:top-5"
+                style={{ borderColor: COLORS.border }}
+                onClick={() => setActivePracticeModal(null)}
+              >
+                <X size={18} />
+              </button>
+              <div className="relative flex h-full min-h-0 flex-col gap-6 md:flex-row md:gap-0" style={{ minHeight: "60vh" }}>
+                <aside className={`relative flex min-h-0 w-full flex-shrink-0 flex-col bg-gradient-to-br ${activeModalData.gradient} px-6 py-8 text-white sm:px-7 md:w-[320px] md:overflow-hidden lg:w-[360px]`}>
+                  <div
+                    className="absolute inset-0 opacity-30"
+                    style={{ backgroundImage: "radial-gradient(circle at 15% 20%, rgba(255,255,255,0.25) 0, transparent 55%)" }}
+                    aria-hidden
+                  ></div>
+                  <div className="consumer-modal-aside-scroll relative z-10 flex h-full flex-col gap-6 pr-1 pb-6 sm:pr-2 md:overflow-y-auto">
+                    <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-white/80">
+                      {activeModalData.tag}
+                    </span>
+                    <h3 id={modalTitleId} className="text-2xl font-bold leading-tight md:text-[28px] lg:text-[30px]">
+                      {activeModalData.title}
+                    </h3>
+                    <p id={modalDescriptionId} className="text-sm leading-relaxed text-white/80 md:text-base">
+                      {activeModalData.description}
+                    </p>
+                    <div className="space-y-4 text-sm text-white/90">
+                      {activeModalData.highlights.map((item) => (
+                        <div key={item.title} className="flex items-start gap-3">
+                          <CheckCircle2 className="mt-0.5 h-5 w-5" style={{ color: activeModalData.highlightColor }} />
+                          <div>
+                            <p className="text-base font-semibold text-white">{item.title}</p>
+                            <p className="text-sm text-white/75">{item.description}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-auto pt-2 text-sm text-white/70">
+                      Utilize os canais oficiais para solicitar atendimento personalizado conforme sua necessidade.
+                    </div>
+                  </div>
+                </aside>
+                <div className="relative flex flex-1 flex-col bg-white">
+                  <div className="consumer-modal-scroll relative flex-1 px-6 py-9 sm:px-9 md:flex-1 md:overflow-y-auto md:px-12 md:py-12">
+                    <div className="mx-auto flex w-full max-w-2xl flex-col gap-10 md:gap-12">
+                      <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border, background: activeModalData.bulletSection.background ?? "#ffffff" }}>
+                        <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                          {activeModalData.bulletSection.title}
+                        </h4>
+                        <p className="mt-3 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
+                          {activeModalData.bulletSection.intro}
+                        </p>
+                        <ul className="mt-5 space-y-4 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
+                          {activeModalData.bulletSection.bullets.map((bullet, index) => (
+                            <li key={index} className="flex items-start gap-3">
+                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                              <span>{bullet}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </section>
+                      <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border, background: activeModalData.stepsBackground ?? "#f9fafb" }}>
+                        <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                          {activeModalData.stepsTitle}
+                        </h4>
+                        {activeModalData.stepsIntro && (
+                          <p className="mt-3 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
+                            {activeModalData.stepsIntro}
+                          </p>
+                        )}
+                        <div className="mt-5 grid gap-6 sm:grid-cols-3">
+                          {activeModalData.steps.map((step) => (
+                            <div key={step.title} className="flex flex-col gap-3">
+                              <div className="flex items-center gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: `${COLORS.accent}1a`, color: COLORS.accent }}>
+                                  {step.icon}
+                                </div>
+                                <span className="text-sm font-semibold" style={{ color: COLORS.ink }}>{step.title}</span>
+                              </div>
+                              <p className="text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>{step.description}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                      <section className="grid gap-6 md:grid-cols-2">
+                        {activeModalData.columns.map((column) => (
+                          <div key={column.title} className="rounded-3xl border p-6 md:p-7" style={{ borderColor: COLORS.border, background: column.background ?? "transparent" }}>
+                            <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                              {column.title}
+                            </h4>
+                            <ul className="mt-4 space-y-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                              {column.bullets.map((bullet, index) => (
+                                <li key={index} className="flex items-start gap-3">
+                                  <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                                  <span>{bullet}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </section>
+                      <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border }}>
+                        {activeModalData.closing.paragraphs.map((paragraph, index) => (
+                          <p
+                            key={index}
+                            className={`text-sm leading-relaxed md:text-base ${index > 0 ? "mt-3" : ""}`}
+                            style={{ color: index === 0 ? COLORS.ink : COLORS.inkSoft }}
+                          >
+                            {paragraph}
+                          </p>
+                        ))}
+                      </section>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* NOSSA EQUIPE (carrossel) */}
       <section id="equipe" className="relative py-16 md:py-24" style={{ background: `linear-gradient(180deg, ${COLORS.bg2} 0%, #0f0f0f 100%)`, color:'#fff' }}>
@@ -414,8 +879,19 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                   <div className="grid md:grid-cols-2 gap-10 items-stretch p-6">
                     <div className="flex justify-center">
                       <div className="rounded-2xl p-2" style={{ background: `linear-gradient(135deg, ${COLORS.accent}40, ${COLORS.accent2}26)` }}>
-                        <div className="rounded-2xl overflow-hidden bg-white shadow-xl w-[280px] h-[360px] sm:w-[320px] sm:h-[420px] flex items-center justify-center">
-                          <img src={m.photo} alt={m.name} loading={m.name==='Júlia Bellussi' ? 'eager' : undefined} referrerPolicy={m.name==='Júlia Bellussi' ? 'no-referrer' : undefined} crossOrigin={m.name==='Júlia Bellussi' ? 'anonymous' : undefined} onError={(e)=>{ const el=e.currentTarget as HTMLImageElement; if(m.name==='Júlia Bellussi'){ if(!el.dataset.triedcdn){ el.dataset.triedcdn='1'; el.src = CONFIG.TEAM_PHOTO_JULIA; } else if(!el.dataset.triedclean){ el.dataset.triedclean='1'; el.src = fallbackAsset(CONFIG.TEAM_PHOTO_JULIA); } } else { if(!el.dataset.fallback){ el.dataset.fallback='1'; el.src = fallbackAsset(m.photo); } } }} className="object-cover w-full h-full" />
+                        <div className="relative w-[240px] sm:w-[280px] md:w-[320px] lg:w-[360px]">
+                          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[26px] bg-white shadow-xl">
+                            <img
+                              src={m.photo}
+                              alt={m.name}
+                              loading={m.name==='Júlia Bellussi' ? 'eager' : undefined}
+                              referrerPolicy={m.name==='Júlia Bellussi' ? 'no-referrer' : undefined}
+                              crossOrigin={m.name==='Júlia Bellussi' ? 'anonymous' : undefined}
+                              onError={(e)=>{ const el=e.currentTarget as HTMLImageElement; if(m.name==='Júlia Bellussi'){ if(!el.dataset.triedcdn){ el.dataset.triedcdn='1'; el.src = CONFIG.TEAM_PHOTO_JULIA; } else if(!el.dataset.triedclean){ el.dataset.triedclean='1'; el.src = fallbackAsset(CONFIG.TEAM_PHOTO_JULIA); } } else { if(!el.dataset.fallback){ el.dataset.fallback='1'; el.src = fallbackAsset(m.photo); } } }}
+                              className="h-full w-full object-contain p-3 sm:p-4"
+                              style={{ background: '#ffffff' }}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -423,11 +899,32 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                       <h3 className="text-2xl font-bold">{m.name}</h3>
                       <p className="mt-1 text-white/70">{m.oab}</p>
                       <p className="mt-4 text-white/80 max-w-prose">{m.name === 'Júlia Bellussi' ? 'Especialista em Direito Previdenciário, com foco em planejamentos de aposentadoria, análise de contribuições e estratégias para garantir o acesso aos direitos dos clientes.' : 'Atuação dedicada em Direito de Família, Sucessões e Direito Civil. Atendimento humano, estratégico e transparente para cada caso.'}</p>
-                      <div className="mt-6 flex gap-3 items-center">
-                        <a href={waLink()} target="_blank" rel="noopener noreferrer">
-                          <Button className="cursor-pointer transition-opacity hover:opacity-90 min-h-[44px] px-5 rounded-xl shadow-none" style={{ background: COLORS.black, color: COLORS.bg1 }}><WhatsappIcon size={18}/> WhatsApp</Button>
-                        </a>
-                        <Button className="cursor-pointer transition-all duration-200 hover:opacity-100 hover:bg-[rgba(193,154,107,.12)] hover:border-[rgba(193,154,107,.8)] hover:shadow-sm hover:-translate-y-[1px] min-h-[44px] px-5 rounded-xl border-2" style={{ background:'transparent', color: COLORS.accent, borderColor: COLORS.accent }} onClick={() => scrollToId('#sobre')}>Sobre</Button>
+                      <div className="mt-6 flex flex-col sm:flex-row gap-3 sm:items-center">
+                        <div className="flex items-center gap-3">
+                          <a
+                            href={waLink()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Chamar no WhatsApp"
+                            title="Chamar no WhatsApp"
+                            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border transition-all duration-200 hover:-translate-y-[1px] hover:shadow-sm hover:bg-black/90 px-5"
+                            style={{
+                              background: COLORS.black,
+                              borderColor: "rgba(17,17,17,0.85)",
+                              color: "#f9f9f9",
+                            }}
+                          >
+                            <WhatsappIcon size={18} />
+                            <span className="text-sm font-medium tracking-wide">Chamar no WhatsApp</span>
+                          </a>
+                          <Button
+                            className="cursor-pointer transition-all duration-200 hover:opacity-100 hover:bg-[rgba(193,154,107,.12)] hover:border-[rgba(193,154,107,.8)] hover:shadow-sm hover:-translate-y-[1px] min-h-[44px] px-5 rounded-xl border-2"
+                            style={{ background: "transparent", color: COLORS.accent, borderColor: COLORS.accent }}
+                            onClick={() => scrollToId('#sobre')}
+                          >
+                            Sobre
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
