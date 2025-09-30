@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "./components/src/ui/button";
 import { Card, CardContent } from "./components/src/ui/card";
 
@@ -308,8 +308,51 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
           <span className="font-bold text-lg md:text-xl" style={{ color: COLORS.ink }}>Advocacia Duran</span>
         </button>
         {/* Botão mobile */}
-        <button aria-label="Abrir menu" className="md:hidden p-2 rounded-lg border cursor-pointer" style={{ borderColor: COLORS.border }} onClick={()=>setMobileOpen(v=>!v)}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+        <button
+          aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
+          aria-expanded={mobileOpen}
+          className="md:hidden p-2 rounded-lg border cursor-pointer transition-colors"
+          style={{ borderColor: COLORS.border }}
+          onClick={()=>setMobileOpen(v=>!v)}
+        >
+          <motion.svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <motion.path
+              d="M4 7h16"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              animate={{
+                d: mobileOpen ? "M6 6l12 12" : "M4 7h16",
+              }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+            />
+            <motion.path
+              d="M4 12h16"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              animate={{
+                opacity: mobileOpen ? 0 : 1,
+              }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+            />
+            <motion.path
+              d="M4 17h16"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              animate={{
+                d: mobileOpen ? "M6 18L18 6" : "M4 17h16",
+              }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+            />
+          </motion.svg>
         </button>
         <nav role="navigation" className="hidden md:flex gap-6 font-medium items-center">
           <button onClick={() => scrollToId('#sobre')} className="cursor-pointer transition-colors hover:text-[#c19a6b]">Sobre</button>
@@ -322,14 +365,26 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
       {fixHeader && <div style={{height: headerH}} aria-hidden></div>}
       {/* Menu mobile */}
       
-      {mobileOpen && (
-        <div className="md:hidden border-b bg-white/95 backdrop-blur-sm px-4 sm:px-6 py-3 flex flex-col gap-2" style={{ borderColor: COLORS.border }}>
-          <button onClick={() => { scrollToId('#sobre'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Sobre</button>
-          <button onClick={() => { scrollToId('#areas'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Áreas</button>
-          <button onClick={() => { scrollToId('#equipe'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Equipe</button>
-          <button onClick={() => { scrollToId('#contato'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Contato</button>
-        </div>
-      )}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.nav
+            key="mobile-nav"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="md:hidden border-b bg-white/95 backdrop-blur-sm px-4 sm:px-6 overflow-hidden"
+            style={{ borderColor: COLORS.border }}
+          >
+            <div className="py-3 flex flex-col gap-1">
+              <button onClick={() => { scrollToId('#sobre'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Sobre</button>
+              <button onClick={() => { scrollToId('#areas'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Áreas</button>
+              <button onClick={() => { scrollToId('#equipe'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Equipe</button>
+              <button onClick={() => { scrollToId('#contato'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Contato</button>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
 
       {/* SOBRE + EXCELÊNCIA */}
       <section id="sobre" ref={combinedRef} className="relative py-16 md:py-24" style={{ background: `linear-gradient(180deg, ${COLORS.bg1} 0%, rgba(193,154,107,.08) 100%)` }}>
@@ -414,8 +469,8 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                   <div className="grid md:grid-cols-2 gap-10 items-stretch p-6">
                     <div className="flex justify-center">
                       <div className="rounded-2xl p-2" style={{ background: `linear-gradient(135deg, ${COLORS.accent}40, ${COLORS.accent2}26)` }}>
-                        <div className="rounded-2xl overflow-hidden bg-white shadow-xl w-[280px] h-[360px] sm:w-[320px] sm:h-[420px] flex items-center justify-center">
-                          <img src={m.photo} alt={m.name} loading={m.name==='Júlia Bellussi' ? 'eager' : undefined} referrerPolicy={m.name==='Júlia Bellussi' ? 'no-referrer' : undefined} crossOrigin={m.name==='Júlia Bellussi' ? 'anonymous' : undefined} onError={(e)=>{ const el=e.currentTarget as HTMLImageElement; if(m.name==='Júlia Bellussi'){ if(!el.dataset.triedcdn){ el.dataset.triedcdn='1'; el.src = CONFIG.TEAM_PHOTO_JULIA; } else if(!el.dataset.triedclean){ el.dataset.triedclean='1'; el.src = fallbackAsset(CONFIG.TEAM_PHOTO_JULIA); } } else { if(!el.dataset.fallback){ el.dataset.fallback='1'; el.src = fallbackAsset(m.photo); } } }} className="object-cover w-full h-full" />
+                        <div className="rounded-2xl overflow-hidden bg-white shadow-xl w-[280px] sm:w-[320px] aspect-[3/4] flex items-center justify-center">
+                          <img src={m.photo} alt={m.name} loading={m.name==='Júlia Bellussi' ? 'eager' : undefined} referrerPolicy={m.name==='Júlia Bellussi' ? 'no-referrer' : undefined} crossOrigin={m.name==='Júlia Bellussi' ? 'anonymous' : undefined} onError={(e)=>{ const el=e.currentTarget as HTMLImageElement; if(m.name==='Júlia Bellussi'){ if(!el.dataset.triedcdn){ el.dataset.triedcdn='1'; el.src = CONFIG.TEAM_PHOTO_JULIA; } else if(!el.dataset.triedclean){ el.dataset.triedclean='1'; el.src = fallbackAsset(CONFIG.TEAM_PHOTO_JULIA); } } else { if(!el.dataset.fallback){ el.dataset.fallback='1'; el.src = fallbackAsset(m.photo); } } }} className="w-full h-full object-contain object-top" />
                         </div>
                       </div>
                     </div>
