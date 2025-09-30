@@ -7,6 +7,6 @@ export default defineConfig({
   base: '/edimara_law/',            // << importante para carregar assets no Pages
   resolve: { alias: { '@': path.resolve(__dirname, './src') } },
   server: {
-    allowedHosts: ['bcbeb348b823.ngrok-free.app'],
+    allowedHosts: ['1743b3df390e.ngrok-free.app'],
   },
 })
