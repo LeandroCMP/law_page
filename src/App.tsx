@@ -123,14 +123,16 @@ export default function LawFirmLanding() {
 
 
   useEffect(() => {
-    if (consumerModalOpen) {
-      const { body } = document;
-      const prev = body.style.overflow;
-      body.style.overflow = 'hidden';
-      return () => {
-        body.style.overflow = prev;
-      };
-    }
+    if (!consumerModalOpen) return;
+    const { body, documentElement } = document;
+    const prevBodyOverflow = body.style.overflow;
+    const prevHtmlOverflow = documentElement.style.overflow;
+    body.style.overflow = "hidden";
+    documentElement.style.overflow = "hidden";
+    return () => {
+      body.style.overflow = prevBodyOverflow;
+      documentElement.style.overflow = prevHtmlOverflow;
+    };
   }, [consumerModalOpen]);
 
   
@@ -287,19 +289,16 @@ html,body{margin:0;overflow-x:hidden}
 *{box-sizing:border-box}
 body{font-family:'Merriweather', serif;}
 h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2px}
-.consumer-modal-scroll{scrollbar-width:thin;scrollbar-color:${COLORS.accent} rgba(193,154,107,0.18);}
+.consumer-modal-scroll{scrollbar-width:thin;scrollbar-color:${COLORS.accent} rgba(193,154,107,0.18);max-height:calc(92vh - 3rem);}
 .consumer-modal-scroll::-webkit-scrollbar{width:12px;}
 .consumer-modal-scroll::-webkit-scrollbar-track{background:rgba(193,154,107,0.12);border-radius:999px;}
 .consumer-modal-scroll::-webkit-scrollbar-thumb{background:${COLORS.accent};border-radius:999px;border:3px solid #fdfaf6;}
 .consumer-modal-scroll::-webkit-scrollbar-thumb:hover{background:${COLORS.accent2};}
 @media (max-width: 767px){
-  .consumer-modal-scroll{max-height:calc(100vh - 7rem);}
-}
-@media (min-width: 768px){
-  .consumer-modal-scroll{max-height:calc(92vh - 5rem);}
+  .consumer-modal-scroll{max-height:calc(100vh - 3.5rem);}
 }
 @media (min-width: 1024px){
-  .consumer-modal-scroll{max-height:calc(92vh - 4rem);}
+  .consumer-modal-scroll{max-height:calc(92vh - 2.25rem);}
 }
 `}</style>
 
@@ -412,6 +411,295 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               <button onClick={() => { scrollToId('#contato'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Contato</button>
             </div>
           </motion.nav>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {consumerModalOpen && (
+          <motion.div
+            key="consumer-modal"
+            className="fixed inset-0 z-[10050] flex items-center justify-center px-4 py-6 sm:py-8 md:py-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <button
+              type="button"
+              aria-label="Fechar modal"
+              className="absolute inset-0 bg-black/65"
+              onClick={() => setConsumerModalOpen(false)}
+            ></button>
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="consumer-modal-title"
+              aria-describedby="consumer-modal-description"
+              className="relative w-full max-w-5xl max-h-[92vh] overflow-hidden rounded-[32px] bg-white shadow-2xl"
+              initial={{ scale: 0.92, opacity: 0, y: 24 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.92, opacity: 0, y: 24 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+            >
+              <div className="absolute -top-32 -right-24 h-72 w-72 rounded-full bg-[rgba(193,154,107,0.18)] blur-3xl" aria-hidden></div>
+              <div className="absolute -bottom-32 -left-28 h-72 w-72 rounded-full bg-[rgba(241,213,180,0.28)] blur-3xl" aria-hidden></div>
+              <div className="relative flex h-full flex-col overflow-hidden">
+                <div className="consumer-modal-scroll flex-1 overflow-y-auto overscroll-contain">
+                  <section className="relative overflow-hidden bg-gradient-to-br from-[#1f1d1b] via-[#2b2118] to-[#5a3d23] text-white">
+                    <div
+                      className="absolute inset-0 opacity-30"
+                      style={{ backgroundImage: "radial-gradient(circle at 15% 20%, rgba(255,255,255,0.25) 0, transparent 55%)" }}
+                      aria-hidden
+                    ></div>
+                    <button
+                      type="button"
+                      className="absolute right-6 top-6 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border bg-white/90 text-[#2b2b2b] shadow-sm transition hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[rgba(193,154,107,0.6)]"
+                      style={{ borderColor: COLORS.border }}
+                      aria-label="Fechar modal"
+                      onClick={() => setConsumerModalOpen(false)}
+                    >
+                      <X size={18} />
+                    </button>
+                    <div className="relative z-10 px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12">
+                      <div className="flex flex-col gap-6">
+                        <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-white/80">
+                          Direito do Consumidor
+                        </span>
+                        <div className="space-y-4">
+                          <h3 id="consumer-modal-title" className="text-2xl font-bold leading-tight md:text-[28px] lg:text-[30px]">
+                            Defesa estratégica para proteger seu poder de consumo
+                          </h3>
+                          <p id="consumer-modal-description" className="text-sm leading-relaxed text-white/80 md:text-base">
+                            Representamos consumidores em conflitos com empresas, instituições financeiras, planos de saúde e e-commerces, conduzindo negociações e ações com transparência e agilidade.
+                          </p>
+                        </div>
+                        <div className="grid gap-4 sm:grid-cols-3">
+                          <div className="flex items-start gap-3 rounded-2xl bg-white/10 p-4 backdrop-blur-sm">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white">
+                              <ShieldCheck size={18} />
+                            </div>
+                            <div>
+                              <p className="text-base font-semibold text-white">Proteção completa</p>
+                              <p className="text-sm text-white/75">Avaliamos cláusulas abusivas e garantimos que seus direitos sejam respeitados.</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3 rounded-2xl bg-white/10 p-4 backdrop-blur-sm">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white">
+                              <Scale size={18} />
+                            </div>
+                            <div>
+                              <p className="text-base font-semibold text-white">Acordos equilibrados</p>
+                              <p className="text-sm text-white/75">Negociação estratégica com foco em recuperar valores e benefícios.</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3 rounded-2xl bg-white/10 p-4 backdrop-blur-sm">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white">
+                              <Gavel size={18} />
+                            </div>
+                            <div>
+                              <p className="text-base font-semibold text-white">Atuação firme</p>
+                              <p className="text-sm text-white/75">Ações judiciais e administrativas conduzidas com técnica e proximidade.</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:gap-4">
+                          <a href={waLink()} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                            <Button
+                              className="w-full justify-center gap-2 rounded-xl px-5 py-3 text-base font-semibold shadow-sm transition hover:-translate-y-[2px] hover:shadow-md"
+                              style={{ background: "#ffffff", color: COLORS.black, borderRadius: 16 }}
+                            >
+                              <WhatsappIcon size={18} /> Conversar pelo WhatsApp
+                            </Button>
+                          </a>
+                          <Button
+                            className="w-full justify-center gap-2 rounded-xl border px-5 py-3 text-base font-semibold text-white transition hover:bg-white/15 sm:w-auto"
+                            style={{ background: "transparent", borderColor: "rgba(255,255,255,0.45)", borderRadius: 16 }}
+                            onClick={() => {
+                              setConsumerModalOpen(false);
+                              scrollToId("#contato");
+                            }}
+                          >
+                            Falar com a equipe
+                          </Button>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-white/70">
+                          <Clock3 size={14} /> Atendimento em todo o Brasil
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                  <div className="space-y-9 bg-white px-6 pb-8 pt-8 sm:px-8 sm:pb-10 sm:pt-10 md:px-10 md:pb-12 md:pt-12">
+                    <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border, background: `linear-gradient(135deg, ${COLORS.bg1}, #fff)` }}>
+                      <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                        Principais soluções
+                      </h4>
+                      <p className="mt-3 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
+                        Estratégias desenhadas de acordo com o seu caso para reparar prejuízos, encerrar cobranças indevidas e restabelecer serviços essenciais.
+                      </p>
+                      <ul className="mt-5 space-y-4 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
+                        <li className="flex items-start gap-3">
+                          <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                          <span>Indenizações por fraudes, cancelamentos, vícios de produtos e serviços ou entregas não realizadas.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                          <span>Revisão de contratos e contestação de juros abusivos, taxas ocultas e cláusulas ilegais.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                          <span>Defesa administrativa diante de Procon, Senacon e demais órgãos de proteção ao consumidor.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                          <span>Acordos e ações contra bancos, operadoras de telefonia, seguradoras, planos de saúde e e-commerces.</span>
+                        </li>
+                      </ul>
+                    </section>
+                    <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border, background: "#fefbf7" }}>
+                      <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                        Como guiamos sua demanda
+                      </h4>
+                      <div className="mt-5 grid gap-6 sm:grid-cols-3">
+                        <div className="flex flex-col gap-3">
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: `${COLORS.accent}1a`, color: COLORS.accent }}>
+                              <Phone size={18} />
+                            </div>
+                            <span className="text-sm font-semibold" style={{ color: COLORS.ink }}>Diagnóstico</span>
+                          </div>
+                          <p className="text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                            Entrevista detalhada e análise de documentos para mapear riscos e prioridades.
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: `${COLORS.accent}1a`, color: COLORS.accent }}>
+                              <FileText size={18} />
+                            </div>
+                            <span className="text-sm font-semibold" style={{ color: COLORS.ink }}>Plano de ação</span>
+                          </div>
+                          <p className="text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                            Definição das medidas cabíveis, estimativa de prazos e alinhamento transparente com você.
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: `${COLORS.accent}1a`, color: COLORS.accent }}>
+                              <Handshake size={18} />
+                            </div>
+                            <span className="text-sm font-semibold" style={{ color: COLORS.ink }}>Execução</span>
+                          </div>
+                          <p className="text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                            Negociações firmes e protocolos ágeis em esfera administrativa ou judicial.
+                          </p>
+                        </div>
+                      </div>
+                    </section>
+                    <section className="grid gap-6 md:grid-cols-2">
+                      <div className="rounded-3xl border p-6 md:p-7" style={{ borderColor: COLORS.border }}>
+                        <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                          Diferenciais
+                        </h4>
+                        <ul className="mt-4 space-y-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                            <span>Atendimento humano, digital e próximo, com comunicação contínua.</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                            <span>Uso estratégico do Código de Defesa do Consumidor e precedentes favoráveis.</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                            <span>Transparência sobre riscos, custos e possibilidades de acordo em cada etapa.</span>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="rounded-3xl border p-6 md:p-7" style={{ borderColor: COLORS.border, background: "rgba(17,17,17,0.04)" }}>
+                        <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                          Casos recorrentes
+                        </h4>
+                        <ul className="mt-4 space-y-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                            <span>Cancelamentos de viagens, compras on-line e entregas não realizadas.</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                            <span>Cobranças indevidas e falhas em serviços bancários, cartões e financiamentos.</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                            <span>Negativas de cobertura por planos de saúde e seguradoras.</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </section>
+                    <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border, background: "#fef9f2" }}>
+                      <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                        Documentos que fortalecem sua defesa
+                      </h4>
+                      <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                        <div className="flex items-start gap-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                          <FileText className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                          <span>Contratos, termos de serviço, comprovantes de pagamento e notas fiscais.</span>
+                        </div>
+                        <div className="flex items-start gap-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                          <ShieldCheck className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                          <span>Protocolos, números de atendimento e registros de reclamações anteriores.</span>
+                        </div>
+                        <div className="flex items-start gap-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                          <Building2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                          <span>Comunicados, e-mails ou mensagens da empresa sobre o ocorrido.</span>
+                        </div>
+                        <div className="flex items-start gap-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                          <Mail className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                          <span>Comprovantes de tentativas de negociação ou respostas negativas do fornecedor.</span>
+                        </div>
+                      </div>
+                    </section>
+                    <section className="rounded-3xl bg-[#111111] p-6 text-white md:p-8">
+                      <div className="space-y-2">
+                        <h4 className="text-xl font-semibold">Pronto para iniciar sua defesa?</h4>
+                        <p className="text-sm leading-relaxed text-white/80 md:text-base">
+                          Conte sua história e receba um direcionamento personalizado com os próximos passos, prazos estimados e alternativas de acordo.
+                        </p>
+                      </div>
+                      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+                        <a href={waLink()} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                          <Button
+                            className="w-full justify-center gap-2 rounded-xl px-5 py-3 text-base font-semibold text-[#111111] transition hover:opacity-90"
+                            style={{ background: "#f8e9d7", borderRadius: 16 }}
+                          >
+                            <WhatsappIcon size={18} /> Iniciar atendimento
+                          </Button>
+                        </a>
+                        <Button
+                          className="w-full justify-center rounded-xl border border-white/40 px-5 py-3 text-base font-semibold text-white transition hover:bg-white/10 sm:w-auto"
+                          style={{ background: "transparent", borderRadius: 16 }}
+                          onClick={() => {
+                            setConsumerModalOpen(false);
+                            scrollToId("#contato");
+                          }}
+                        >
+                          Agendar conversa
+                        </Button>
+                      </div>
+                      <div className="mt-6 grid gap-3 text-sm text-white/80 sm:grid-cols-2">
+                        <div className="flex items-center gap-3">
+                          <Phone size={16} />
+                          <span>{CONFIG.TEL_DISPLAY}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Mail size={16} />
+                          <span>{CONFIG.EMAIL}</span>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
 
