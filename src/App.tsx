@@ -11,7 +11,6 @@ import {
   CheckCircle2,
   FileText,
   Handshake,
-  Building2,
   Instagram,
   Linkedin,
   Clock3,
@@ -56,7 +55,12 @@ const COLORS = {
   border: "#ecebe9",
 } as const;
 
-type PracticeModalKey = "consulting" | "consumer" | "family" | "succession";
+type PracticeModalKey =
+  | "consulting"
+  | "consumer"
+  | "family"
+  | "succession"
+  | "retirement";
 
 type PracticeModalContent = {
   tag: string;
@@ -139,7 +143,12 @@ export default function LawFirmLanding() {
       desc: "Acompanhamento preventivo para decisões seguras e redução de riscos.",
       modal: "consulting",
     },
-    { icon: <Building2 />, title: "Direito Imobiliário", desc: "Compra, venda, locação e disputas possessórias." },
+    {
+      icon: <Clock3 />,
+      title: "Planejamento Previdenciário",
+      desc: "Estudo previdenciário completo para definir o melhor momento e forma de aposentadoria.",
+      modal: "retirement",
+    },
     { icon: <Handshake />, title: "Mediação e Acordos", desc: "Soluções consensuais com segurança jurídica." },
   ];
 
@@ -220,6 +229,85 @@ export default function LawFirmLanding() {
         paragraphs: [
           "A consultoria jurídica preventiva oferece segurança para quem busca antecipar problemas legais e agir com estratégia.",
           "Disponibilizamos atendimento presencial e online para entregar orientações especializadas de forma prática e acessível.",
+        ],
+      },
+    },
+    retirement: {
+      tag: "Planejamento Previdenciário",
+      gradient: "from-[#1b1f25] via-[#233240] to-[#3a586c]",
+      highlightColor: "#c5ddec",
+      title: "Planejamento previdenciário completo para uma aposentadoria segura",
+      description:
+        "O planejamento previdenciário analisa o histórico de contribuições, realiza simulações pelas regras vigentes e define a melhor estratégia para acessar o benefício ideal.",
+      highlights: [
+        {
+          title: "Estudo técnico contributivo",
+          description: "Mapeamos contribuições e identificamos lacunas para garantir o tempo necessário à aposentadoria.",
+        },
+        {
+          title: "Simulações completas",
+          description: "Avaliamos todas as regras permanentes e de transição da Reforma da Previdência (EC 103/2019).",
+        },
+        {
+          title: "Estratégias personalizadas",
+          description: "Indicamos o momento ideal para se aposentar e as medidas corretivas quando já existem pendências.",
+        },
+      ],
+      bulletSection: {
+        title: "Para quem o planejamento é indispensável",
+        intro: "O planejamento atende diferentes perfis que precisam decidir quando e como se aposentar:",
+        bullets: [
+          "Trabalhadores CLT que desejam escolher o melhor momento para requerer o benefício.",
+          "Autônomos, empresários e MEIs que precisam otimizar contribuições ao INSS.",
+          "Servidores públicos vinculados a regimes próprios de previdência (RPPS).",
+          "Profissionais expostos a agentes nocivos em atividades insalubres ou perigosas.",
+          "Pessoas próximas de se aposentar e que buscam segurança na definição das regras aplicáveis.",
+        ],
+        background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`
+      },
+      steps: [
+        {
+          icon: <FileText size={18} />,
+          title: "Mapeamento contributivo",
+          description: "Organizamos o CNIS, identificamos vínculos e calculamos o tempo especial quando necessário.",
+        },
+        {
+          icon: <CheckCircle2 size={18} />,
+          title: "Simulações personalizadas",
+          description: "Realizamos projeções pela regra mais vantajosa e avaliamos alternativas preventivas ou corretivas.",
+        },
+        {
+          icon: <Handshake size={18} />,
+          title: "Plano de ação e acompanhamento",
+          description: "Entregamos parecer completo, orientações contínuas e acompanhamento para implementar as estratégias.",
+        },
+      ],
+      stepsTitle: "Como conduzimos o planejamento",
+      stepsIntro: "Unimos análise técnica, simulações detalhadas e suporte estratégico para garantir a melhor decisão.",
+      stepsBackground: "#f4f7fb",
+      columns: [
+        {
+          title: "Benefícios principais",
+          bullets: [
+            "Cálculo preciso da Renda Mensal Inicial (RMI) com indicação da melhor regra.",
+            "Identificação de contribuições em falta e orientações sobre tempo especial.",
+            "Redução de riscos de indeferimento com documentação correta e estratégia ajustada.",
+          ],
+        },
+        {
+          title: "Serviços oferecidos",
+          bullets: [
+            "Simulações de aposentadoria em todas as regras e transições.",
+            "Revisão de contribuições, CNIS e valores pagos, inclusive Revisão da Vida Toda.",
+            "Consultoria continuada para empresas, autônomos e profissionais liberais.",
+          ],
+          background: "rgba(197,221,236,0.18)",
+        },
+      ],
+      closing: {
+        paragraphs: [
+          "Planejar a aposentadoria exige conhecimento jurídico especializado e atenção a cada detalhe contributivo.",
+          "Oferecemos atendimento personalizado para orientar os próximos passos e garantir uma aposentadoria segura.",
         ],
       },
     },
