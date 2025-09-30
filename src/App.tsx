@@ -14,6 +14,7 @@ import {
   Instagram,
   Linkedin,
   Clock3,
+  X,
 } from "lucide-react";
 import { useEffect, useState, useRef, type JSX } from "react";
 
@@ -479,7 +480,7 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
         {consumerModalOpen && (
           <motion.div
             key="consumer-modal"
-            className="fixed inset-0 z-[100] flex items-center justify-center px-4"
+            className="fixed inset-0 z-[10050] flex items-center justify-center px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -494,73 +495,98 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               role="dialog"
               aria-modal="true"
               aria-labelledby="consumer-modal-title"
-              className="relative max-w-3xl w-full rounded-3xl bg-white shadow-2xl overflow-hidden"
+              aria-describedby="consumer-modal-description"
+              className="relative w-full max-w-4xl rounded-[32px] bg-white shadow-2xl overflow-hidden"
               initial={{ scale: 0.9, opacity: 0, y: 24 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 24 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
             >
-              <div className="absolute top-4 right-4 z-10">
-                <button
-                  type="button"
-                  className="cursor-pointer rounded-full border px-3 py-1 text-sm font-medium"
-                  style={{ borderColor: COLORS.border, color: COLORS.inkSoft }}
-                  onClick={() => setConsumerModalOpen(false)}
-                >
-                  Fechar
-                </button>
-              </div>
-              <div className="relative p-8 md:p-10">
-                <div className="absolute -top-24 -right-16 w-56 h-56 rounded-full opacity-10" style={{ background: COLORS.accent }} aria-hidden></div>
-                <h3 id="consumer-modal-title" className="text-2xl md:text-3xl font-bold" style={{ color: COLORS.ink }}>
-                  Direito do Consumidor
-                </h3>
-                <p className="mt-4 text-base leading-relaxed" style={{ color: COLORS.inkSoft }}>
-                  Amparo jurídico completo para garantir equilíbrio nas relações de consumo, combater práticas abusivas e obter reparação rápida para prejuízos materiais ou morais.
-                </p>
-                <div className="mt-6 grid gap-6 md:grid-cols-2">
-                  <div>
-                    <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
-                      Principais atuações
-                    </h4>
-                    <ul className="mt-3 space-y-2 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
-                      <li>• Ações de indenização por danos materiais e morais diante de condutas abusivas.</li>
-                      <li>• Defesa contra cobranças indevidas, cláusulas abusivas e revisão contratual.</li>
-                      <li>• Suporte em problemas com produtos ou serviços defeituosos, vícios aparentes ou ocultos.</li>
-                      <li>• Conflitos com bancos e financeiras: fraudes, juros abusivos e negativação indevida.</li>
-                      <li>• Orientação preventiva para empresas adequarem-se ao Código de Defesa do Consumidor.</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
-                      Por que contar conosco
-                    </h4>
-                    <ul className="mt-3 space-y-2 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
-                      <li>• Estratégias focadas em equilibrar a relação entre consumidor e fornecedor.</li>
-                      <li>• Prevenção e combate a práticas ilegais, publicidade enganosa e cláusulas abusivas.</li>
-                      <li>• Busca por soluções céleres, inclusive em juizados especiais, com comunicação transparente.</li>
-                    </ul>
-                    <div className="mt-6 rounded-2xl border px-4 py-4 text-sm" style={{ borderColor: COLORS.border, color: COLORS.ink }}>
-                      Atendimento humanizado, atualizado e totalmente online para clientes em todo o Brasil.
+              <div className="absolute -top-28 -right-24 w-72 h-72 rounded-full opacity-10" style={{ background: COLORS.accent }} aria-hidden></div>
+              <div className="absolute inset-x-0 top-0 h-2" style={{ background: COLORS.accent }} aria-hidden></div>
+              <button
+                type="button"
+                className="absolute top-4 right-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border bg-white shadow-sm transition hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[rgba(193,154,107,0.6)]"
+                style={{ borderColor: COLORS.border, color: COLORS.ink }}
+                aria-label="Fechar modal"
+                onClick={() => setConsumerModalOpen(false)}
+              >
+                <X size={18} />
+              </button>
+              <div className="relative p-8 md:p-12">
+                <div className="flex flex-col gap-6 md:gap-8">
+                  <div className="space-y-4 md:space-y-5">
+                    <span className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em]" style={{ background: `${COLORS.accent}1a`, color: COLORS.accent }}>
+                      Defesa do Consumidor
+                    </span>
+                    <div className="space-y-3">
+                      <h3 id="consumer-modal-title" className="text-2xl md:text-4xl font-bold leading-snug" style={{ color: COLORS.ink }}>
+                        Representação estratégica para proteger seus direitos de consumo
+                      </h3>
+                      <p id="consumer-modal-description" className="text-base leading-relaxed md:text-lg" style={{ color: COLORS.inkSoft }}>
+                        Atuamos para equilibrar as relações entre consumidores e fornecedores, combatendo práticas abusivas, recuperando prejuízos e garantindo experiências de consumo justas, claras e seguras.
+                      </p>
                     </div>
                   </div>
-                </div>
-                <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                  <a href={waLink()} target="_blank" rel="noopener noreferrer">
-                    <Button className="cursor-pointer transition-opacity hover:opacity-90 min-h-[48px] px-5 rounded-xl" style={{ background: COLORS.black, color: COLORS.bg1 }}>
-                      <WhatsappIcon size={18} /> Conversar pelo WhatsApp
-                    </Button>
-                  </a>
-                  <Button
-                    className="cursor-pointer transition-all duration-200 hover:opacity-100 hover:bg-[rgba(193,154,107,.12)] hover:border-[rgba(193,154,107,.8)] hover:shadow-sm hover:-translate-y-[1px] min-h-[48px] px-5 rounded-xl border-2"
-                    style={{ background: 'transparent', color: COLORS.accent, borderColor: COLORS.accent }}
-                    onClick={() => {
-                      setConsumerModalOpen(false);
-                      scrollToId('#contato');
-                    }}
-                  >
-                    Falar com a equipe
-                  </Button>
+
+                  <div className="grid gap-6 md:grid-cols-[1.4fr,1fr]">
+                    <div className="space-y-5">
+                      <div className="rounded-2xl border p-6" style={{ borderColor: COLORS.border, background: `linear-gradient(135deg, ${COLORS.bg1}, #fff)` }}>
+                        <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                          Soluções jurídicas completas
+                        </h4>
+                        <ul className="mt-3 space-y-2 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                          <li>• Indenizações por danos morais e materiais em fraudes, atrasos ou vícios em produtos.</li>
+                          <li>• Contestação de cobranças indevidas, juros abusivos e práticas abusivas de fornecedores.</li>
+                          <li>• Acordos e ações contra bancos, financeiras, operadoras de telefonia, planos de saúde e e-commerce.</li>
+                          <li>• Revisão de contratos com cláusulas prejudiciais ou falta de transparência.</li>
+                          <li>• Defesa administrativa perante órgãos de proteção ao consumidor e Procon.</li>
+                        </ul>
+                      </div>
+                      <div className="rounded-2xl border p-6" style={{ borderColor: COLORS.border }}>
+                        <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                          Diferenciais
+                        </h4>
+                        <ul className="mt-3 space-y-2 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                          <li>• Atendimento personalizado, humanizado e totalmente online.</li>
+                          <li>• Comunicação constante sobre cada etapa do processo.</li>
+                          <li>• Ações preventivas para reduzir riscos e fortalecer negociações.</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-5 rounded-2xl border p-6" style={{ borderColor: COLORS.border, background: 'rgba(17,17,17,0.03)' }}>
+                      <div className="space-y-2">
+                        <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                          Casos recorrentes
+                        </h4>
+                        <ul className="space-y-2 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                          <li>• Cancelamentos de viagens, compras on-line e entregas não realizadas.</li>
+                          <li>• Falhas em serviços bancários, financiamentos e seguros.</li>
+                          <li>• Planos de saúde que negam coberturas essenciais.</li>
+                        </ul>
+                      </div>
+                      <div className="rounded-2xl border p-5 text-sm leading-relaxed" style={{ borderColor: COLORS.border, color: COLORS.ink }}>
+                        Cada estratégia é pensada para evitar desgastes, acelerar resultados e buscar acordos vantajosos antes de recorrer ao Judiciário.
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        <a href={waLink()} target="_blank" rel="noopener noreferrer" className="w-full">
+                          <Button className="w-full cursor-pointer justify-center gap-2 rounded-xl px-5 py-3 text-base font-semibold transition-opacity hover:opacity-90" style={{ background: COLORS.black, color: COLORS.bg1 }}>
+                            <WhatsappIcon size={18} /> Conversar pelo WhatsApp
+                          </Button>
+                        </a>
+                        <Button
+                          className="w-full cursor-pointer justify-center rounded-xl border-2 px-5 py-3 text-base font-semibold transition-all duration-200 hover:opacity-100 hover:bg-[rgba(193,154,107,.12)] hover:border-[rgba(193,154,107,.8)] hover:shadow-sm hover:-translate-y-[1px]"
+                          style={{ background: 'transparent', color: COLORS.accent, borderColor: COLORS.accent }}
+                          onClick={() => {
+                            setConsumerModalOpen(false);
+                            scrollToId('#contato');
+                          }}
+                        >
+                          Falar com a equipe
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
