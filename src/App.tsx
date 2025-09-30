@@ -905,15 +905,12 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                 Entre em contato pelos canais abaixo ou agende uma consulta na seção de contato.
               </div>
             </motion.div>
-            <motion.img
-              initial={{opacity:0,scale:.95}}
-              whileInView={{opacity:1,scale:1}}
-              viewport={{amount:0.3}}
-              transition={{duration:.7}}
-              src={CONFIG.PORTRAIT_URL}
+            <img
+              src={fallbackAsset(CONFIG.PORTRAIT_URL)}
               alt="Foto da Responsável"
-              className="rounded-2xl shadow-2xl mx-auto w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[360px]"
-              style={{ aspectRatio: '3 / 4', objectFit: 'contain' }}
+              loading="lazy"
+              className="mx-auto w-full max-w-[240px] sm:max-w-[300px] lg:max-w-[340px] rounded-[28px] border border-[#e8ded0] shadow-[0_20px_40px_rgba(17,17,17,0.18)]"
+              style={{ aspectRatio: '3 / 4', objectFit: 'contain', background: '#fffefb' }}
             />
           </div>
         </div>
