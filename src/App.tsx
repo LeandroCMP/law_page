@@ -292,6 +292,15 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
 .consumer-modal-scroll::-webkit-scrollbar-track{background:rgba(193,154,107,0.12);border-radius:999px;}
 .consumer-modal-scroll::-webkit-scrollbar-thumb{background:${COLORS.accent};border-radius:999px;border:3px solid #fdfaf6;}
 .consumer-modal-scroll::-webkit-scrollbar-thumb:hover{background:${COLORS.accent2};}
+@media (max-width: 767px){
+  .consumer-modal-scroll{max-height:calc(100vh - 7rem);}
+}
+@media (min-width: 768px){
+  .consumer-modal-scroll{max-height:calc(92vh - 5rem);}
+}
+@media (min-width: 1024px){
+  .consumer-modal-scroll{max-height:calc(92vh - 4rem);}
+}
 `}</style>
 
       {/* CAPA */}
@@ -486,7 +495,7 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
         {consumerModalOpen && (
           <motion.div
             key="consumer-modal"
-            className="fixed inset-0 z-[10050] flex items-center justify-center px-4 py-8 md:py-12"
+            className="fixed inset-0 z-[10050] flex items-center justify-center overflow-y-auto px-4 py-8 md:py-12"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
