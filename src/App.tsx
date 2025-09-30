@@ -1209,8 +1209,8 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               aria-modal="true"
               aria-labelledby={aboutModalTitleId}
               aria-describedby={aboutModalDescriptionId}
-              className="relative w-full max-w-4xl overflow-hidden rounded-[36px] bg-white shadow-2xl"
-              style={{ maxHeight: "min(92vh, 820px)" }}
+              className="relative flex w-full max-w-4xl flex-col overflow-hidden rounded-[36px] bg-white shadow-2xl"
+              style={{ maxHeight: "min(92vh, 820px)", height: "min(92vh, 820px)" }}
               initial={{ scale: 0.94, opacity: 0, y: 30 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.94, opacity: 0, y: 30 }}
@@ -1227,7 +1227,7 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               >
                 <X size={18} />
               </button>
-              <div className="relative z-10 flex h-full flex-col">
+              <div className="relative z-10 flex min-h-0 flex-1 flex-col">
                 <div className="relative bg-gradient-to-r from-[#1b1712] via-[#2f2418] to-[#735030] px-7 py-10 text-white sm:px-10">
                   <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em]">
                     Sobre a advogada
@@ -1241,7 +1241,7 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                 </div>
                 <div
                   id={aboutModalDescriptionId}
-                  className="flex-1 space-y-8 overflow-y-auto px-6 py-8 sm:px-10"
+                  className="flex-1 space-y-8 overflow-y-auto px-6 py-8 sm:px-10 min-h-0"
                   style={{ color: COLORS.inkSoft }}
                 >
                   <div className="space-y-4 text-sm leading-relaxed sm:text-base">
