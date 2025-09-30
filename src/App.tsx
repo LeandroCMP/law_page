@@ -72,7 +72,6 @@ type PracticeModalContent = {
   stepsBackground?: string;
   columns: { title: string; bullets: string[]; background?: string }[];
   closing: { paragraphs: string[] };
-  cta: { headline: string; description: string; primaryLabel: string; secondaryLabel: string; background: string; textColor: string };
 };
 
 // Ícone WhatsApp inline (usado fora do menu)
@@ -197,15 +196,6 @@ export default function LawFirmLanding() {
           "Trabalhamos com transparência, estimando valores recuperáveis, prazos médios e alternativas viáveis para que você tome decisões com segurança.",
         ],
       },
-      cta: {
-        headline: "Pronto para iniciar sua defesa?",
-        description:
-          "Compartilhe o que aconteceu com você. Nossa equipe retorna rapidamente com as primeiras orientações e o plano de ação recomendado.",
-        primaryLabel: "Iniciar atendimento",
-        secondaryLabel: "Agendar conversa",
-        background: "#111111",
-        textColor: "#111111",
-      },
     },
     family: {
       tag: "Direito de Família",
@@ -265,15 +255,6 @@ export default function LawFirmLanding() {
           "Auxiliamos na documentação, nas negociações e na execução das decisões para que as mudanças ocorram com segurança jurídica.",
         ],
       },
-      cta: {
-        headline: "Vamos cuidar do seu caso familiar?",
-        description:
-          "Conte sua situação e receba orientações claras sobre acordos, medidas judiciais e caminhos preventivos para proteger quem você ama.",
-        primaryLabel: "Iniciar atendimento",
-        secondaryLabel: "Agendar consulta",
-        background: "linear-gradient(135deg,#22142d,#4d2a5b)",
-        textColor: "#111111",
-      },
     },
     succession: {
       tag: "Direito Sucessório",
@@ -332,15 +313,6 @@ export default function LawFirmLanding() {
           "Trabalhamos para que a partilha ocorra com serenidade, respeitando direitos, afetos e a vontade de quem partiu.",
           "Nossa assessoria acompanha prazos, tributos e formalidades, garantindo segurança jurídica em cada decisão sucessória.",
         ],
-      },
-      cta: {
-        headline: "Precisa organizar a sucessão familiar?",
-        description:
-          "Explique seu cenário patrimonial. Indicamos o melhor caminho para formalizar testamentos, inventários e acordos entre herdeiros.",
-        primaryLabel: "Iniciar atendimento",
-        secondaryLabel: "Agendar conversa",
-        background: "linear-gradient(135deg,#162633,#2f5669)",
-        textColor: "#111111",
       },
     },
   };
@@ -874,27 +846,6 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                             {paragraph}
                           </p>
                         ))}
-                      </section>
-                      <section className="rounded-3xl p-6 text-white md:p-8" style={{ background: activeModalData.cta.background }}>
-                        <div className="space-y-2">
-                          <h4 className="text-xl font-semibold">{activeModalData.cta.headline}</h4>
-                          <p className="text-sm leading-relaxed text-white/80 md:text-base">
-                            {activeModalData.cta.description}
-                          </p>
-                        </div>
-                        <div className="mt-6 text-sm text-white/80">
-                          Para acionar a equipe, utilize os contatos abaixo ou preencha o formulário no site.
-                        </div>
-                        <div className="mt-6 grid gap-3 text-sm text-white/80 sm:grid-cols-2">
-                          <div className="flex items-center gap-3">
-                            <Phone size={16} />
-                            <span>{CONFIG.TEL_DISPLAY}</span>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <Mail size={16} />
-                            <span>{CONFIG.EMAIL}</span>
-                          </div>
-                        </div>
                       </section>
                     </div>
                   </div>
