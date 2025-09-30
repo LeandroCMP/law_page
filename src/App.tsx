@@ -141,10 +141,10 @@ export default function LawFirmLanding() {
     registration: "OAB/SP 526.456",
     tagline: "Especialista em Direito de Família, Sucessório e Consumidor",
     summary: [
-      "Advogada inscrita na OAB/SP 526.456 e responsável pela condução estratégica das áreas de Família, Sucessões, Consumidor e demandas cíveis do escritório.",
-      "Graduada em Direito pelo Centro Universitário de Santa Fé do Sul – Unifunec, com pós-graduação em Direito de Família e Sucessões, pós-graduação em Direito do Consumidor e especialização em Prática em Direito Sucessório.",
-      "Atua de forma 100% online para oferecer praticidade, acolhimento e acompanhamento contínuo a clientes em todo o Brasil.",
-      "Combina tecnologia e atendimento humanizado para garantir transparência, segurança e confiança em cada etapa do processo jurídico.",
+      "Advogada inscrita na OAB/SP sob o número 526.456 OAB/SP.",
+      "Graduada em Direito pelo Centro Universitário de Santa Fé do Sul – Unifunec.",
+      "Pós-graduada em Direito de Família e Sucessões, pós-graduada em Direito do Consumidor e especialista em Prática em Direito Sucessório.",
+      "Escritório 100% online que proporciona praticidade, comodidade e atendimento em todo o Brasil.",
     ],
     formations: [
       "Graduada em Direito pelo Centro Universitário de Santa Fé do Sul – Unifunec.",
@@ -155,18 +155,18 @@ export default function LawFirmLanding() {
     pillars: [
       {
         title: "Atendimento humanizado",
-        text: "Prioriza acolhimento, cuidado e linguagem acessível, mantendo o cliente informado em todas as etapas do processo.",
+        text: "Nosso compromisso é com um atendimento humanizado, sempre priorizando o cuidado e a empatia em cada atendimento.",
       },
       {
-        title: "Tecnologia como aliada",
-        text: "Escritório 100% online que utiliza recursos digitais para agilizar rotinas, simplificar a comunicação e oferecer acompanhamento próximo, independentemente da cidade do cliente.",
+        title: "Transparência e tecnologia",
+        text: "Oferecemos soluções jurídicas personalizadas e eficazes, com transparência, acolhimento e o uso de tecnologia para garantir a confiança em todas as etapas do processo.",
       },
       {
-        title: "Estratégia e personalização",
-        text: "Cada demanda é analisada de forma individualizada para construir soluções jurídicas eficazes e alinhadas aos objetivos de quem procura o escritório.",
+        title: "Serviço 100% online",
+        text: "Nosso escritório é 100% online o que proporciona praticidade e comodidade, atendendo clientes em todo o Brasil.",
       },
     ],
-    closing: "Conte com a condução pessoal da Dra. Edimara para um atendimento prático, transparente e dedicado na defesa dos seus direitos.",
+    closing: "Conte conosco para um serviço de alta qualidade e dedicação.",
   } as const;
 
   const practiceCards: { icon: JSX.Element; title: string; desc: string; modal?: PracticeModalKey }[] = [
