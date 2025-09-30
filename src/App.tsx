@@ -674,15 +674,8 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               <p className="mt-4 text-[17px] leading-relaxed max-w-prose" style={{ color: COLORS.inkSoft }}>
                 Referência em Direito de Família, Sucessões, Consumidor e Civil. Do primeiro contato à solução final, priorizamos eficiência, sigilo e acolhimento.
               </p>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <a href={waLink()} target="_blank" rel="noopener noreferrer">
-                  <Button className="cursor-pointer transition-opacity hover:opacity-90 min-h-[48px] px-5 rounded-xl" style={{ background: COLORS.black, color: COLORS.bg1 }}>
-                    Contato WhatsApp
-                  </Button>
-                </a>
-                <Button className="cursor-pointer transition-all duration-200 hover:opacity-100 hover:bg-[rgba(193,154,107,.12)] hover:border-[rgba(193,154,107,.8)] hover:shadow-sm hover:-translate-y-[1px] min-h-[48px] px-5 rounded-xl border-2" style={{ background:'transparent', color: COLORS.accent, borderColor: COLORS.accent }} onClick={() => scrollToId('#contato')}>
-                  Falar com a equipe
-                </Button>
+              <div className="mt-8 text-sm" style={{ color: COLORS.inkSoft }}>
+                Entre em contato pelos canais abaixo ou agende uma consulta na seção de contato.
               </div>
             </motion.div>
             <motion.div initial={{opacity:0,scale:.95}} whileInView={{opacity:1,scale:1}} viewport={{amount:0.3}} transition={{duration:.7}} className="flex justify-center">
@@ -807,25 +800,8 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                         </div>
                       ))}
                     </div>
-                    <div className="mt-auto flex flex-col gap-3 pt-2">
-                      <a href={waLink()} target="_blank" rel="noopener noreferrer" className="w-full">
-                        <Button
-                          className="w-full justify-center gap-2 rounded-xl px-5 py-3 text-base font-semibold shadow-sm transition hover:-translate-y-[2px] hover:shadow-md"
-                          style={{ background: "#ffffff", color: COLORS.black, borderRadius: 16 }}
-                        >
-                          <WhatsappIcon size={18} /> Conversar pelo WhatsApp
-                        </Button>
-                      </a>
-                      <Button
-                        className="w-full justify-center gap-2 rounded-xl border px-5 py-3 text-base font-semibold text-white transition hover:bg-white/15"
-                        style={{ background: "transparent", borderColor: "rgba(255,255,255,0.4)", borderRadius: 16 }}
-                        onClick={() => {
-                          setActivePracticeModal(null);
-                          scrollToId('#contato');
-                        }}
-                      >
-                        Falar com a equipe
-                      </Button>
+                    <div className="mt-auto pt-2 text-sm text-white/70">
+                      Utilize os canais oficiais para solicitar atendimento personalizado conforme sua necessidade.
                     </div>
                   </div>
                 </aside>
@@ -906,25 +882,8 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                             {activeModalData.cta.description}
                           </p>
                         </div>
-                        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-                          <a href={waLink()} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-                            <Button
-                              className="w-full justify-center gap-2 rounded-xl px-5 py-3 text-base font-semibold transition hover:opacity-90"
-                              style={{ background: "#f8e9d7", color: activeModalData.cta.textColor, borderRadius: 16 }}
-                            >
-                              <WhatsappIcon size={18} /> {activeModalData.cta.primaryLabel}
-                            </Button>
-                          </a>
-                          <Button
-                            className="w-full justify-center rounded-xl border border-white/40 px-5 py-3 text-base font-semibold text-white transition hover:bg-white/10 sm:w-auto"
-                            style={{ background: "transparent", borderRadius: 16 }}
-                            onClick={() => {
-                              setActivePracticeModal(null);
-                              scrollToId('#contato');
-                            }}
-                          >
-                            {activeModalData.cta.secondaryLabel}
-                          </Button>
+                        <div className="mt-6 text-sm text-white/80">
+                          Para acionar a equipe, utilize os contatos abaixo ou preencha o formulário no site.
                         </div>
                         <div className="mt-6 grid gap-3 text-sm text-white/80 sm:grid-cols-2">
                           <div className="flex items-center gap-3">
@@ -989,10 +948,7 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                       <h3 className="text-2xl font-bold">{m.name}</h3>
                       <p className="mt-1 text-white/70">{m.oab}</p>
                       <p className="mt-4 text-white/80 max-w-prose">{m.name === 'Júlia Bellussi' ? 'Especialista em Direito Previdenciário, com foco em planejamentos de aposentadoria, análise de contribuições e estratégias para garantir o acesso aos direitos dos clientes.' : 'Atuação dedicada em Direito de Família, Sucessões e Direito Civil. Atendimento humano, estratégico e transparente para cada caso.'}</p>
-                      <div className="mt-6 flex gap-3 items-center">
-                        <a href={waLink()} target="_blank" rel="noopener noreferrer">
-                          <Button className="cursor-pointer transition-opacity hover:opacity-90 min-h-[44px] px-5 rounded-xl shadow-none" style={{ background: COLORS.black, color: COLORS.bg1 }}><WhatsappIcon size={18}/> WhatsApp</Button>
-                        </a>
+                      <div className="mt-6">
                         <Button className="cursor-pointer transition-all duration-200 hover:opacity-100 hover:bg-[rgba(193,154,107,.12)] hover:border-[rgba(193,154,107,.8)] hover:shadow-sm hover:-translate-y-[1px] min-h-[44px] px-5 rounded-xl border-2" style={{ background:'transparent', color: COLORS.accent, borderColor: COLORS.accent }} onClick={() => scrollToId('#sobre')}>Sobre</Button>
                       </div>
                     </div>
