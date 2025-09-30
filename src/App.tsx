@@ -906,7 +906,12 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               </div>
             </motion.div>
             <motion.div initial={{opacity:0,scale:.95}} whileInView={{opacity:1,scale:1}} viewport={{amount:0.3}} transition={{duration:.7}} className="flex justify-center">
-              <img src={CONFIG.PORTRAIT_URL} alt="Foto da Responsável" className="rounded-2xl shadow-2xl w-full max-w-sm sm:max-w-md lg:max-w-lg object-cover" style={{ aspectRatio: '3 / 4' }} />
+              <img
+                src={CONFIG.PORTRAIT_URL}
+                alt="Foto da Responsável"
+                className="rounded-2xl shadow-2xl w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[360px]"
+                style={{ aspectRatio: '3 / 4', objectFit: 'contain' }}
+              />
             </motion.div>
           </div>
         </div>
