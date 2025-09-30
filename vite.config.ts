@@ -6,4 +6,7 @@ export default defineConfig({
   plugins: [react()],
   base: '/edimara_law/',            // << importante para carregar assets no Pages
   resolve: { alias: { '@': path.resolve(__dirname, './src') } },
+  server: {
+    allowedHosts: ['bcbeb348b823.ngrok-free.app'],
+  },
 })
