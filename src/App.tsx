@@ -56,6 +56,25 @@ const COLORS = {
   border: "#ecebe9",
 } as const;
 
+type PracticeModalKey = "consumer" | "family" | "succession";
+
+type PracticeModalContent = {
+  tag: string;
+  gradient: string;
+  highlightColor: string;
+  title: string;
+  description: string;
+  highlights: { title: string; description: string }[];
+  bulletSection: { title: string; intro: string; bullets: string[]; background?: string };
+  steps: { icon: JSX.Element; title: string; description: string }[];
+  stepsTitle: string;
+  stepsIntro?: string;
+  stepsBackground?: string;
+  columns: { title: string; bullets: string[]; background?: string }[];
+  closing: { paragraphs: string[] };
+  cta: { headline: string; description: string; primaryLabel: string; secondaryLabel: string; background: string; textColor: string };
+};
+
 // Ícone WhatsApp inline (usado fora do menu)
 function WhatsappIcon(props: { size?: number; color?: string }) {
   const { size = 18, color = "currentColor" } = props || {};
@@ -77,7 +96,7 @@ export default function LawFirmLanding() {
   const [parallax, setParallax] = useState(0);
   const [teamIndex, setTeamIndex] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [consumerModalOpen, setConsumerModalOpen] = useState(false);
+  const [activePracticeModal, setActivePracticeModal] = useState<PracticeModalKey | null>(null);
   // fallback funcional para sticky
   const [fixHeader, setFixHeader] = useState(false);
   const [headerH, setHeaderH] = useState(0);
@@ -111,6 +130,225 @@ export default function LawFirmLanding() {
     { name: "Júlia Bellussi", oab: "OAB/SP 495.591", photo: fallbackAsset(CONFIG.TEAM_PHOTO_JULIA) },
   ];
 
+  const practiceCards: { icon: JSX.Element; title: string; desc: string; modal?: PracticeModalKey }[] = [
+    { icon: <Scale />, title: "Direito de Família", desc: "Divórcios, guarda, alimentos e partilha.", modal: "family" },
+    { icon: <Gavel />, title: "Direito Sucessório", desc: "Inventários, testamentos e regularização patrimonial.", modal: "succession" },
+    { icon: <ShieldCheck />, title: "Direito do Consumidor", desc: "Defesa contra práticas abusivas, cobranças e contratos.", modal: "consumer" },
+    { icon: <FileText />, title: "Contratos e Direito Civil", desc: "Elaboração, revisão e execução contratual." },
+    { icon: <Building2 />, title: "Direito Imobiliário", desc: "Compra, venda, locação e disputas possessórias." },
+    { icon: <Handshake />, title: "Mediação e Acordos", desc: "Soluções consensuais com segurança jurídica." },
+  ];
+
+  const practiceModals: Record<PracticeModalKey, PracticeModalContent> = {
+    consumer: {
+      tag: "Direito do Consumidor",
+      gradient: "from-[#1f1d1b] via-[#2b2118] to-[#5a3d23]",
+      highlightColor: "#f9d8aa",
+      title: "Representação estratégica para proteger seus direitos de consumo",
+      description:
+        "Atuamos para equilibrar a relação entre consumidores e fornecedores, combatendo abusos, recuperando prejuízos e negociando acordos vantajosos.",
+      highlights: [
+        { title: "Resposta ágil", description: "Diagnóstico inicial e medidas de urgência com retorno em até 24 horas úteis." },
+        { title: "Acompanhamento contínuo", description: "Atualizações claras em cada etapa, com linguagem acessível e canal direto com a equipe." },
+        { title: "Negociação estratégica", description: "Buscamos resolver conflitos com rapidez, priorizando acordos eficazes antes de acionar o Judiciário." },
+      ],
+      bulletSection: {
+        title: "Soluções jurídicas completas",
+        intro:
+          "Avaliamos cada cenário com rigor técnico para definir a estratégia adequada, atuando tanto na esfera judicial quanto na administrativa.",
+        bullets: [
+          "Indenizações por danos morais e materiais em fraudes, atrasos, vícios ou entregas não realizadas.",
+          "Contestação de cobranças indevidas, juros abusivos e cláusulas que ferem o Código de Defesa do Consumidor.",
+          "Acordos e ações contra bancos, financeiras, operadoras de telefonia, planos de saúde e e-commerce.",
+          "Revisão de contratos com falta de transparência, cobranças ocultas ou cláusulas abusivas.",
+          "Defesa administrativa junto a Procon, Senacon e demais órgãos de proteção ao consumidor.",
+        ],
+        background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`
+      },
+      steps: [
+        { icon: <Phone size={18} />, title: "Diagnóstico", description: "Coleta detalhada de documentos e cronologia para mapear riscos e urgências." },
+        { icon: <FileText size={18} />, title: "Estratégia", description: "Definição das medidas cabíveis, estimativa de prazos e alinhamento com o cliente." },
+        { icon: <Handshake size={18} />, title: "Execução", description: "Negociações firmes e protocolos ágeis para alcançar a reparação mais eficiente." },
+      ],
+      stepsTitle: "Como guiamos sua demanda",
+      stepsBackground: "#fefbf7",
+      columns: [
+        {
+          title: "Diferenciais",
+          bullets: [
+            "Atendimento personalizado, humanizado e totalmente online.",
+            "Comunicação constante sobre cada etapa do processo.",
+            "Ações preventivas para reduzir riscos e fortalecer negociações.",
+          ],
+        },
+        {
+          title: "Casos recorrentes",
+          bullets: [
+            "Cancelamentos de viagens, compras on-line e entregas não realizadas.",
+            "Falhas em serviços bancários, financiamentos, seguros e cartões.",
+            "Planos de saúde que negam coberturas essenciais ou limitam tratamentos.",
+          ],
+          background: "rgba(17,17,17,0.03)",
+        },
+      ],
+      closing: {
+        paragraphs: [
+          "Cada estratégia é pensada para evitar desgastes, acelerar resultados e garantir que o fornecedor seja responsabilizado com base no Código de Defesa do Consumidor.",
+          "Trabalhamos com transparência, estimando valores recuperáveis, prazos médios e alternativas viáveis para que você tome decisões com segurança.",
+        ],
+      },
+      cta: {
+        headline: "Pronto para iniciar sua defesa?",
+        description:
+          "Compartilhe o que aconteceu com você. Nossa equipe retorna rapidamente com as primeiras orientações e o plano de ação recomendado.",
+        primaryLabel: "Iniciar atendimento",
+        secondaryLabel: "Agendar conversa",
+        background: "#111111",
+        textColor: "#111111",
+      },
+    },
+    family: {
+      tag: "Direito de Família",
+      gradient: "from-[#1c1825] via-[#2a1c33] to-[#503154]",
+      highlightColor: "#f4c6d6",
+      title: "Cuidado jurídico para equilibrar direitos, deveres e vínculos familiares",
+      description:
+        "Apoiamos famílias em divórcios, guarda, alimentos, uniões estáveis e planejamento patrimonial, sempre guiados pelo melhor interesse das partes envolvidas.",
+      highlights: [
+        { title: "Atendimento humanizado", description: "Escuta ativa para compreender a história familiar e reduzir conflitos emocionais." },
+        { title: "Acordos equilibrados", description: "Priorizamos soluções consensuais que preservam vínculos e respeitam todos os envolvidos." },
+        { title: "Proteção patrimonial", description: "Estruturamos partilhas e medidas preventivas para evitar prejuízos futuros." },
+      ],
+      bulletSection: {
+        title: "Demandas que conduzimos",
+        intro: "Com base na legislação de família, estruturamos medidas adequadas para cada realidade familiar.",
+        bullets: [
+          "Divórcio consensual ou litigioso com definição de bens e deveres.",
+          "Reconhecimento e dissolução de união estável.",
+          "Guarda, convivência e direito de visitas, inclusive guarda compartilhada.",
+          "Pensão alimentícia: fixação, revisão, execução e exoneração.",
+          "Partilha de bens em casamentos e uniões estáveis.",
+          "Investigação ou reconhecimento de paternidade e regularização registral.",
+        ],
+        background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`
+      },
+      steps: [
+        { icon: <Phone size={18} />, title: "Escuta acolhedora", description: "Reunião inicial para mapear necessidades, prioridades e urgências da família." },
+        { icon: <FileText size={18} />, title: "Planejamento jurídico", description: "Organização de documentos, avaliação de riscos e desenho de acordos ou medidas judiciais." },
+        { icon: <Handshake size={18} />, title: "Acompanhamento contínuo", description: "Suporte na homologação, audiências e cumprimento das decisões com comunicação transparente." },
+      ],
+      stepsTitle: "Como conduzimos o seu caso",
+      stepsIntro: "Combinamos acolhimento e firmeza técnica para que cada decisão seja tomada com confiança.",
+      stepsBackground: "#fdf7fb",
+      columns: [
+        {
+          title: "Diferenciais",
+          bullets: [
+            "Atuação orientada pelo melhor interesse de crianças e adolescentes.",
+            "Comunicação empática e objetiva para facilitar decisões em momentos sensíveis.",
+            "Rede de apoio multidisciplinar quando o caso exige perícias ou mediação especializada.",
+          ],
+        },
+        {
+          title: "Situações frequentes",
+          bullets: [
+            "Definição de guarda compartilhada e convivência equilibrada.",
+            "Divórcios com partilha de imóveis, empresas e investimentos.",
+            "Acordos pré-nupciais, pós-nupciais e planejamento patrimonial familiar.",
+          ],
+          background: "rgba(80,49,84,0.08)",
+        },
+      ],
+      closing: {
+        paragraphs: [
+          "Cada família recebe análise sensível para equilibrar direitos, deveres e o bem-estar emocional de todos.",
+          "Auxiliamos na documentação, nas negociações e na execução das decisões para que as mudanças ocorram com segurança jurídica.",
+        ],
+      },
+      cta: {
+        headline: "Vamos cuidar do seu caso familiar?",
+        description:
+          "Conte sua situação e receba orientações claras sobre acordos, medidas judiciais e caminhos preventivos para proteger quem você ama.",
+        primaryLabel: "Iniciar atendimento",
+        secondaryLabel: "Agendar consulta",
+        background: "linear-gradient(135deg,#22142d,#4d2a5b)",
+        textColor: "#111111",
+      },
+    },
+    succession: {
+      tag: "Direito Sucessório",
+      gradient: "from-[#18222a] via-[#1f303c] to-[#2f5669]",
+      highlightColor: "#b7d4e6",
+      title: "Planejamento sucessório e inventários conduzidos com estratégia e respeito",
+      description:
+        "Apoiamos famílias na transmissão de patrimônio, elaboração de testamentos e resolução de inventários para garantir segurança e harmonia entre herdeiros.",
+      highlights: [
+        { title: "Planejamento preventivo", description: "Estruturamos soluções para antecipar conflitos e proteger o patrimônio." },
+        { title: "Inventário eficiente", description: "Condução judicial ou extrajudicial com foco em celeridade e organização." },
+        { title: "Suporte aos herdeiros", description: "Orientação próxima para tomada de decisões e cumprimento das vontades do falecido." },
+      ],
+      bulletSection: {
+        title: "Como atuamos",
+        intro: "Cuidamos de todas as etapas da sucessão patrimonial, respeitando a legislação e a vontade do falecido.",
+        bullets: [
+          "Inventário judicial e extrajudicial com levantamento completo de bens e dívidas.",
+          "Partilha de bens entre herdeiros, incluindo avaliação e equalização de quinhões.",
+          "Elaboração, revisão e registro de testamentos e codicilos.",
+          "Anulação de testamentos ou cláusulas inválidas e defesa de herdeiros prejudicados.",
+          "Planejamento sucessório para prevenir litígios e proteger empresas e imóveis familiares.",
+          "Reconhecimento ou exclusão de herdeiros em disputas complexas.",
+        ],
+        background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`
+      },
+      steps: [
+        { icon: <Phone size={18} />, title: "Avaliação inicial", description: "Entendimento da estrutura familiar, patrimônio e prazos legais." },
+        { icon: <FileText size={18} />, title: "Plano sucessório", description: "Organização documental, definição de estratégias e estimativa de custos e tributos." },
+        { icon: <Handshake size={18} />, title: "Execução acompanhada", description: "Condução de escrituras, petições e audiências com atualização constante aos herdeiros." },
+      ],
+      stepsTitle: "Etapas do acompanhamento",
+      stepsIntro: "Criamos um cronograma claro para que todas as obrigações e prazos sucessórios sejam cumpridos sem surpresas.",
+      stepsBackground: "#f4f7fb",
+      columns: [
+        {
+          title: "Diferenciais",
+          bullets: [
+            "Rigor técnico para assegurar a validade dos atos sucessórios.",
+            "Mediação de conflitos para preservar relações familiares em momentos de luto.",
+            "Articulação com contadores e avaliadores para mensurar bens e tributos com precisão.",
+          ],
+        },
+        {
+          title: "Demandas frequentes",
+          bullets: [
+            "Inventários com bens em diferentes estados ou com pendências documentais.",
+            "Testamentos com cláusulas de usufruto, incomunicabilidade ou fideicomisso.",
+            "Planejamento patrimonial para empresas familiares e holdings sucessórias.",
+          ],
+          background: "rgba(30,86,105,0.08)",
+        },
+      ],
+      closing: {
+        paragraphs: [
+          "Trabalhamos para que a partilha ocorra com serenidade, respeitando direitos, afetos e a vontade de quem partiu.",
+          "Nossa assessoria acompanha prazos, tributos e formalidades, garantindo segurança jurídica em cada decisão sucessória.",
+        ],
+      },
+      cta: {
+        headline: "Precisa organizar a sucessão familiar?",
+        description:
+          "Explique seu cenário patrimonial. Indicamos o melhor caminho para formalizar testamentos, inventários e acordos entre herdeiros.",
+        primaryLabel: "Iniciar atendimento",
+        secondaryLabel: "Agendar conversa",
+        background: "linear-gradient(135deg,#162633,#2f5669)",
+        textColor: "#111111",
+      },
+    },
+  };
+
+  const activeModalData = activePracticeModal ? practiceModals[activePracticeModal] : null;
+  const modalTitleId = activePracticeModal ? `${activePracticeModal}-modal-title` : undefined;
+  const modalDescriptionId = activePracticeModal ? `${activePracticeModal}-modal-description` : undefined;
+
   const containerCls = "max-w-6xl mx-auto px-4 sm:px-6";
 
   // --- Preload e Parallax ---
@@ -123,7 +361,7 @@ export default function LawFirmLanding() {
 
 
   useEffect(() => {
-    if (!consumerModalOpen) return;
+    if (!activePracticeModal) return;
     const { body, documentElement } = document;
     const prevBodyOverflow = body.style.overflow;
     const prevHtmlOverflow = documentElement.style.overflow;
@@ -133,7 +371,7 @@ export default function LawFirmLanding() {
       body.style.overflow = prevBodyOverflow;
       documentElement.style.overflow = prevHtmlOverflow;
     };
-  }, [consumerModalOpen]);
+  }, [activePracticeModal]);
 
   
 
@@ -464,28 +702,21 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
             <span style={{ position:'absolute', left:'50%', transform:'translateX(-50%)', bottom:0, width:72, height:2, background: COLORS.accent }} />
           </h2>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              { icon: <Scale />, title: 'Direito de Família', desc: 'Divórcios, guarda, alimentos e partilha.', action: 'contact' },
-              { icon: <Gavel />, title: 'Direito Sucessório', desc: 'Inventários, testamentos e regularização patrimonial.', action: 'contact' },
-              { icon: <ShieldCheck />, title: 'Direito do Consumidor', desc: 'Defesa contra práticas abusivas, cobranças e contratos.', action: 'modal' },
-              { icon: <FileText />, title: 'Contratos e Direito Civil', desc: 'Elaboração, revisão e execução contratual.', action: 'contact' },
-              { icon: <Building2 />, title: 'Direito Imobiliário', desc: 'Compra, venda, locação e disputas possessórias.', action: 'contact' },
-              { icon: <Handshake />, title: 'Mediação e Acordos', desc: 'Soluções consensuais com segurança jurídica.', action: 'contact' },
-            ].map((item, i) => (
+            {practiceCards.map((item, i) => (
               <motion.div key={item.title} initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} viewport={{amount:0.2}} transition={{delay:i*.08}}>
                 <Card
                   role="button"
                   tabIndex={0}
-                  aria-haspopup={item.action === 'modal' ? 'dialog' : undefined}
+                  aria-haspopup={item.modal ? 'dialog' : undefined}
                   className="rounded-2xl border bg-white/90 shadow-md transition hover:-translate-y-[2px] hover:shadow-xl"
                   style={{ border: `1px solid ${COLORS.border}` }}
                   onClick={() => {
-                    if (item.action === 'modal') setConsumerModalOpen(true);
+                    if (item.modal) setActivePracticeModal(item.modal);
                     else scrollToId('#contato');
                   }}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                      if (item.action === 'modal') setConsumerModalOpen(true);
+                      if (item.modal) setActivePracticeModal(item.modal);
                       else scrollToId('#contato');
                     }
                   }}
@@ -495,7 +726,7 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                     <h3 className="text-xl font-semibold" style={{ color: COLORS.ink }}>{item.title}</h3>
                     <p className="text-sm" style={{ color: COLORS.inkSoft }}>{item.desc}</p>
                     <span className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: COLORS.accent }}>
-                      {item.action === 'modal' ? 'Saiba mais' : 'Solicitar contato'}
+                      {item.modal ? 'Saiba mais' : 'Solicitar contato'}
                     </span>
                   </CardContent>
                 </Card>
@@ -505,11 +736,12 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
         </div>
       </section>
 
+
       <AnimatePresence>
-        {consumerModalOpen && (
+        {activeModalData && (
           <motion.div
-            key="consumer-modal"
-            className="fixed inset-0 z-[10050] flex items-center justify-center overflow-y-auto px-4 py-8 md:py-12"
+            key="practice-modal"
+            className="fixed inset-0 z-[11000] flex items-center justify-center px-4 py-8 md:py-12"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -518,239 +750,180 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               type="button"
               aria-label="Fechar modal"
               className="absolute inset-0 bg-black/65"
-              onClick={() => setConsumerModalOpen(false)}
+              onClick={() => setActivePracticeModal(null)}
             ></button>
             <motion.div
               role="dialog"
               aria-modal="true"
-              aria-labelledby="consumer-modal-title"
-              aria-describedby="consumer-modal-description"
-              className="consumer-modal-shell relative w-full max-w-5xl overflow-hidden rounded-[32px] bg-white shadow-2xl"
+              aria-labelledby={modalTitleId}
+              aria-describedby={modalDescriptionId}
+              className="consumer-modal-shell relative flex w-full max-w-5xl flex-col overflow-hidden rounded-[32px] bg-white shadow-2xl"
+              style={{ maxHeight: "min(92vh, 820px)" }}
               initial={{ scale: 0.92, opacity: 0, y: 24 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.92, opacity: 0, y: 24 }}
-              transition={{ duration: 0.28, ease: 'easeOut' }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
             >
               <div className="absolute -top-32 -right-24 h-72 w-72 rounded-full bg-[rgba(193,154,107,0.18)] blur-3xl" aria-hidden></div>
               <div
                 className="absolute inset-0 opacity-[0.04]"
-                style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(193,154,107,.6) 0, rgba(193,154,107,0) 55%)' }}
+                style={{ backgroundImage: "radial-gradient(circle at 20% 20%, rgba(193,154,107,.6) 0, rgba(193,154,107,0) 55%)" }}
                 aria-hidden
               ></div>
-              <div className="relative flex h-full min-h-0 flex-col md:flex-row" style={{ minHeight: '60vh' }}>
-                <aside className="relative flex min-h-0 w-full flex-shrink-0 flex-col bg-gradient-to-br from-[#1f1d1b] via-[#2b2118] to-[#5a3d23] px-7 py-8 text-white md:w-[320px] md:overflow-hidden lg:w-[360px]">
+              <div className="relative flex h-full min-h-0 flex-col md:flex-row" style={{ minHeight: "60vh" }}>
+                <aside className={`relative flex min-h-0 w-full flex-shrink-0 flex-col bg-gradient-to-br ${activeModalData.gradient} px-7 py-8 text-white md:w-[320px] md:overflow-hidden lg:w-[360px]`}>
                   <div
                     className="absolute inset-0 opacity-30"
-                    style={{ backgroundImage: 'radial-gradient(circle at 15% 20%, rgba(255,255,255,0.25) 0, transparent 55%)' }}
+                    style={{ backgroundImage: "radial-gradient(circle at 15% 20%, rgba(255,255,255,0.25) 0, transparent 55%)" }}
                     aria-hidden
                   ></div>
                   <div className="consumer-modal-aside-scroll relative z-10 flex h-full flex-col gap-6 overflow-y-auto pr-1 pb-6 sm:pr-2">
                     <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-white/80">
-                      Defesa do Consumidor
+                      {activeModalData.tag}
                     </span>
-                    <h3 id="consumer-modal-title" className="text-2xl font-bold leading-tight md:text-[28px] lg:text-[30px]">
-                      Representação estratégica para proteger seus direitos de consumo
+                    <h3 id={modalTitleId} className="text-2xl font-bold leading-tight md:text-[28px] lg:text-[30px]">
+                      {activeModalData.title}
                     </h3>
-                    <p id="consumer-modal-description" className="text-sm leading-relaxed text-white/80 md:text-base">
-                      Atuamos para equilibrar a relação entre consumidores e fornecedores, combatendo abusos, recuperando prejuízos e negociando acordos vantajosos.
+                    <p id={modalDescriptionId} className="text-sm leading-relaxed text-white/80 md:text-base">
+                      {activeModalData.description}
                     </p>
                     <div className="space-y-4 text-sm text-white/90">
-                      <div className="flex items-start gap-3">
-                        <CheckCircle2 className="mt-0.5 h-5 w-5 text-[#f9d8aa]" />
-                        <div>
-                          <p className="text-base font-semibold text-white">Resposta ágil</p>
-                          <p className="text-sm text-white/75">Diagnóstico inicial e medidas de urgência com retorno em até 24 horas úteis.</p>
+                      {activeModalData.highlights.map((item) => (
+                        <div key={item.title} className="flex items-start gap-3">
+                          <CheckCircle2 className="mt-0.5 h-5 w-5" style={{ color: activeModalData.highlightColor }} />
+                          <div>
+                            <p className="text-base font-semibold text-white">{item.title}</p>
+                            <p className="text-sm text-white/75">{item.description}</p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <CheckCircle2 className="mt-0.5 h-5 w-5 text-[#f9d8aa]" />
-                        <div>
-                          <p className="text-base font-semibold text-white">Acompanhamento contínuo</p>
-                          <p className="text-sm text-white/75">Atualizações claras em cada etapa, com linguagem acessível e canal direto com a equipe.</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <CheckCircle2 className="mt-0.5 h-5 w-5 text-[#f9d8aa]" />
-                        <div>
-                          <p className="text-base font-semibold text-white">Negociação estratégica</p>
-                          <p className="text-sm text-white/75">Buscamos resolver conflitos com rapidez, priorizando acordos eficazes antes de acionar o Judiciário.</p>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                     <div className="mt-auto flex flex-col gap-3 pt-2">
                       <a href={waLink()} target="_blank" rel="noopener noreferrer" className="w-full">
                         <Button
                           className="w-full justify-center gap-2 rounded-xl px-5 py-3 text-base font-semibold shadow-sm transition hover:-translate-y-[2px] hover:shadow-md"
-                          style={{ background: '#ffffff', color: COLORS.black, borderRadius: 16 }}
+                          style={{ background: "#ffffff", color: COLORS.black, borderRadius: 16 }}
                         >
                           <WhatsappIcon size={18} /> Conversar pelo WhatsApp
                         </Button>
                       </a>
                       <Button
                         className="w-full justify-center gap-2 rounded-xl border px-5 py-3 text-base font-semibold text-white transition hover:bg-white/15"
-                        style={{ background: 'transparent', borderColor: 'rgba(255,255,255,0.4)', borderRadius: 16 }}
+                        style={{ background: "transparent", borderColor: "rgba(255,255,255,0.4)", borderRadius: 16 }}
                         onClick={() => {
-                          setConsumerModalOpen(false);
+                          setActivePracticeModal(null);
                           scrollToId('#contato');
                         }}
                       >
                         Falar com a equipe
                       </Button>
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-white/60">
-                        <Clock3 size={14} /> Atendimento em todo o Brasil
-                      </div>
                     </div>
                   </div>
                 </aside>
-                <div className="relative flex min-h-0 flex-1 flex-col bg-white">
+                <div className="relative flex flex-1 flex-col bg-white">
                   <button
                     type="button"
-                    className="absolute right-5 top-5 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border bg-white/90 text-[#2b2b2b] shadow-sm transition hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[rgba(193,154,107,0.6)]"
-                    style={{ borderColor: COLORS.border }}
                     aria-label="Fechar modal"
-                    onClick={() => setConsumerModalOpen(false)}
+                    className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border bg-white/80 text-sm text-[#111111] shadow-sm transition hover:bg-white"
+                    style={{ borderColor: COLORS.border }}
+                    onClick={() => setActivePracticeModal(null)}
                   >
                     <X size={18} />
                   </button>
                   <div className="consumer-modal-scroll relative flex-1 overflow-y-auto px-7 py-10 sm:px-9 md:px-12 md:py-12">
                     <div className="mx-auto flex w-full max-w-2xl flex-col gap-10 md:gap-12">
-                      <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border, background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)` }}>
+                      <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border, background: activeModalData.bulletSection.background ?? "#ffffff" }}>
                         <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
-                          Soluções jurídicas completas
+                          {activeModalData.bulletSection.title}
                         </h4>
                         <p className="mt-3 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
-                          Avaliamos cada cenário com rigor técnico para definir a estratégia adequada, atuando tanto na esfera judicial quanto na administrativa.
+                          {activeModalData.bulletSection.intro}
                         </p>
                         <ul className="mt-5 space-y-4 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
-                            <span>Indenizações por danos morais e materiais em fraudes, atrasos, vícios ou entregas não realizadas.</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
-                            <span>Contestação de cobranças indevidas, juros abusivos e cláusulas que ferem o Código de Defesa do Consumidor.</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
-                            <span>Acordos e ações contra bancos, financeiras, operadoras de telefonia, planos de saúde e e-commerce.</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
-                            <span>Revisão de contratos com falta de transparência, cobranças ocultas ou cláusulas abusivas.</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
-                            <span>Defesa administrativa junto a Procon, Senacon e demais órgãos de proteção ao consumidor.</span>
-                          </li>
+                          {activeModalData.bulletSection.bullets.map((bullet, index) => (
+                            <li key={index} className="flex items-start gap-3">
+                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                              <span>{bullet}</span>
+                            </li>
+                          ))}
                         </ul>
                       </section>
-                      <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border, background: '#fefbf7' }}>
+                      <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border, background: activeModalData.stepsBackground ?? "#f9fafb" }}>
                         <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
-                          Como guiamos sua demanda
+                          {activeModalData.stepsTitle}
                         </h4>
+                        {activeModalData.stepsIntro && (
+                          <p className="mt-3 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
+                            {activeModalData.stepsIntro}
+                          </p>
+                        )}
                         <div className="mt-5 grid gap-6 sm:grid-cols-3">
-                          <div className="flex flex-col gap-3">
-                            <div className="flex items-center gap-3">
-                              <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: `${COLORS.accent}1a`, color: COLORS.accent }}>
-                                <Phone size={18} />
+                          {activeModalData.steps.map((step) => (
+                            <div key={step.title} className="flex flex-col gap-3">
+                              <div className="flex items-center gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: `${COLORS.accent}1a`, color: COLORS.accent }}>
+                                  {step.icon}
+                                </div>
+                                <span className="text-sm font-semibold" style={{ color: COLORS.ink }}>{step.title}</span>
                               </div>
-                              <span className="text-sm font-semibold" style={{ color: COLORS.ink }}>Diagnóstico</span>
+                              <p className="text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>{step.description}</p>
                             </div>
-                            <p className="text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>Coleta detalhada de documentos e cronologia para mapear riscos e urgências.</p>
-                          </div>
-                          <div className="flex flex-col gap-3">
-                            <div className="flex items-center gap-3">
-                              <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: `${COLORS.accent}1a`, color: COLORS.accent }}>
-                                <FileText size={18} />
-                              </div>
-                              <span className="text-sm font-semibold" style={{ color: COLORS.ink }}>Estratégia</span>
-                            </div>
-                            <p className="text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>Definição das medidas cabíveis, estimativa de prazos e alinhamento com o cliente.</p>
-                          </div>
-                          <div className="flex flex-col gap-3">
-                            <div className="flex items-center gap-3">
-                              <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: `${COLORS.accent}1a`, color: COLORS.accent }}>
-                                <Handshake size={18} />
-                              </div>
-                              <span className="text-sm font-semibold" style={{ color: COLORS.ink }}>Execução</span>
-                            </div>
-                            <p className="text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>Negociações firmes e protocolos ágeis para alcançar a reparação mais eficiente.</p>
-                          </div>
+                          ))}
                         </div>
                       </section>
                       <section className="grid gap-6 md:grid-cols-2">
-                        <div className="rounded-3xl border p-6 md:p-7" style={{ borderColor: COLORS.border }}>
-                          <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
-                            Diferenciais
-                          </h4>
-                          <ul className="mt-4 space-y-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
-                            <li className="flex items-start gap-3">
-                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
-                              <span>Atendimento personalizado, humanizado e totalmente online.</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
-                              <span>Comunicação constante sobre cada etapa do processo.</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
-                              <span>Ações preventivas para reduzir riscos e fortalecer negociações.</span>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="rounded-3xl border p-6 md:p-7" style={{ borderColor: COLORS.border, background: 'rgba(17,17,17,0.03)' }}>
-                          <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
-                            Casos recorrentes
-                          </h4>
-                          <ul className="mt-4 space-y-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
-                            <li className="flex items-start gap-3">
-                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
-                              <span>Cancelamentos de viagens, compras on-line e entregas não realizadas.</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
-                              <span>Falhas em serviços bancários, financiamentos, seguros e cartões.</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
-                              <span>Planos de saúde que negam coberturas essenciais ou limitam tratamentos.</span>
-                            </li>
-                          </ul>
-                        </div>
+                        {activeModalData.columns.map((column) => (
+                          <div key={column.title} className="rounded-3xl border p-6 md:p-7" style={{ borderColor: COLORS.border, background: column.background ?? "transparent" }}>
+                            <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                              {column.title}
+                            </h4>
+                            <ul className="mt-4 space-y-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                              {column.bullets.map((bullet, index) => (
+                                <li key={index} className="flex items-start gap-3">
+                                  <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                                  <span>{bullet}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
                       </section>
                       <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border }}>
-                        <p className="text-base leading-relaxed" style={{ color: COLORS.ink }}>
-                          Cada estratégia é pensada para evitar desgastes, acelerar resultados e garantir que o fornecedor seja responsabilizado com base no Código de Defesa do Consumidor.
-                        </p>
-                        <p className="mt-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
-                          Trabalhamos com transparência, estimando valores recuperáveis, prazos médios e alternativas viáveis para que você tome decisões com segurança.
-                        </p>
+                        {activeModalData.closing.paragraphs.map((paragraph, index) => (
+                          <p
+                            key={index}
+                            className={`text-sm leading-relaxed md:text-base ${index > 0 ? "mt-3" : ""}`}
+                            style={{ color: index === 0 ? COLORS.ink : COLORS.inkSoft }}
+                          >
+                            {paragraph}
+                          </p>
+                        ))}
                       </section>
-                      <section className="rounded-3xl bg-[#111111] p-6 text-white md:p-8">
+                      <section className="rounded-3xl p-6 text-white md:p-8" style={{ background: activeModalData.cta.background }}>
                         <div className="space-y-2">
-                          <h4 className="text-xl font-semibold">Pronto para iniciar sua defesa?</h4>
+                          <h4 className="text-xl font-semibold">{activeModalData.cta.headline}</h4>
                           <p className="text-sm leading-relaxed text-white/80 md:text-base">
-                            Compartilhe o que aconteceu com você. Nossa equipe retorna rapidamente com as primeiras orientações e o plano de ação recomendado.
+                            {activeModalData.cta.description}
                           </p>
                         </div>
                         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
                           <a href={waLink()} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
                             <Button
-                              className="w-full justify-center gap-2 rounded-xl px-5 py-3 text-base font-semibold text-[#111111] transition hover:opacity-90"
-                              style={{ background: '#f8e9d7', borderRadius: 16 }}
+                              className="w-full justify-center gap-2 rounded-xl px-5 py-3 text-base font-semibold transition hover:opacity-90"
+                              style={{ background: "#f8e9d7", color: activeModalData.cta.textColor, borderRadius: 16 }}
                             >
-                              <WhatsappIcon size={18} /> Iniciar atendimento
+                              <WhatsappIcon size={18} /> {activeModalData.cta.primaryLabel}
                             </Button>
                           </a>
                           <Button
                             className="w-full justify-center rounded-xl border border-white/40 px-5 py-3 text-base font-semibold text-white transition hover:bg-white/10 sm:w-auto"
-                            style={{ background: 'transparent', borderRadius: 16 }}
+                            style={{ background: "transparent", borderRadius: 16 }}
                             onClick={() => {
-                              setConsumerModalOpen(false);
+                              setActivePracticeModal(null);
                               scrollToId('#contato');
                             }}
                           >
-                            Agendar conversa
+                            {activeModalData.cta.secondaryLabel}
                           </Button>
                         </div>
                         <div className="mt-6 grid gap-3 text-sm text-white/80 sm:grid-cols-2">
