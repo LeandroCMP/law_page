@@ -899,8 +899,24 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                       <h3 className="text-2xl font-bold">{m.name}</h3>
                       <p className="mt-1 text-white/70">{m.oab}</p>
                       <p className="mt-4 text-white/80 max-w-prose">{m.name === 'Júlia Bellussi' ? 'Especialista em Direito Previdenciário, com foco em planejamentos de aposentadoria, análise de contribuições e estratégias para garantir o acesso aos direitos dos clientes.' : 'Atuação dedicada em Direito de Família, Sucessões e Direito Civil. Atendimento humano, estratégico e transparente para cada caso.'}</p>
-                      <div className="mt-6">
-                        <Button className="cursor-pointer transition-all duration-200 hover:opacity-100 hover:bg-[rgba(193,154,107,.12)] hover:border-[rgba(193,154,107,.8)] hover:shadow-sm hover:-translate-y-[1px] min-h-[44px] px-5 rounded-xl border-2" style={{ background:'transparent', color: COLORS.accent, borderColor: COLORS.accent }} onClick={() => scrollToId('#sobre')}>Sobre</Button>
+                      <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                        <Button
+                          className="cursor-pointer transition-all duration-200 hover:opacity-100 hover:bg-[rgba(193,154,107,.12)] hover:border-[rgba(193,154,107,.8)] hover:shadow-sm hover:-translate-y-[1px] min-h-[44px] px-5 rounded-xl border-2"
+                          style={{ background: "transparent", color: COLORS.accent, borderColor: COLORS.accent }}
+                          onClick={() => scrollToId('#sobre')}
+                        >
+                          Sobre
+                        </Button>
+                        <a
+                          href={waLink()}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2 min-h-[44px] px-5 rounded-xl border-2 font-medium transition-all duration-200 hover:opacity-90 hover:shadow-sm hover:-translate-y-[1px]"
+                          style={{ background: '#25D366', borderColor: '#25D366', color: '#0f2714' }}
+                        >
+                          <WhatsappIcon size={18} />
+                          Falar no WhatsApp
+                        </a>
                       </div>
                     </div>
                   </div>
