@@ -60,7 +60,8 @@ type PracticeModalKey =
   | "consumer"
   | "family"
   | "succession"
-  | "retirement";
+  | "retirement"
+  | "mediation";
 
 type PracticeModalContent = {
   tag: string;
@@ -149,7 +150,12 @@ export default function LawFirmLanding() {
       desc: "Estudo previdenciário completo para definir o melhor momento e forma de aposentadoria.",
       modal: "retirement",
     },
-    { icon: <Handshake />, title: "Mediação e Acordos", desc: "Soluções consensuais com segurança jurídica." },
+    {
+      icon: <Handshake />,
+      title: "Mediação e Acordos",
+      desc: "Condução colaborativa para acordos que evitam litígios prolongados.",
+      modal: "mediation",
+    },
   ];
 
   const practiceModals: Record<PracticeModalKey, PracticeModalContent> = {
@@ -308,6 +314,83 @@ export default function LawFirmLanding() {
         paragraphs: [
           "Planejar a aposentadoria exige conhecimento jurídico especializado e atenção a cada detalhe contributivo.",
           "Oferecemos atendimento personalizado para orientar os próximos passos e garantir uma aposentadoria segura.",
+        ],
+      },
+    },
+    mediation: {
+      tag: "Mediação e Acordos",
+      gradient: "from-[#1d1914] via-[#3a2a1f] to-[#6b4b2f]",
+      highlightColor: "#f2d3b0",
+      title: "Mediação e acordos extrajudiciais para soluções pacíficas",
+      description:
+        "Busca resolver conflitos de forma pacífica e colaborativa, com foco no diálogo, agilidade e economia. Ideal para divórcios amigáveis, inventários extrajudiciais, acordos e mediações, evita desgastes emocionais e financeiros.",
+      highlights: [
+        {
+          title: "Diálogo estruturado",
+          description: "Conduzimos negociações com foco no diálogo, agilidade e economia para preservar relações.",
+        },
+        {
+          title: "Soluções consensuais",
+          description: "Indicada para divórcios amigáveis e inventários extrajudiciais que precisam de acordos seguros.",
+        },
+        {
+          title: "Atendimento humanizado",
+          description: "Atuamos com acolhimento, transparência e praticidade em uma abordagem online e humanizada.",
+        },
+      ],
+      bulletSection: {
+        title: "Quando a mediação faz diferença",
+        intro: "Indicada para quem busca acordos estruturados com suporte jurídico integral:",
+        bullets: [
+          "Casais e famílias que priorizam soluções pacíficas e acordos sempre que possível.",
+          "Sucessões e inventários extrajudiciais que demandam diálogo contínuo e divisão equilibrada.",
+          "Clientes que desejam relações de confiança, orientação segura e suporte integral durante a negociação.",
+        ],
+        background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`,
+      },
+      steps: [
+        {
+          icon: <FileText size={18} />,
+          title: "Escuta e acolhimento",
+          description: "Compreendemos a realidade de cada parte com acolhimento, transparência e praticidade.",
+        },
+        {
+          icon: <Handshake size={18} />,
+          title: "Construção conjunta",
+          description: "Mediamos conversas e propomos caminhos colaborativos que preservam vínculos e evitam litígios.",
+        },
+        {
+          icon: <CheckCircle2 size={18} />,
+          title: "Formalização segura",
+          description: "Estruturamos o acordo com segurança jurídica e acompanhamos a assinatura para garantir estabilidade.",
+        },
+      ],
+      stepsTitle: "Como conduzimos a mediação",
+      stepsIntro: "Transformamos conflitos em acordos por meio de diálogo guiado e suporte jurídico contínuo.",
+      stepsBackground: "#fdf6f0",
+      columns: [
+        {
+          title: "Situações atendidas",
+          bullets: [
+            "Divórcios amigáveis e reorganização familiar com preservação de vínculos.",
+            "Inventários extrajudiciais e partilhas que precisam de consenso ágil.",
+            "Acordos preventivos para evitar desgastes emocionais e financeiros.",
+          ],
+        },
+        {
+          title: "Diferenciais do atendimento",
+          bullets: [
+            "Acolhimento, transparência e praticidade em todas as etapas.",
+            "Atendimento online e humanizado com tecnologia e empatia.",
+            "Relações de confiança com orientação segura e suporte integral.",
+          ],
+          background: "rgba(193,154,107,0.12)",
+        },
+      ],
+      closing: {
+        paragraphs: [
+          "A mediação orientada por nossa equipe privilegia o diálogo e reduz o desgaste de disputas prolongadas.",
+          "Conte com uma condução humanizada para transformar conflitos em soluções estáveis e juridicamente seguras.",
         ],
       },
     },
