@@ -8,6 +8,7 @@ import {
   Scale,
   Gavel,
   ShieldCheck,
+  CheckCircle2,
   FileText,
   Handshake,
   Building2,
@@ -286,6 +287,11 @@ html,body{margin:0;overflow-x:hidden}
 *{box-sizing:border-box}
 body{font-family:'Merriweather', serif;}
 h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2px}
+.consumer-modal-scroll{scrollbar-width:thin;scrollbar-color:${COLORS.accent} rgba(193,154,107,0.18);}
+.consumer-modal-scroll::-webkit-scrollbar{width:12px;}
+.consumer-modal-scroll::-webkit-scrollbar-track{background:rgba(193,154,107,0.12);border-radius:999px;}
+.consumer-modal-scroll::-webkit-scrollbar-thumb{background:${COLORS.accent};border-radius:999px;border:3px solid #fdfaf6;}
+.consumer-modal-scroll::-webkit-scrollbar-thumb:hover{background:${COLORS.accent2};}
 `}</style>
 
       {/* CAPA */}
@@ -488,7 +494,7 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
             <button
               type="button"
               aria-label="Fechar modal"
-              className="absolute inset-0 bg-black/60"
+              className="absolute inset-0 bg-black/65"
               onClick={() => setConsumerModalOpen(false)}
             ></button>
             <motion.div
@@ -496,95 +502,245 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               aria-modal="true"
               aria-labelledby="consumer-modal-title"
               aria-describedby="consumer-modal-description"
-              className="relative flex w-full max-w-4xl max-h-[90vh] flex-col overflow-hidden rounded-[32px] bg-white shadow-2xl"
-              initial={{ scale: 0.9, opacity: 0, y: 24 }}
+              className="relative w-full max-w-5xl max-h-[92vh] overflow-hidden rounded-[32px] bg-white shadow-2xl"
+              initial={{ scale: 0.92, opacity: 0, y: 24 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 24 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
+              exit={{ scale: 0.92, opacity: 0, y: 24 }}
+              transition={{ duration: 0.28, ease: 'easeOut' }}
             >
-              <div className="absolute -top-28 -right-24 w-72 h-72 rounded-full opacity-10" style={{ background: COLORS.accent }} aria-hidden></div>
-              <div className="absolute inset-x-0 top-0 h-2" style={{ background: COLORS.accent }} aria-hidden></div>
-              <button
-                type="button"
-                className="absolute top-4 right-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border bg-white shadow-sm transition hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[rgba(193,154,107,0.6)]"
-                style={{ borderColor: COLORS.border, color: COLORS.ink }}
-                aria-label="Fechar modal"
-                onClick={() => setConsumerModalOpen(false)}
-              >
-                <X size={18} />
-              </button>
-              <div className="relative flex-1 overflow-y-auto p-8 md:p-12">
-                <div className="flex flex-col gap-6 md:gap-8">
-                  <div className="space-y-4 md:space-y-5">
-                    <span className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em]" style={{ background: `${COLORS.accent}1a`, color: COLORS.accent }}>
+              <div className="absolute -top-32 -right-24 h-72 w-72 rounded-full bg-[rgba(193,154,107,0.18)] blur-3xl" aria-hidden></div>
+              <div
+                className="absolute inset-0 opacity-[0.04]"
+                style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(193,154,107,.6) 0, rgba(193,154,107,0) 55%)' }}
+                aria-hidden
+              ></div>
+              <div className="relative flex h-full flex-col md:flex-row" style={{ minHeight: '60vh' }}>
+                <aside className="relative flex flex-shrink-0 flex-col gap-6 bg-gradient-to-br from-[#1f1d1b] via-[#2b2118] to-[#5a3d23] px-7 py-8 text-white md:w-[320px] lg:w-[360px]">
+                  <div
+                    className="absolute inset-0 opacity-30"
+                    style={{ backgroundImage: 'radial-gradient(circle at 15% 20%, rgba(255,255,255,0.25) 0, transparent 55%)' }}
+                    aria-hidden
+                  ></div>
+                  <div className="relative z-10 flex h-full flex-col gap-6">
+                    <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-white/80">
                       Defesa do Consumidor
                     </span>
-                    <div className="space-y-3">
-                      <h3 id="consumer-modal-title" className="text-2xl md:text-4xl font-bold leading-snug" style={{ color: COLORS.ink }}>
-                        Representação estratégica para proteger seus direitos de consumo
-                      </h3>
-                      <p id="consumer-modal-description" className="text-base leading-relaxed md:text-lg" style={{ color: COLORS.inkSoft }}>
-                        Atuamos para equilibrar as relações entre consumidores e fornecedores, combatendo práticas abusivas, recuperando prejuízos e garantindo experiências de consumo justas, claras e seguras.
-                      </p>
+                    <h3 id="consumer-modal-title" className="text-2xl font-bold leading-tight md:text-[28px] lg:text-[30px]">
+                      Representação estratégica para proteger seus direitos de consumo
+                    </h3>
+                    <p id="consumer-modal-description" className="text-sm leading-relaxed text-white/80 md:text-base">
+                      Atuamos para equilibrar a relação entre consumidores e fornecedores, combatendo abusos, recuperando prejuízos e negociando acordos vantajosos.
+                    </p>
+                    <div className="space-y-4 text-sm text-white/90">
+                      <div className="flex items-start gap-3">
+                        <CheckCircle2 className="mt-0.5 h-5 w-5 text-[#f9d8aa]" />
+                        <div>
+                          <p className="text-base font-semibold text-white">Resposta ágil</p>
+                          <p className="text-sm text-white/75">Diagnóstico inicial e medidas de urgência com retorno em até 24 horas úteis.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle2 className="mt-0.5 h-5 w-5 text-[#f9d8aa]" />
+                        <div>
+                          <p className="text-base font-semibold text-white">Acompanhamento contínuo</p>
+                          <p className="text-sm text-white/75">Atualizações claras em cada etapa, com linguagem acessível e canal direto com a equipe.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle2 className="mt-0.5 h-5 w-5 text-[#f9d8aa]" />
+                        <div>
+                          <p className="text-base font-semibold text-white">Negociação estratégica</p>
+                          <p className="text-sm text-white/75">Buscamos resolver conflitos com rapidez, priorizando acordos eficazes antes de acionar o Judiciário.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-auto flex flex-col gap-3 pt-2">
+                      <a href={waLink()} target="_blank" rel="noopener noreferrer" className="w-full">
+                        <Button
+                          className="w-full justify-center gap-2 rounded-xl px-5 py-3 text-base font-semibold shadow-sm transition hover:-translate-y-[2px] hover:shadow-md"
+                          style={{ background: '#ffffff', color: COLORS.black, borderRadius: 16 }}
+                        >
+                          <WhatsappIcon size={18} /> Conversar pelo WhatsApp
+                        </Button>
+                      </a>
+                      <Button
+                        className="w-full justify-center gap-2 rounded-xl border px-5 py-3 text-base font-semibold text-white transition hover:bg-white/15"
+                        style={{ background: 'transparent', borderColor: 'rgba(255,255,255,0.4)', borderRadius: 16 }}
+                        onClick={() => {
+                          setConsumerModalOpen(false);
+                          scrollToId('#contato');
+                        }}
+                      >
+                        Falar com a equipe
+                      </Button>
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-white/60">
+                        <Clock3 size={14} /> Atendimento em todo o Brasil
+                      </div>
                     </div>
                   </div>
-
-                  <div className="grid gap-6 md:grid-cols-[1.4fr,1fr]">
-                    <div className="space-y-5">
-                      <div className="rounded-2xl border p-6" style={{ borderColor: COLORS.border, background: `linear-gradient(135deg, ${COLORS.bg1}, #fff)` }}>
+                </aside>
+                <div className="relative flex flex-1 flex-col bg-white">
+                  <button
+                    type="button"
+                    className="absolute right-5 top-5 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border bg-white/90 text-[#2b2b2b] shadow-sm transition hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[rgba(193,154,107,0.6)]"
+                    style={{ borderColor: COLORS.border }}
+                    aria-label="Fechar modal"
+                    onClick={() => setConsumerModalOpen(false)}
+                  >
+                    <X size={18} />
+                  </button>
+                  <div className="consumer-modal-scroll relative flex-1 overflow-y-auto px-7 py-10 sm:px-9 md:px-12 md:py-12">
+                    <div className="mx-auto flex w-full max-w-2xl flex-col gap-10 md:gap-12">
+                      <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border, background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)` }}>
                         <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
                           Soluções jurídicas completas
                         </h4>
-                        <ul className="mt-3 space-y-2 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
-                          <li>• Indenizações por danos morais e materiais em fraudes, atrasos ou vícios em produtos.</li>
-                          <li>• Contestação de cobranças indevidas, juros abusivos e práticas abusivas de fornecedores.</li>
-                          <li>• Acordos e ações contra bancos, financeiras, operadoras de telefonia, planos de saúde e e-commerce.</li>
-                          <li>• Revisão de contratos com cláusulas prejudiciais ou falta de transparência.</li>
-                          <li>• Defesa administrativa perante órgãos de proteção ao consumidor e Procon.</li>
+                        <p className="mt-3 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
+                          Avaliamos cada cenário com rigor técnico para definir a estratégia adequada, atuando tanto na esfera judicial quanto na administrativa.
+                        </p>
+                        <ul className="mt-5 space-y-4 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                            <span>Indenizações por danos morais e materiais em fraudes, atrasos, vícios ou entregas não realizadas.</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                            <span>Contestação de cobranças indevidas, juros abusivos e cláusulas que ferem o Código de Defesa do Consumidor.</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                            <span>Acordos e ações contra bancos, financeiras, operadoras de telefonia, planos de saúde e e-commerce.</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                            <span>Revisão de contratos com falta de transparência, cobranças ocultas ou cláusulas abusivas.</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                            <span>Defesa administrativa junto a Procon, Senacon e demais órgãos de proteção ao consumidor.</span>
+                          </li>
                         </ul>
-                      </div>
-                      <div className="rounded-2xl border p-6" style={{ borderColor: COLORS.border }}>
+                      </section>
+                      <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border, background: '#fefbf7' }}>
                         <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
-                          Diferenciais
+                          Como guiamos sua demanda
                         </h4>
-                        <ul className="mt-3 space-y-2 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
-                          <li>• Atendimento personalizado, humanizado e totalmente online.</li>
-                          <li>• Comunicação constante sobre cada etapa do processo.</li>
-                          <li>• Ações preventivas para reduzir riscos e fortalecer negociações.</li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-5 rounded-2xl border p-6" style={{ borderColor: COLORS.border, background: 'rgba(17,17,17,0.03)' }}>
-                      <div className="space-y-2">
-                        <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
-                          Casos recorrentes
-                        </h4>
-                        <ul className="space-y-2 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
-                          <li>• Cancelamentos de viagens, compras on-line e entregas não realizadas.</li>
-                          <li>• Falhas em serviços bancários, financiamentos e seguros.</li>
-                          <li>• Planos de saúde que negam coberturas essenciais.</li>
-                        </ul>
-                      </div>
-                      <div className="rounded-2xl border p-5 text-sm leading-relaxed" style={{ borderColor: COLORS.border, color: COLORS.ink }}>
-                        Cada estratégia é pensada para evitar desgastes, acelerar resultados e buscar acordos vantajosos antes de recorrer ao Judiciário.
-                      </div>
-                      <div className="flex flex-col gap-3">
-                        <a href={waLink()} target="_blank" rel="noopener noreferrer" className="w-full">
-                          <Button className="w-full cursor-pointer justify-center gap-2 rounded-xl px-5 py-3 text-base font-semibold transition-opacity hover:opacity-90" style={{ background: COLORS.black, color: COLORS.bg1 }}>
-                            <WhatsappIcon size={18} /> Conversar pelo WhatsApp
+                        <div className="mt-5 grid gap-6 sm:grid-cols-3">
+                          <div className="flex flex-col gap-3">
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: `${COLORS.accent}1a`, color: COLORS.accent }}>
+                                <Phone size={18} />
+                              </div>
+                              <span className="text-sm font-semibold" style={{ color: COLORS.ink }}>Diagnóstico</span>
+                            </div>
+                            <p className="text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>Coleta detalhada de documentos e cronologia para mapear riscos e urgências.</p>
+                          </div>
+                          <div className="flex flex-col gap-3">
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: `${COLORS.accent}1a`, color: COLORS.accent }}>
+                                <FileText size={18} />
+                              </div>
+                              <span className="text-sm font-semibold" style={{ color: COLORS.ink }}>Estratégia</span>
+                            </div>
+                            <p className="text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>Definição das medidas cabíveis, estimativa de prazos e alinhamento com o cliente.</p>
+                          </div>
+                          <div className="flex flex-col gap-3">
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: `${COLORS.accent}1a`, color: COLORS.accent }}>
+                                <Handshake size={18} />
+                              </div>
+                              <span className="text-sm font-semibold" style={{ color: COLORS.ink }}>Execução</span>
+                            </div>
+                            <p className="text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>Negociações firmes e protocolos ágeis para alcançar a reparação mais eficiente.</p>
+                          </div>
+                        </div>
+                      </section>
+                      <section className="grid gap-6 md:grid-cols-2">
+                        <div className="rounded-3xl border p-6 md:p-7" style={{ borderColor: COLORS.border }}>
+                          <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                            Diferenciais
+                          </h4>
+                          <ul className="mt-4 space-y-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                            <li className="flex items-start gap-3">
+                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                              <span>Atendimento personalizado, humanizado e totalmente online.</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                              <span>Comunicação constante sobre cada etapa do processo.</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                              <span>Ações preventivas para reduzir riscos e fortalecer negociações.</span>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="rounded-3xl border p-6 md:p-7" style={{ borderColor: COLORS.border, background: 'rgba(17,17,17,0.03)' }}>
+                          <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                            Casos recorrentes
+                          </h4>
+                          <ul className="mt-4 space-y-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                            <li className="flex items-start gap-3">
+                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                              <span>Cancelamentos de viagens, compras on-line e entregas não realizadas.</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                              <span>Falhas em serviços bancários, financiamentos, seguros e cartões.</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                              <span>Planos de saúde que negam coberturas essenciais ou limitam tratamentos.</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </section>
+                      <section className="rounded-3xl border p-6 md:p-8" style={{ borderColor: COLORS.border }}>
+                        <p className="text-base leading-relaxed" style={{ color: COLORS.ink }}>
+                          Cada estratégia é pensada para evitar desgastes, acelerar resultados e garantir que o fornecedor seja responsabilizado com base no Código de Defesa do Consumidor.
+                        </p>
+                        <p className="mt-3 text-sm leading-relaxed" style={{ color: COLORS.inkSoft }}>
+                          Trabalhamos com transparência, estimando valores recuperáveis, prazos médios e alternativas viáveis para que você tome decisões com segurança.
+                        </p>
+                      </section>
+                      <section className="rounded-3xl bg-[#111111] p-6 text-white md:p-8">
+                        <div className="space-y-2">
+                          <h4 className="text-xl font-semibold">Pronto para iniciar sua defesa?</h4>
+                          <p className="text-sm leading-relaxed text-white/80 md:text-base">
+                            Compartilhe o que aconteceu com você. Nossa equipe retorna rapidamente com as primeiras orientações e o plano de ação recomendado.
+                          </p>
+                        </div>
+                        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+                          <a href={waLink()} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                            <Button
+                              className="w-full justify-center gap-2 rounded-xl px-5 py-3 text-base font-semibold text-[#111111] transition hover:opacity-90"
+                              style={{ background: '#f8e9d7', borderRadius: 16 }}
+                            >
+                              <WhatsappIcon size={18} /> Iniciar atendimento
+                            </Button>
+                          </a>
+                          <Button
+                            className="w-full justify-center rounded-xl border border-white/40 px-5 py-3 text-base font-semibold text-white transition hover:bg-white/10 sm:w-auto"
+                            style={{ background: 'transparent', borderRadius: 16 }}
+                            onClick={() => {
+                              setConsumerModalOpen(false);
+                              scrollToId('#contato');
+                            }}
+                          >
+                            Agendar conversa
                           </Button>
-                        </a>
-                        <Button
-                          className="w-full cursor-pointer justify-center rounded-xl border-2 px-5 py-3 text-base font-semibold transition-all duration-200 hover:opacity-100 hover:bg-[rgba(193,154,107,.12)] hover:border-[rgba(193,154,107,.8)] hover:shadow-sm hover:-translate-y-[1px]"
-                          style={{ background: 'transparent', color: COLORS.accent, borderColor: COLORS.accent }}
-                          onClick={() => {
-                            setConsumerModalOpen(false);
-                            scrollToId('#contato');
-                          }}
-                        >
-                          Falar com a equipe
-                        </Button>
-                      </div>
+                        </div>
+                        <div className="mt-6 grid gap-3 text-sm text-white/80 sm:grid-cols-2">
+                          <div className="flex items-center gap-3">
+                            <Phone size={16} />
+                            <span>{CONFIG.TEL_DISPLAY}</span>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Mail size={16} />
+                            <span>{CONFIG.EMAIL}</span>
+                          </div>
+                        </div>
+                      </section>
                     </div>
                   </div>
                 </div>
