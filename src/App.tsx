@@ -614,6 +614,7 @@ export default function LawFirmLanding() {
   const aboutModalDescriptionId = aboutModalOpen ? "about-modal-description" : undefined;
 
   const containerCls = "max-w-6xl mx-auto px-4 sm:px-6";
+  const headerOffset = Math.max(headerH, headerRef.current?.offsetHeight ?? 0);
 
   // --- Preload e Parallax ---
   useEffect(() => {
@@ -625,7 +626,8 @@ export default function LawFirmLanding() {
 
 
   useEffect(() => {
-    if (!activePracticeModal) return;
+    const overlayOpen = Boolean(activePracticeModal || aboutModalOpen || mobileOpen);
+    if (!overlayOpen) return;
     const { body, documentElement } = document;
     const prevBodyOverflow = body.style.overflow;
     const prevHtmlOverflow = documentElement.style.overflow;
@@ -635,20 +637,16 @@ export default function LawFirmLanding() {
       body.style.overflow = prevBodyOverflow;
       documentElement.style.overflow = prevHtmlOverflow;
     };
-  }, [activePracticeModal]);
+  }, [activePracticeModal, aboutModalOpen, mobileOpen]);
 
   useEffect(() => {
-    if (!aboutModalOpen) return;
-    const { body, documentElement } = document;
-    const prevBodyOverflow = body.style.overflow;
-    const prevHtmlOverflow = documentElement.style.overflow;
-    body.style.overflow = "hidden";
-    documentElement.style.overflow = "hidden";
-    return () => {
-      body.style.overflow = prevBodyOverflow;
-      documentElement.style.overflow = prevHtmlOverflow;
+    if (!mobileOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileOpen(false);
     };
-  }, [aboutModalOpen]);
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [mobileOpen]);
 
   
 
@@ -934,24 +932,83 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
       {fixHeader && <div style={{height: headerH}} aria-hidden></div>}
       {/* Menu mobile */}
       
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {mobileOpen && (
-          <motion.nav
+          <motion.aside
             key="mobile-nav"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden border-b bg-white/95 backdrop-blur-sm px-4 sm:px-6 overflow-hidden"
-            style={{ borderColor: COLORS.border }}
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.24, ease: "easeInOut" }}
+            className="md:hidden fixed inset-x-0 bottom-0 z-[9998]"
+            style={{ top: headerOffset }}
           >
-            <div className="py-3 flex flex-col gap-1">
-              <button onClick={() => { scrollToId('#sobre'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Sobre</button>
-              <button onClick={() => { scrollToId('#areas'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Áreas</button>
-              <button onClick={() => { scrollToId('#equipe'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Equipe</button>
-              <button onClick={() => { scrollToId('#contato'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Contato</button>
-            </div>
-          </motion.nav>
+            <motion.div
+              aria-hidden
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0 bg-black/35 backdrop-blur-[2px]"
+              onClick={() => setMobileOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="relative mx-4 mb-6 overflow-hidden rounded-2xl border shadow-xl"
+              style={{ borderColor: COLORS.border, background: "rgba(255,255,255,0.96)" }}
+            >
+              <header
+                className="px-6 py-5 border-b"
+                style={{ borderColor: COLORS.border, background: "rgba(255,255,255,0.82)" }}
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: COLORS.inkSoft }}>
+                  Menu
+                </p>
+                <p className="mt-1 text-lg font-semibold" style={{ color: COLORS.ink }}>
+                  Navegue pelo site
+                </p>
+              </header>
+              <nav
+                role="navigation"
+                aria-label="Navegação principal mobile"
+                className="flex flex-col"
+              >
+                {[
+                  { label: "Sobre", target: "#sobre" },
+                  { label: "Áreas", target: "#areas" },
+                  { label: "Equipe", target: "#equipe" },
+                  { label: "Contato", target: "#contato" },
+                ].map((item, index, array) => (
+                  <button
+                    key={item.target}
+                    onClick={() => {
+                      scrollToId(item.target);
+                      setMobileOpen(false);
+                    }}
+                    className="group flex items-center justify-between gap-4 px-6 py-4 text-left text-base font-medium transition duration-200 hover:bg-[rgba(193,154,107,0.08)] hover:text-[#c19a6b]"
+                    style={{
+                      color: COLORS.ink,
+                      borderBottom:
+                        index === array.length - 1 ? "none" : `1px solid ${COLORS.border}`,
+                      background: "transparent",
+                    }}
+                  >
+                    <span>{item.label}</span>
+                    <span
+                      className="text-xs font-semibold uppercase tracking-[0.28em] transition-transform duration-200 group-hover:translate-x-1"
+                      style={{ color: COLORS.accent }}
+                      aria-hidden
+                    >
+                      Ver
+                    </span>
+                  </button>
+                ))}
+              </nav>
+            </motion.div>
+          </motion.aside>
         )}
       </AnimatePresence>
 
