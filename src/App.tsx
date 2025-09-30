@@ -101,6 +101,7 @@ export default function LawFirmLanding() {
   const [teamIndex, setTeamIndex] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activePracticeModal, setActivePracticeModal] = useState<PracticeModalKey | null>(null);
+  const [aboutModalOpen, setAboutModalOpen] = useState(false);
   // fallback funcional para sticky
   const [fixHeader, setFixHeader] = useState(false);
   const [headerH, setHeaderH] = useState(0);
@@ -130,9 +131,27 @@ export default function LawFirmLanding() {
   const waLink = () => `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`;
 
   const team = [
-    { name: "Edimara Duran", oab: "OAB/SP 526.456", photo: CONFIG.TEAM_PHOTO_EDIMARA },
+    { name: "Edimara Duran", oab: "OAB/SP 526.456", photo: fallbackAsset(CONFIG.TEAM_PHOTO_EDIMARA) },
     { name: "Júlia Bellussi", oab: "OAB/SP 495.591", photo: fallbackAsset(CONFIG.TEAM_PHOTO_JULIA) },
   ];
+
+  const aboutModalContent = {
+    name: "Edimara Aparecida dos Santos Duran",
+    role: "CEO - Sócia do escritório Edimara Duran Advocacia e Assessoria Jurídica",
+    registration: "OAB/SP 526.456",
+    summary: [
+      "Somos um escritório 100% online, oferecendo praticidade, comodidade e soluções jurídicas personalizadas com uso estratégico de tecnologia.",
+      "Atuamos com transparência, acolhimento e atenção constante para construir relações de confiança em todas as etapas do processo jurídico.",
+      "Nosso compromisso é com um atendimento humanizado, priorizando cuidado, empatia e excelência na condução de cada demanda.",
+    ],
+    specializations: [
+      "Graduada em Direito pelo Centro Universitário de Santa Fé do Sul – Unifunec.",
+      "Pós-graduada em Direito de Família e Sucessões.",
+      "Pós-graduada em Direito do Consumidor.",
+      "Especialista em Prática em Direito Sucessório.",
+    ],
+    location: "O escritório presta serviços 100% online, atendendo clientes em todo o Brasil com a mesma dedicação e proximidade.",
+  } as const;
 
   const practiceCards: { icon: JSX.Element; title: string; desc: string; modal?: PracticeModalKey }[] = [
     { icon: <Scale />, title: "Direito de Família", desc: "Casamento, união estável, divórcio, guarda e pensão.", modal: "family" },
@@ -575,6 +594,8 @@ export default function LawFirmLanding() {
   const activeModalData = activePracticeModal ? practiceModals[activePracticeModal] : null;
   const modalTitleId = activePracticeModal ? `${activePracticeModal}-modal-title` : undefined;
   const modalDescriptionId = activePracticeModal ? `${activePracticeModal}-modal-description` : undefined;
+  const aboutModalTitleId = aboutModalOpen ? "about-modal-title" : undefined;
+  const aboutModalDescriptionId = aboutModalOpen ? "about-modal-description" : undefined;
 
   const containerCls = "max-w-6xl mx-auto px-4 sm:px-6";
 
@@ -599,6 +620,19 @@ export default function LawFirmLanding() {
       documentElement.style.overflow = prevHtmlOverflow;
     };
   }, [activePracticeModal]);
+
+  useEffect(() => {
+    if (!aboutModalOpen) return;
+    const { body, documentElement } = document;
+    const prevBodyOverflow = body.style.overflow;
+    const prevHtmlOverflow = documentElement.style.overflow;
+    body.style.overflow = "hidden";
+    documentElement.style.overflow = "hidden";
+    return () => {
+      body.style.overflow = prevBodyOverflow;
+      documentElement.style.overflow = prevHtmlOverflow;
+    };
+  }, [aboutModalOpen]);
 
   
 
@@ -904,12 +938,21 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               <div className="mt-8 text-sm" style={{ color: COLORS.inkSoft }}>
                 Entre em contato pelos canais abaixo ou agende uma consulta na seção de contato.
               </div>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button
+                  className="cursor-pointer rounded-xl px-6 py-3 text-sm font-semibold shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:shadow-md"
+                  style={{ background: COLORS.black, color: COLORS.bg1 }}
+                  onClick={() => setAboutModalOpen(true)}
+                >
+                  Sobre Edimara Duran
+                </Button>
+              </div>
             </motion.div>
             <img
               src={fallbackAsset(CONFIG.PORTRAIT_URL)}
               alt="Foto da Responsável"
               loading="lazy"
-              className="mx-auto w-full max-w-[240px] sm:max-w-[300px] lg:max-w-[340px] rounded-[28px] border border-[#e8ded0] shadow-[0_20px_40px_rgba(17,17,17,0.18)]"
+              className="mx-auto w-full max-w-[240px] sm:max-w-[300px] lg:max-w-[340px] rounded-[28px] shadow-[0_24px_48px_rgba(17,17,17,0.18)]"
               style={{ aspectRatio: '3 / 4', objectFit: 'contain', background: '#fffefb' }}
             />
           </div>
@@ -927,12 +970,19 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
           </h2>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {practiceCards.map((item, i) => (
-              <motion.div key={item.title} initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} viewport={{amount:0.2}} transition={{delay:i*.08}}>
+              <motion.div
+                key={item.title}
+                initial={{opacity:0,y:30}}
+                whileInView={{opacity:1,y:0}}
+                viewport={{amount:0.2}}
+                transition={{delay:i*.08}}
+                className="h-full"
+              >
                 <Card
                   role="button"
                   tabIndex={0}
                   aria-haspopup={item.modal ? 'dialog' : undefined}
-                  className="rounded-2xl border bg-white/90 shadow-md transition hover:-translate-y-[2px] hover:shadow-xl"
+                  className="flex h-full flex-col rounded-2xl border bg-white/90 shadow-md transition hover:-translate-y-[2px] hover:shadow-xl"
                   style={{ border: `1px solid ${COLORS.border}` }}
                   onClick={() => {
                     if (item.modal) setActivePracticeModal(item.modal);
@@ -945,11 +995,13 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                     }
                   }}
                 >
-                  <CardContent className="flex flex-col items-center gap-4 p-6 text-center">
+                  <CardContent className="flex h-full flex-col items-center gap-4 p-6 text-center">
                     {cardIcon(item.icon)}
-                    <h3 className="text-xl font-semibold" style={{ color: COLORS.ink }}>{item.title}</h3>
-                    <p className="text-sm" style={{ color: COLORS.inkSoft }}>{item.desc}</p>
-                    <span className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: COLORS.accent }}>
+                    <div className="flex flex-col items-center gap-3">
+                      <h3 className="text-xl font-semibold" style={{ color: COLORS.ink }}>{item.title}</h3>
+                      <p className="text-sm" style={{ color: COLORS.inkSoft }}>{item.desc}</p>
+                    </div>
+                    <span className="mt-auto text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: COLORS.accent }}>
                       {item.modal ? 'Saiba mais' : 'Solicitar contato'}
                     </span>
                   </CardContent>
@@ -1115,6 +1167,90 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
         )}
       </AnimatePresence>
 
+      <AnimatePresence>
+        {aboutModalOpen && (
+          <motion.div
+            key="about-modal"
+            className="fixed inset-0 z-[11500] flex items-center justify-center px-4 py-8 md:py-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <button
+              type="button"
+              aria-label="Fechar modal Sobre"
+              className="absolute inset-0 bg-black/65"
+              onClick={() => setAboutModalOpen(false)}
+            ></button>
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={aboutModalTitleId}
+              aria-describedby={aboutModalDescriptionId}
+              className="relative w-full max-w-3xl overflow-hidden rounded-[32px] bg-white shadow-2xl"
+              initial={{ scale: 0.94, opacity: 0, y: 30 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.94, opacity: 0, y: 30 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+            >
+              <div className="absolute -top-32 -right-24 h-72 w-72 rounded-full bg-[rgba(193,154,107,0.18)] blur-3xl" aria-hidden></div>
+              <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 18% 18%, rgba(193,154,107,.5) 0, transparent 55%)" }} aria-hidden></div>
+              <button
+                type="button"
+                aria-label="Fechar modal Sobre"
+                className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full border bg-white/85 text-sm text-[#111111] shadow-sm backdrop-blur transition hover:bg-white md:right-5 md:top-5"
+                style={{ borderColor: COLORS.border }}
+                onClick={() => setAboutModalOpen(false)}
+              >
+                <X size={18} />
+              </button>
+              <div className="relative z-10 flex flex-col gap-6 p-6 sm:p-10">
+                <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[rgba(193,154,107,0.1)] px-4 py-1 text-xs font-semibold uppercase tracking-[0.24em]" style={{ color: COLORS.accent }}>
+                  Sobre a advogada
+                </span>
+                <div>
+                  <h3 id={aboutModalTitleId} className="text-2xl font-bold text-[#111111] md:text-[30px]">
+                    {aboutModalContent.name}
+                  </h3>
+                  <p className="mt-2 text-sm font-semibold text-[#4a4a4a] md:text-base">{aboutModalContent.role}</p>
+                  <p className="mt-1 text-sm text-[#7a7a7a]">{aboutModalContent.registration}</p>
+                </div>
+                <div
+                  id={aboutModalDescriptionId}
+                  className="space-y-4 text-sm leading-relaxed md:text-base"
+                  style={{ color: COLORS.inkSoft }}
+                >
+                  {aboutModalContent.summary.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+                <div className="rounded-3xl border p-6" style={{ borderColor: COLORS.border, background: "#fdf8f1" }}>
+                  <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                    Formação e especializações
+                  </h4>
+                  <ul className="mt-4 space-y-3 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
+                    {aboutModalContent.specializations.map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="rounded-3xl border p-6" style={{ borderColor: COLORS.border, background: "#ffffff" }}>
+                  <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                    Atendimento em todo o Brasil
+                  </h4>
+                  <p className="mt-3 text-sm leading-relaxed md:text-base" style={{ color: COLORS.inkSoft }}>
+                    {aboutModalContent.location}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* NOSSA EQUIPE (carrossel) */}
       <section id="equipe" className="relative py-16 md:py-24" style={{ background: `linear-gradient(180deg, ${COLORS.bg2} 0%, #0f0f0f 100%)`, color:'#fff' }}>
         {/* textura */}
@@ -1137,21 +1273,20 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                 <div key={idx} className="min-w-full">
                   <div className="grid md:grid-cols-2 gap-10 items-stretch p-6">
                     <div className="flex justify-center">
-                      <div className="rounded-2xl p-2" style={{ background: `linear-gradient(135deg, ${COLORS.accent}40, ${COLORS.accent2}26)` }}>
-                        <div className="relative w-[240px] sm:w-[280px] md:w-[320px] lg:w-[360px]">
-                          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[26px] bg-white shadow-xl">
-                            <img
-                              src={m.photo}
-                              alt={m.name}
-                              loading={m.name==='Júlia Bellussi' ? 'eager' : undefined}
-                              referrerPolicy={m.name==='Júlia Bellussi' ? 'no-referrer' : undefined}
-                              crossOrigin={m.name==='Júlia Bellussi' ? 'anonymous' : undefined}
-                              onError={(e)=>{ const el=e.currentTarget as HTMLImageElement; if(m.name==='Júlia Bellussi'){ if(!el.dataset.triedcdn){ el.dataset.triedcdn='1'; el.src = CONFIG.TEAM_PHOTO_JULIA; } else if(!el.dataset.triedclean){ el.dataset.triedclean='1'; el.src = fallbackAsset(CONFIG.TEAM_PHOTO_JULIA); } } else { if(!el.dataset.fallback){ el.dataset.fallback='1'; el.src = fallbackAsset(m.photo); } } }}
-                              className="h-full w-full object-contain p-3 sm:p-4"
-                              style={{ background: '#ffffff' }}
-                            />
-                          </div>
-                        </div>
+                      <div
+                        className="relative aspect-[3/4] w-full max-w-[240px] sm:max-w-[280px] md:max-w-[320px] lg:max-w-[340px] overflow-hidden rounded-[28px] shadow-[0_24px_48px_rgba(17,17,17,0.22)]"
+                        style={{ background: '#fffefb' }}
+                      >
+                        <img
+                          src={m.photo}
+                          alt={m.name}
+                          loading={m.name==='Júlia Bellussi' ? 'eager' : undefined}
+                          referrerPolicy={m.name==='Júlia Bellussi' ? 'no-referrer' : undefined}
+                          crossOrigin={m.name==='Júlia Bellussi' ? 'anonymous' : undefined}
+                          onError={(e)=>{ const el=e.currentTarget as HTMLImageElement; if(m.name==='Júlia Bellussi'){ if(!el.dataset.triedcdn){ el.dataset.triedcdn='1'; el.src = CONFIG.TEAM_PHOTO_JULIA; } else if(!el.dataset.triedclean){ el.dataset.triedclean='1'; el.src = fallbackAsset(CONFIG.TEAM_PHOTO_JULIA); } } else { if(!el.dataset.fallback){ el.dataset.fallback='1'; el.src = fallbackAsset(m.photo); } } }}
+                          className="absolute inset-0 h-full w-full object-contain"
+                          style={{ display: 'block' }}
+                        />
                       </div>
                     </div>
                     <div className="flex flex-col justify-center h-full md:pr-4">
@@ -1179,7 +1314,13 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                           <Button
                             className="cursor-pointer transition-all duration-200 hover:opacity-100 hover:bg-[rgba(193,154,107,.12)] hover:border-[rgba(193,154,107,.8)] hover:shadow-sm hover:-translate-y-[1px] min-h-[44px] px-5 rounded-xl border-2"
                             style={{ background: "transparent", color: COLORS.accent, borderColor: COLORS.accent }}
-                            onClick={() => scrollToId('#sobre')}
+                            onClick={() => {
+                              if (m.name === 'Edimara Duran') {
+                                setAboutModalOpen(true);
+                              } else {
+                                scrollToId('#sobre');
+                              }
+                            }}
                           >
                             Sobre
                           </Button>
