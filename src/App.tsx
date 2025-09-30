@@ -56,7 +56,7 @@ const COLORS = {
   border: "#ecebe9",
 } as const;
 
-type PracticeModalKey = "consumer" | "family" | "succession";
+type PracticeModalKey = "consulting" | "consumer" | "family" | "succession";
 
 type PracticeModalContent = {
   tag: string;
@@ -133,12 +133,96 @@ export default function LawFirmLanding() {
     { icon: <Scale />, title: "Direito de Família", desc: "Casamento, união estável, divórcio, guarda e pensão.", modal: "family" },
     { icon: <Gavel />, title: "Direito Sucessório", desc: "Inventários, partilha de bens e elaboração de testamentos.", modal: "succession" },
     { icon: <ShieldCheck />, title: "Direito do Consumidor", desc: "Indenizações, revisão contratual e prevenção de abusos.", modal: "consumer" },
-    { icon: <FileText />, title: "Contratos e Direito Civil", desc: "Elaboração, revisão e execução contratual." },
+    {
+      icon: <FileText />,
+      title: "Consultoria Jurídica",
+      desc: "Acompanhamento preventivo para decisões seguras e redução de riscos.",
+      modal: "consulting",
+    },
     { icon: <Building2 />, title: "Direito Imobiliário", desc: "Compra, venda, locação e disputas possessórias." },
     { icon: <Handshake />, title: "Mediação e Acordos", desc: "Soluções consensuais com segurança jurídica." },
   ];
 
   const practiceModals: Record<PracticeModalKey, PracticeModalContent> = {
+    consulting: {
+      tag: "Consultoria Jurídica",
+      gradient: "from-[#1a1814] via-[#2b2419] to-[#5a4024]",
+      highlightColor: "#f4e0c3",
+      title: "Consultoria jurídica preventiva para decisões seguras",
+      description:
+        "A consultoria jurídica preventiva é direcionada a quem deseja evitar problemas legais antes que ocorram, com acompanhamento especializado alinhado à legislação vigente.",
+      highlights: [
+        {
+          title: "Análise de contratos",
+          description: "Revisamos contratos e documentos com foco em segurança jurídica.",
+        },
+        {
+          title: "Pareceres técnicos",
+          description: "Esclarecemos dúvidas e embasamos decisões com pareceres objetivos.",
+        },
+        {
+          title: "Planejamento estratégico",
+          description: "Construímos estratégias para prevenir litígios e reduzir custos com processos judiciais.",
+        },
+      ],
+      bulletSection: {
+        title: "Quando a consultoria é essencial",
+        intro: "Entre os objetivos da consultoria jurídica preventiva, destacam-se:",
+        bullets: [
+          "Prevenir litígios e riscos jurídicos que possam comprometer patrimônio ou imagem.",
+          "Economizar tempo e dinheiro evitando ações judiciais desnecessárias.",
+          "Tomar decisões seguras com respaldo legal e análise estratégica.",
+          "Aumentar a competitividade empresarial garantindo conformidade legal em contratos e práticas comerciais.",
+          "Planejar o futuro com confiança, seja no âmbito pessoal ou empresarial.",
+        ],
+        background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`
+      },
+      steps: [
+        {
+          icon: <FileText size={18} />,
+          title: "Diagnóstico preventivo",
+          description: "Mapeamos contratos, documentos e rotinas para identificar riscos jurídicos.",
+        },
+        {
+          icon: <CheckCircle2 size={18} />,
+          title: "Pareceres e orientações",
+          description: "Emitimos pareceres técnicos e orientações personalizadas para embasar decisões.",
+        },
+        {
+          icon: <Handshake size={18} />,
+          title: "Planejamento contínuo",
+          description: "Desenvolvemos planos estratégicos que evitam litígios e reduzem custos futuros.",
+        },
+      ],
+      stepsTitle: "Como conduzimos a consultoria",
+      stepsIntro: "Nosso atendimento combina análise técnica, orientação clara e acompanhamento próximo.",
+      stepsBackground: "#fdf8f0",
+      columns: [
+        {
+          title: "Importância prática",
+          bullets: [
+            "Previne litígios e riscos que poderiam afetar patrimônio ou reputação.",
+            "Garante decisões seguras com suporte jurídico especializado.",
+            "Reforça a conformidade legal de empresas em contratos e rotinas comerciais.",
+          ],
+        },
+        {
+          title: "Benefícios do atendimento online",
+          bullets: [
+            "Consultoria jurídica online acessível em qualquer lugar do Brasil.",
+            "Agilidade para esclarecer dúvidas e implementar orientações preventivas.",
+            "Flexibilidade para conciliar reuniões presenciais e virtuais conforme a necessidade.",
+          ],
+          background: "rgba(193,154,107,0.12)",
+        },
+      ],
+      closing: {
+        paragraphs: [
+          "A consultoria jurídica preventiva oferece segurança para quem busca antecipar problemas legais e agir com estratégia.",
+          "Disponibilizamos atendimento presencial e online para entregar orientações especializadas de forma prática e acessível.",
+        ],
+      },
+    },
     consumer: {
       tag: "Direito do Consumidor",
       gradient: "from-[#1f1d1b] via-[#2b2118] to-[#5a3d23]",
