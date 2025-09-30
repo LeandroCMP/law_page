@@ -768,16 +768,40 @@ export default function LawFirmLanding() {
   };
 
   // --- Gestos do carrossel ---
+  const isInteractiveTarget = (target: EventTarget | null) => {
+    if (!(target instanceof HTMLElement)) return false;
+    return Boolean(
+      target.closest(
+        "button, a, input, textarea, select, [role='button'], [role='link'], [data-carousel-interactive]"
+      )
+    );
+  };
+
+  const extractClientX = (e: any) => {
+    if (typeof e.clientX === "number") return e.clientX;
+    if (e.touches && e.touches[0]) return e.touches[0].clientX;
+    if (e.changedTouches && e.changedTouches[0]) return e.changedTouches[0].clientX;
+    return 0;
+  };
+
   const onPointerDown = (e: any) => {
+    if (isInteractiveTarget(e.target)) {
+      setIsDragging(false);
+      setDragDelta(0);
+      return;
+    }
     setIsDragging(true);
-    const x = e.clientX ?? (e.touches ? e.touches[0]?.clientX : 0) ?? 0;
-    setDragStartX(x);
+    setDragStartX(extractClientX(e));
     setDragDelta(0);
-    try { e.currentTarget?.setPointerCapture?.(e.pointerId); } catch {}
+    if (typeof e.pointerId === "number") {
+      try {
+        e.currentTarget?.setPointerCapture?.(e.pointerId);
+      } catch {}
+    }
   };
   const onPointerMove = (e: any) => {
     if (!isDragging) return;
-    const x = e.clientX ?? (e.touches ? e.touches[0]?.clientX : 0) ?? 0;
+    const x = extractClientX(e);
     setDragDelta(x - dragStartX);
   };
   const onPointerUp = () => {
