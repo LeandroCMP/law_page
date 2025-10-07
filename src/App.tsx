@@ -11,7 +11,6 @@ import {
   CheckCircle2,
   FileText,
   Handshake,
-  Building2,
   Instagram,
   Linkedin,
   Clock3,
@@ -56,7 +55,13 @@ const COLORS = {
   border: "#ecebe9",
 } as const;
 
-type PracticeModalKey = "consumer" | "family" | "succession";
+type PracticeModalKey =
+  | "consulting"
+  | "consumer"
+  | "family"
+  | "succession"
+  | "retirement"
+  | "mediation";
 
 type PracticeModalContent = {
   tag: string;
@@ -96,6 +101,7 @@ export default function LawFirmLanding() {
   const [teamIndex, setTeamIndex] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activePracticeModal, setActivePracticeModal] = useState<PracticeModalKey | null>(null);
+  const [aboutModalOpen, setAboutModalOpen] = useState(false);
   // fallback funcional para sticky
   const [fixHeader, setFixHeader] = useState(false);
   const [headerH, setHeaderH] = useState(0);
@@ -125,75 +131,359 @@ export default function LawFirmLanding() {
   const waLink = () => `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`;
 
   const team = [
-    { name: "Edimara Duran", oab: "OAB/SP 526.456", photo: CONFIG.TEAM_PHOTO_EDIMARA },
+    { name: "Edimara Duran", oab: "OAB/SP 526.456", photo: fallbackAsset(CONFIG.TEAM_PHOTO_EDIMARA) },
     { name: "Júlia Bellussi", oab: "OAB/SP 495.591", photo: fallbackAsset(CONFIG.TEAM_PHOTO_JULIA) },
   ];
 
+  const aboutModalContent = {
+    name: "Edimara Aparecida dos Santos Duran",
+    role: "CEO - Sócia do escritório Edimara Duran Advocacia e Assessoria Jurídica",
+    registration: "OAB/SP 526.456",
+    tagline: "Especialista em Direito de Família, Sucessório e Consumidor",
+    summary: [
+      "Advogada inscrita na OAB/SP sob o número 526.456 OAB/SP.",
+      "Graduada em Direito pelo Centro Universitário de Santa Fé do Sul – Unifunec.",
+      "Pós-graduada em Direito de Família e Sucessões, pós-graduada em Direito do Consumidor e especialista em Prática em Direito Sucessório.",
+      "Escritório 100% online que proporciona praticidade, comodidade e atendimento em todo o Brasil.",
+    ],
+    formations: [
+      "Graduada em Direito pelo Centro Universitário de Santa Fé do Sul – Unifunec.",
+      "Pós-graduada em Direito de Família e Sucessões.",
+      "Pós-graduada em Direito do Consumidor.",
+      "Especialista em Prática em Direito Sucessório.",
+    ],
+    pillars: [
+      {
+        title: "Atendimento humanizado",
+        text: "Nosso compromisso é com um atendimento humanizado, sempre priorizando o cuidado e a empatia em cada atendimento.",
+      },
+      {
+        title: "Transparência e tecnologia",
+        text: "Oferecemos soluções jurídicas personalizadas e eficazes, com transparência, acolhimento e o uso de tecnologia para garantir a confiança em todas as etapas do processo.",
+      },
+      {
+        title: "Serviço 100% online",
+        text: "Nosso escritório é 100% online o que proporciona praticidade e comodidade, atendendo clientes em todo o Brasil.",
+      },
+    ],
+    closing: "Conte conosco para um serviço de alta qualidade e dedicação.",
+  } as const;
+
   const practiceCards: { icon: JSX.Element; title: string; desc: string; modal?: PracticeModalKey }[] = [
-    { icon: <Scale />, title: "Direito de Família", desc: "Divórcios, guarda, alimentos e partilha.", modal: "family" },
-    { icon: <Gavel />, title: "Direito Sucessório", desc: "Inventários, testamentos e regularização patrimonial.", modal: "succession" },
-    { icon: <ShieldCheck />, title: "Direito do Consumidor", desc: "Defesa contra práticas abusivas, cobranças e contratos.", modal: "consumer" },
-    { icon: <FileText />, title: "Contratos e Direito Civil", desc: "Elaboração, revisão e execução contratual." },
-    { icon: <Building2 />, title: "Direito Imobiliário", desc: "Compra, venda, locação e disputas possessórias." },
-    { icon: <Handshake />, title: "Mediação e Acordos", desc: "Soluções consensuais com segurança jurídica." },
+    { icon: <Scale />, title: "Direito de Família", desc: "Casamento, união estável, divórcio, guarda e pensão.", modal: "family" },
+    { icon: <Gavel />, title: "Direito Sucessório", desc: "Inventários, partilha de bens e elaboração de testamentos.", modal: "succession" },
+    { icon: <ShieldCheck />, title: "Direito do Consumidor", desc: "Indenizações, revisão contratual e prevenção de abusos.", modal: "consumer" },
+    {
+      icon: <FileText />,
+      title: "Consultoria Jurídica",
+      desc: "Acompanhamento preventivo para decisões seguras e redução de riscos.",
+      modal: "consulting",
+    },
+    {
+      icon: <Clock3 />,
+      title: "Planejamento Previdenciário",
+      desc: "Estudo previdenciário completo para definir o melhor momento e forma de aposentadoria.",
+      modal: "retirement",
+    },
+    {
+      icon: <Handshake />,
+      title: "Mediação e Acordos",
+      desc: "Condução colaborativa para acordos que evitam litígios prolongados.",
+      modal: "mediation",
+    },
   ];
 
   const practiceModals: Record<PracticeModalKey, PracticeModalContent> = {
-    consumer: {
-      tag: "Direito do Consumidor",
-      gradient: "from-[#1f1d1b] via-[#2b2118] to-[#5a3d23]",
-      highlightColor: "#f9d8aa",
-      title: "Representação estratégica para proteger seus direitos de consumo",
+    consulting: {
+      tag: "Consultoria Jurídica",
+      gradient: "from-[#1a1814] via-[#2b2419] to-[#5a4024]",
+      highlightColor: "#f4e0c3",
+      title: "Consultoria jurídica preventiva para decisões seguras",
       description:
-        "Atuamos para equilibrar a relação entre consumidores e fornecedores, combatendo abusos, recuperando prejuízos e negociando acordos vantajosos.",
+        "A consultoria jurídica preventiva é direcionada a quem deseja evitar problemas legais antes que ocorram, com acompanhamento especializado alinhado à legislação vigente.",
       highlights: [
-        { title: "Resposta ágil", description: "Diagnóstico inicial e medidas de urgência com retorno em até 24 horas úteis." },
-        { title: "Acompanhamento contínuo", description: "Atualizações claras em cada etapa, com linguagem acessível e canal direto com a equipe." },
-        { title: "Negociação estratégica", description: "Buscamos resolver conflitos com rapidez, priorizando acordos eficazes antes de acionar o Judiciário." },
+        {
+          title: "Análise de contratos",
+          description: "Revisamos contratos e documentos com foco em segurança jurídica.",
+        },
+        {
+          title: "Pareceres técnicos",
+          description: "Esclarecemos dúvidas e embasamos decisões com pareceres objetivos.",
+        },
+        {
+          title: "Planejamento estratégico",
+          description: "Construímos estratégias para prevenir litígios e reduzir custos com processos judiciais.",
+        },
       ],
       bulletSection: {
-        title: "Soluções jurídicas completas",
-        intro:
-          "Avaliamos cada cenário com rigor técnico para definir a estratégia adequada, atuando tanto na esfera judicial quanto na administrativa.",
+        title: "Quando a consultoria é essencial",
+        intro: "Entre os objetivos da consultoria jurídica preventiva, destacam-se:",
         bullets: [
-          "Indenizações por danos morais e materiais em fraudes, atrasos, vícios ou entregas não realizadas.",
-          "Contestação de cobranças indevidas, juros abusivos e cláusulas que ferem o Código de Defesa do Consumidor.",
-          "Acordos e ações contra bancos, financeiras, operadoras de telefonia, planos de saúde e e-commerce.",
-          "Revisão de contratos com falta de transparência, cobranças ocultas ou cláusulas abusivas.",
-          "Defesa administrativa junto a Procon, Senacon e demais órgãos de proteção ao consumidor.",
+          "Prevenir litígios e riscos jurídicos que possam comprometer patrimônio ou imagem.",
+          "Economizar tempo e dinheiro evitando ações judiciais desnecessárias.",
+          "Tomar decisões seguras com respaldo legal e análise estratégica.",
+          "Aumentar a competitividade empresarial garantindo conformidade legal em contratos e práticas comerciais.",
+          "Planejar o futuro com confiança, seja no âmbito pessoal ou empresarial.",
         ],
         background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`
       },
       steps: [
-        { icon: <Phone size={18} />, title: "Diagnóstico", description: "Coleta detalhada de documentos e cronologia para mapear riscos e urgências." },
-        { icon: <FileText size={18} />, title: "Estratégia", description: "Definição das medidas cabíveis, estimativa de prazos e alinhamento com o cliente." },
-        { icon: <Handshake size={18} />, title: "Execução", description: "Negociações firmes e protocolos ágeis para alcançar a reparação mais eficiente." },
+        {
+          icon: <FileText size={18} />,
+          title: "Diagnóstico preventivo",
+          description: "Mapeamos contratos, documentos e rotinas para identificar riscos jurídicos.",
+        },
+        {
+          icon: <CheckCircle2 size={18} />,
+          title: "Pareceres e orientações",
+          description: "Emitimos pareceres técnicos e orientações personalizadas para embasar decisões.",
+        },
+        {
+          icon: <Handshake size={18} />,
+          title: "Planejamento contínuo",
+          description: "Desenvolvemos planos estratégicos que evitam litígios e reduzem custos futuros.",
+        },
       ],
-      stepsTitle: "Como guiamos sua demanda",
-      stepsBackground: "#fefbf7",
+      stepsTitle: "Como conduzimos a consultoria",
+      stepsIntro: "Nosso atendimento combina análise técnica, orientação clara e acompanhamento próximo.",
+      stepsBackground: "#fdf8f0",
       columns: [
         {
-          title: "Diferenciais",
+          title: "Importância prática",
           bullets: [
-            "Atendimento personalizado, humanizado e totalmente online.",
-            "Comunicação constante sobre cada etapa do processo.",
-            "Ações preventivas para reduzir riscos e fortalecer negociações.",
+            "Previne litígios e riscos que poderiam afetar patrimônio ou reputação.",
+            "Garante decisões seguras com suporte jurídico especializado.",
+            "Reforça a conformidade legal de empresas em contratos e rotinas comerciais.",
           ],
         },
         {
-          title: "Casos recorrentes",
+          title: "Benefícios do atendimento online",
           bullets: [
-            "Cancelamentos de viagens, compras on-line e entregas não realizadas.",
-            "Falhas em serviços bancários, financiamentos, seguros e cartões.",
-            "Planos de saúde que negam coberturas essenciais ou limitam tratamentos.",
+            "Consultoria jurídica online acessível em qualquer lugar do Brasil.",
+            "Agilidade para esclarecer dúvidas e implementar orientações preventivas.",
+            "Flexibilidade para conciliar reuniões presenciais e virtuais conforme a necessidade.",
+          ],
+          background: "rgba(193,154,107,0.12)",
+        },
+      ],
+      closing: {
+        paragraphs: [
+          "A consultoria jurídica preventiva oferece segurança para quem busca antecipar problemas legais e agir com estratégia.",
+          "Disponibilizamos atendimento presencial e online para entregar orientações especializadas de forma prática e acessível.",
+        ],
+      },
+    },
+    retirement: {
+      tag: "Planejamento Previdenciário",
+      gradient: "from-[#1b1f25] via-[#233240] to-[#3a586c]",
+      highlightColor: "#c5ddec",
+      title: "Planejamento previdenciário completo para uma aposentadoria segura",
+      description:
+        "O planejamento previdenciário analisa o histórico de contribuições, realiza simulações pelas regras vigentes e define a melhor estratégia para acessar o benefício ideal.",
+      highlights: [
+        {
+          title: "Estudo técnico contributivo",
+          description: "Mapeamos contribuições e identificamos lacunas para garantir o tempo necessário à aposentadoria.",
+        },
+        {
+          title: "Simulações completas",
+          description: "Avaliamos todas as regras permanentes e de transição da Reforma da Previdência (EC 103/2019).",
+        },
+        {
+          title: "Estratégias personalizadas",
+          description: "Indicamos o momento ideal para se aposentar e as medidas corretivas quando já existem pendências.",
+        },
+      ],
+      bulletSection: {
+        title: "Para quem o planejamento é indispensável",
+        intro: "O planejamento atende diferentes perfis que precisam decidir quando e como se aposentar:",
+        bullets: [
+          "Trabalhadores CLT que desejam escolher o melhor momento para requerer o benefício.",
+          "Autônomos, empresários e MEIs que precisam otimizar contribuições ao INSS.",
+          "Servidores públicos vinculados a regimes próprios de previdência (RPPS).",
+          "Profissionais expostos a agentes nocivos em atividades insalubres ou perigosas.",
+          "Pessoas próximas de se aposentar e que buscam segurança na definição das regras aplicáveis.",
+        ],
+        background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`
+      },
+      steps: [
+        {
+          icon: <FileText size={18} />,
+          title: "Mapeamento contributivo",
+          description: "Organizamos o CNIS, identificamos vínculos e calculamos o tempo especial quando necessário.",
+        },
+        {
+          icon: <CheckCircle2 size={18} />,
+          title: "Simulações personalizadas",
+          description: "Realizamos projeções pela regra mais vantajosa e avaliamos alternativas preventivas ou corretivas.",
+        },
+        {
+          icon: <Handshake size={18} />,
+          title: "Plano de ação e acompanhamento",
+          description: "Entregamos parecer completo, orientações contínuas e acompanhamento para implementar as estratégias.",
+        },
+      ],
+      stepsTitle: "Como conduzimos o planejamento",
+      stepsIntro: "Unimos análise técnica, simulações detalhadas e suporte estratégico para garantir a melhor decisão.",
+      stepsBackground: "#f4f7fb",
+      columns: [
+        {
+          title: "Benefícios principais",
+          bullets: [
+            "Cálculo preciso da Renda Mensal Inicial (RMI) com indicação da melhor regra.",
+            "Identificação de contribuições em falta e orientações sobre tempo especial.",
+            "Redução de riscos de indeferimento com documentação correta e estratégia ajustada.",
+          ],
+        },
+        {
+          title: "Serviços oferecidos",
+          bullets: [
+            "Simulações de aposentadoria em todas as regras e transições.",
+            "Revisão de contribuições, CNIS e valores pagos, inclusive Revisão da Vida Toda.",
+            "Consultoria continuada para empresas, autônomos e profissionais liberais.",
+          ],
+          background: "rgba(197,221,236,0.18)",
+        },
+      ],
+      closing: {
+        paragraphs: [
+          "Planejar a aposentadoria exige conhecimento jurídico especializado e atenção a cada detalhe contributivo.",
+          "Oferecemos atendimento personalizado para orientar os próximos passos e garantir uma aposentadoria segura.",
+        ],
+      },
+    },
+    mediation: {
+      tag: "Mediação e Acordos",
+      gradient: "from-[#1d1914] via-[#3a2a1f] to-[#6b4b2f]",
+      highlightColor: "#f2d3b0",
+      title: "Mediação e acordos extrajudiciais para soluções pacíficas",
+      description:
+        "Busca resolver conflitos de forma pacífica e colaborativa, com foco no diálogo, agilidade e economia. Ideal para divórcios amigáveis, inventários extrajudiciais, acordos e mediações, evita desgastes emocionais e financeiros.",
+      highlights: [
+        {
+          title: "Diálogo estruturado",
+          description: "Conduzimos negociações com foco no diálogo, agilidade e economia para preservar relações.",
+        },
+        {
+          title: "Soluções consensuais",
+          description: "Indicada para divórcios amigáveis e inventários extrajudiciais que precisam de acordos seguros.",
+        },
+        {
+          title: "Atendimento humanizado",
+          description: "Atuamos com acolhimento, transparência e praticidade em uma abordagem online e humanizada.",
+        },
+      ],
+      bulletSection: {
+        title: "Quando a mediação faz diferença",
+        intro: "Indicada para quem busca acordos estruturados com suporte jurídico integral:",
+        bullets: [
+          "Casais e famílias que priorizam soluções pacíficas e acordos sempre que possível.",
+          "Sucessões e inventários extrajudiciais que demandam diálogo contínuo e divisão equilibrada.",
+          "Clientes que desejam relações de confiança, orientação segura e suporte integral durante a negociação.",
+        ],
+        background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`,
+      },
+      steps: [
+        {
+          icon: <FileText size={18} />,
+          title: "Escuta e acolhimento",
+          description: "Compreendemos a realidade de cada parte com acolhimento, transparência e praticidade.",
+        },
+        {
+          icon: <Handshake size={18} />,
+          title: "Construção conjunta",
+          description: "Mediamos conversas e propomos caminhos colaborativos que preservam vínculos e evitam litígios.",
+        },
+        {
+          icon: <CheckCircle2 size={18} />,
+          title: "Formalização segura",
+          description: "Estruturamos o acordo com segurança jurídica e acompanhamos a assinatura para garantir estabilidade.",
+        },
+      ],
+      stepsTitle: "Como conduzimos a mediação",
+      stepsIntro: "Transformamos conflitos em acordos por meio de diálogo guiado e suporte jurídico contínuo.",
+      stepsBackground: "#fdf6f0",
+      columns: [
+        {
+          title: "Situações atendidas",
+          bullets: [
+            "Divórcios amigáveis e reorganização familiar com preservação de vínculos.",
+            "Inventários extrajudiciais e partilhas que precisam de consenso ágil.",
+            "Acordos preventivos para evitar desgastes emocionais e financeiros.",
+          ],
+        },
+        {
+          title: "Diferenciais do atendimento",
+          bullets: [
+            "Acolhimento, transparência e praticidade em todas as etapas.",
+            "Atendimento online e humanizado com tecnologia e empatia.",
+            "Relações de confiança com orientação segura e suporte integral.",
+          ],
+          background: "rgba(193,154,107,0.12)",
+        },
+      ],
+      closing: {
+        paragraphs: [
+          "A mediação orientada por nossa equipe privilegia o diálogo e reduz o desgaste de disputas prolongadas.",
+          "Conte com uma condução humanizada para transformar conflitos em soluções estáveis e juridicamente seguras.",
+        ],
+      },
+    },
+    consumer: {
+      tag: "Direito do Consumidor",
+      gradient: "from-[#1f1d1b] via-[#2b2118] to-[#5a3d23]",
+      highlightColor: "#f9d8aa",
+      title: "Direito do Consumidor: proteção nas relações de consumo",
+      description:
+        "O Direito do Consumidor contempla a defesa de consumidores e de empresas que buscam conformidade com a legislação, garantindo equilíbrio nas relações de consumo.",
+      highlights: [
+        { title: "Equilíbrio nas relações", description: "Garante equilíbrio nas relações de consumo, protegendo a parte vulnerável." },
+        { title: "Prevenção de abusos", description: "Previne abusos e práticas ilegais, como cláusulas abusivas e publicidade enganosa." },
+        { title: "Reparação célere", description: "Proporciona meios céleres de reparação, inclusive por juizados especiais." },
+      ],
+      bulletSection: {
+        title: "Principais frentes de atuação",
+        intro:
+          "Entre as principais demandas relacionadas ao Direito do Consumidor, destacam-se:",
+        bullets: [
+          "Ações de indenização por danos materiais e morais decorrentes de práticas abusivas.",
+          "Defesa contra cobranças indevidas e revisão de contratos de consumo.",
+          "Apoio em situações relacionadas a produtos ou serviços defeituosos (vícios aparentes e ocultos).",
+          "Resolução de conflitos com bancos e instituições financeiras, envolvendo fraudes, juros abusivos e negativação indevida.",
+          "Orientação jurídica preventiva voltada a empresas que necessitam adequar-se ao Código de Defesa do Consumidor.",
+        ],
+        background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`
+      },
+      steps: [
+        { icon: <Phone size={18} />, title: "Restituição e indenização", description: "Atuamos para viabilizar a restituição de valores pagos e a indenização por prejuízos causados ao consumidor." },
+        { icon: <FileText size={18} />, title: "Revisão de contratos", description: "Orientamos a revisão de contratos e práticas comerciais para cessar cobranças indevidas e cláusulas abusivas." },
+        { icon: <Handshake size={18} />, title: "Conformidade empresarial", description: "Auxiliamos empresas na implementação de rotinas alinhadas ao Código de Defesa do Consumidor." },
+      ],
+      stepsTitle: "Como nosso apoio se materializa",
+      stepsBackground: "#fefbf7",
+      columns: [
+        {
+          title: "Importância prática",
+          bullets: [
+            "Garante equilíbrio nas relações de consumo, protegendo a parte vulnerável.",
+            "Previne abusos e práticas ilegais, como cláusulas abusivas e publicidade enganosa.",
+            "Favorece maior confiança nas relações comerciais entre consumidores e fornecedores.",
+          ],
+        },
+        {
+          title: "Benefícios da atuação",
+          bullets: [
+            "Para consumidores: restituição de valores pagos, indenização por prejuízos e cessação de práticas abusivas.",
+            "Para empresas: mitigação de riscos de demandas judiciais, fortalecimento da reputação e fidelização de clientes.",
+            "Oferece segurança às empresas por meio da implementação de práticas de conformidade ao CDC.",
           ],
           background: "rgba(17,17,17,0.03)",
         },
       ],
       closing: {
         paragraphs: [
-          "Cada estratégia é pensada para evitar desgastes, acelerar resultados e garantir que o fornecedor seja responsabilizado com base no Código de Defesa do Consumidor.",
-          "Trabalhamos com transparência, estimando valores recuperáveis, prazos médios e alternativas viáveis para que você tome decisões com segurança.",
+          "O Direito do Consumidor constitui instrumento indispensável para assegurar justiça e equilíbrio nas relações de consumo.",
+          "Seja na reparação de danos já ocorridos ou na adoção de medidas preventivas, a assessoria jurídica especializada garante soluções eficientes.",
         ],
       },
     },
@@ -201,58 +491,58 @@ export default function LawFirmLanding() {
       tag: "Direito de Família",
       gradient: "from-[#1c1825] via-[#2a1c33] to-[#503154]",
       highlightColor: "#f4c6d6",
-      title: "Cuidado jurídico para equilibrar direitos, deveres e vínculos familiares",
+      title: "Direito de Família: relações e deveres legais",
       description:
-        "Apoiamos famílias em divórcios, guarda, alimentos, uniões estáveis e planejamento patrimonial, sempre guiados pelo melhor interesse das partes envolvidas.",
+        "O Direito de Família regulamenta relações familiares como casamento, união estável, divórcio, guarda, pensão alimentícia e partilha de bens, unindo técnica e sensibilidade.",
       highlights: [
-        { title: "Atendimento humanizado", description: "Escuta ativa para compreender a história familiar e reduzir conflitos emocionais." },
-        { title: "Acordos equilibrados", description: "Priorizamos soluções consensuais que preservam vínculos e respeitam todos os envolvidos." },
-        { title: "Proteção patrimonial", description: "Estruturamos partilhas e medidas preventivas para evitar prejuízos futuros." },
+        { title: "Proteção de menores", description: "Protege os direitos da criança e do adolescente, com foco no melhor interesse do menor." },
+        { title: "Equilíbrio patrimonial", description: "Garante equilíbrio patrimonial em processos de divórcio e sucessão." },
+        { title: "Soluções pacíficas", description: "Favorece soluções consensuais, priorizando acordos sempre que possível." },
       ],
       bulletSection: {
-        title: "Demandas que conduzimos",
-        intro: "Com base na legislação de família, estruturamos medidas adequadas para cada realidade familiar.",
+        title: "Principais demandas acompanhadas",
+        intro: "Entre as principais demandas jurídicas relacionadas ao Direito de Família, destacam-se:",
         bullets: [
-          "Divórcio consensual ou litigioso com definição de bens e deveres.",
+          "Divórcio consensual e litigioso.",
           "Reconhecimento e dissolução de união estável.",
-          "Guarda, convivência e direito de visitas, inclusive guarda compartilhada.",
-          "Pensão alimentícia: fixação, revisão, execução e exoneração.",
-          "Partilha de bens em casamentos e uniões estáveis.",
-          "Investigação ou reconhecimento de paternidade e regularização registral.",
+          "Guarda de filhos e direito de visitas, incluindo guarda compartilhada.",
+          "Pensão alimentícia: fixação, revisão e execução.",
+          "Partilha de bens na dissolução do casamento ou união estável.",
+          "Ações de investigação e reconhecimento de paternidade.",
         ],
         background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`
       },
       steps: [
-        { icon: <Phone size={18} />, title: "Escuta acolhedora", description: "Reunião inicial para mapear necessidades, prioridades e urgências da família." },
-        { icon: <FileText size={18} />, title: "Planejamento jurídico", description: "Organização de documentos, avaliação de riscos e desenho de acordos ou medidas judiciais." },
-        { icon: <Handshake size={18} />, title: "Acompanhamento contínuo", description: "Suporte na homologação, audiências e cumprimento das decisões com comunicação transparente." },
+        { icon: <Phone size={18} />, title: "Escuta inicial", description: "Reunião acolhedora para mapear a situação familiar e as urgências envolvidas." },
+        { icon: <FileText size={18} />, title: "Organização documental", description: "Reunimos documentos e estruturamos medidas judiciais ou acordos, conforme cada caso." },
+        { icon: <Handshake size={18} />, title: "Soluções seguras", description: "Acompanhamos homologações, audiências e acordos para assegurar o cumprimento das decisões." },
       ],
-      stepsTitle: "Como conduzimos o seu caso",
-      stepsIntro: "Combinamos acolhimento e firmeza técnica para que cada decisão seja tomada com confiança.",
+      stepsTitle: "Como acompanhamos sua família",
+      stepsIntro: "Cada etapa combina orientação jurídica e cuidado humano para garantir decisões conscientes.",
       stepsBackground: "#fdf7fb",
       columns: [
         {
-          title: "Diferenciais",
+          title: "Importância prática",
           bullets: [
-            "Atuação orientada pelo melhor interesse de crianças e adolescentes.",
-            "Comunicação empática e objetiva para facilitar decisões em momentos sensíveis.",
-            "Rede de apoio multidisciplinar quando o caso exige perícias ou mediação especializada.",
+            "Oferece segurança jurídica em momentos de mudança familiar.",
+            "Preserva a dignidade humana por meio da aplicação justa da lei.",
+            "Garante proteção patrimonial e equilíbrio nos vínculos familiares.",
           ],
         },
         {
-          title: "Situações frequentes",
+          title: "Benefícios da atuação",
           bullets: [
-            "Definição de guarda compartilhada e convivência equilibrada.",
-            "Divórcios com partilha de imóveis, empresas e investimentos.",
-            "Acordos pré-nupciais, pós-nupciais e planejamento patrimonial familiar.",
+            "Para famílias: preservação de vínculos, proteção de menores e segurança nas questões patrimoniais.",
+            "Para indivíduos: garantia de alimentos, definição clara de guarda e proteção de direitos hereditários.",
+            "Questões sucessórias e inventário recebem orientação integrada quando necessário.",
           ],
           background: "rgba(80,49,84,0.08)",
         },
       ],
       closing: {
         paragraphs: [
-          "Cada família recebe análise sensível para equilibrar direitos, deveres e o bem-estar emocional de todos.",
-          "Auxiliamos na documentação, nas negociações e na execução das decisões para que as mudanças ocorram com segurança jurídica.",
+          "O Direito de Família é essencial para assegurar justiça, equilíbrio e proteção nas relações familiares.",
+          "A atuação jurídica especializada garante soluções respeitosas em divórcios, guarda compartilhada e pensão alimentícia.",
         ],
       },
     },
@@ -260,58 +550,58 @@ export default function LawFirmLanding() {
       tag: "Direito Sucessório",
       gradient: "from-[#18222a] via-[#1f303c] to-[#2f5669]",
       highlightColor: "#b7d4e6",
-      title: "Planejamento sucessório e inventários conduzidos com estratégia e respeito",
+      title: "Direito Sucessório: organização e partilha do patrimônio",
       description:
-        "Apoiamos famílias na transmissão de patrimônio, elaboração de testamentos e resolução de inventários para garantir segurança e harmonia entre herdeiros.",
+        "O Direito Sucessório regulamenta a transferência do patrimônio após o falecimento, abrangendo herança, testamentos, inventário e partilha de bens.",
       highlights: [
-        { title: "Planejamento preventivo", description: "Estruturamos soluções para antecipar conflitos e proteger o patrimônio." },
-        { title: "Inventário eficiente", description: "Condução judicial ou extrajudicial com foco em celeridade e organização." },
-        { title: "Suporte aos herdeiros", description: "Orientação próxima para tomada de decisões e cumprimento das vontades do falecido." },
+        { title: "Transmissão correta", description: "Assegura a correta transmissão do patrimônio, respeitando a legislação e a vontade do falecido." },
+        { title: "Prevenção de litígios", description: "Previne conflitos familiares, reduzindo disputas em momentos de luto." },
+        { title: "Segurança jurídica", description: "Garante segurança jurídica na partilha e administração de bens." },
       ],
       bulletSection: {
-        title: "Como atuamos",
-        intro: "Cuidamos de todas as etapas da sucessão patrimonial, respeitando a legislação e a vontade do falecido.",
+        title: "Demandas recorrentes",
+        intro: "Entre as principais demandas relacionadas ao Direito Sucessório, destacam-se:",
         bullets: [
-          "Inventário judicial e extrajudicial com levantamento completo de bens e dívidas.",
-          "Partilha de bens entre herdeiros, incluindo avaliação e equalização de quinhões.",
-          "Elaboração, revisão e registro de testamentos e codicilos.",
-          "Anulação de testamentos ou cláusulas inválidas e defesa de herdeiros prejudicados.",
-          "Planejamento sucessório para prevenir litígios e proteger empresas e imóveis familiares.",
-          "Reconhecimento ou exclusão de herdeiros em disputas complexas.",
+          "Inventário judicial e extrajudicial.",
+          "Partilha de bens entre herdeiros.",
+          "Elaboração e registro de testamentos.",
+          "Anulação de testamentos ou cláusulas inválidas.",
+          "Planejamento sucessório para prevenir conflitos e proteger o patrimônio.",
+          "Ações de exclusão ou reconhecimento de herdeiros, além de orientação preventiva em sucessões complexas.",
         ],
         background: `linear-gradient(145deg, ${COLORS.bg1}, #fff)`
       },
       steps: [
-        { icon: <Phone size={18} />, title: "Avaliação inicial", description: "Entendimento da estrutura familiar, patrimônio e prazos legais." },
-        { icon: <FileText size={18} />, title: "Plano sucessório", description: "Organização documental, definição de estratégias e estimativa de custos e tributos." },
-        { icon: <Handshake size={18} />, title: "Execução acompanhada", description: "Condução de escrituras, petições e audiências com atualização constante aos herdeiros." },
+        { icon: <Phone size={18} />, title: "Mapeamento patrimonial", description: "Analisamos a estrutura familiar, o patrimônio envolvido e os prazos legais do inventário." },
+        { icon: <FileText size={18} />, title: "Planejamento da sucessão", description: "Organizamos documentos, definimos estratégias e alinhamos a execução conforme a vontade do falecido." },
+        { icon: <Handshake size={18} />, title: "Partilha assistida", description: "Conduzimos escrituras, petições e acordos, mantendo a harmonia entre herdeiros." },
       ],
-      stepsTitle: "Etapas do acompanhamento",
-      stepsIntro: "Criamos um cronograma claro para que todas as obrigações e prazos sucessórios sejam cumpridos sem surpresas.",
+      stepsTitle: "Como estruturamos o acompanhamento",
+      stepsIntro: "Nosso suporte oferece organização e serenidade em cada etapa da sucessão patrimonial.",
       stepsBackground: "#f4f7fb",
       columns: [
         {
-          title: "Diferenciais",
+          title: "Importância prática",
           bullets: [
-            "Rigor técnico para assegurar a validade dos atos sucessórios.",
-            "Mediação de conflitos para preservar relações familiares em momentos de luto.",
-            "Articulação com contadores e avaliadores para mensurar bens e tributos com precisão.",
+            "Facilita a resolução célere de inventários, evitando prejuízos aos herdeiros.",
+            "Protege o patrimônio familiar por meio de planejamento sucessório adequado.",
+            "Oferece orientação jurídica preventiva em sucessões complexas.",
           ],
         },
         {
-          title: "Demandas frequentes",
+          title: "Benefícios da atuação",
           bullets: [
-            "Inventários com bens em diferentes estados ou com pendências documentais.",
-            "Testamentos com cláusulas de usufruto, incomunicabilidade ou fideicomisso.",
-            "Planejamento patrimonial para empresas familiares e holdings sucessórias.",
+            "Para famílias: organização do inventário, preservação da harmonia entre herdeiros e segurança na partilha de bens.",
+            "Para indivíduos: possibilidade de planejar a sucessão com antecedência, garantindo respeito à vontade pessoal.",
+            "Acompanhamento próximo em todas as etapas para evitar litígios e assegurar conformidade legal.",
           ],
           background: "rgba(30,86,105,0.08)",
         },
       ],
       closing: {
         paragraphs: [
-          "Trabalhamos para que a partilha ocorra com serenidade, respeitando direitos, afetos e a vontade de quem partiu.",
-          "Nossa assessoria acompanha prazos, tributos e formalidades, garantindo segurança jurídica em cada decisão sucessória.",
+          "O Direito Sucessório é fundamental para proporcionar estabilidade e assegurar a correta destinação do patrimônio.",
+          "Da elaboração de testamentos à condução de inventários, a assessoria jurídica especializada garante eficiência e segurança.",
         ],
       },
     },
@@ -320,8 +610,11 @@ export default function LawFirmLanding() {
   const activeModalData = activePracticeModal ? practiceModals[activePracticeModal] : null;
   const modalTitleId = activePracticeModal ? `${activePracticeModal}-modal-title` : undefined;
   const modalDescriptionId = activePracticeModal ? `${activePracticeModal}-modal-description` : undefined;
+  const aboutModalTitleId = aboutModalOpen ? "about-modal-title" : undefined;
+  const aboutModalDescriptionId = aboutModalOpen ? "about-modal-description" : undefined;
 
   const containerCls = "max-w-6xl mx-auto px-4 sm:px-6";
+  const headerOffset = Math.max(headerH, headerRef.current?.offsetHeight ?? 0);
 
   // --- Preload e Parallax ---
   useEffect(() => {
@@ -333,7 +626,8 @@ export default function LawFirmLanding() {
 
 
   useEffect(() => {
-    if (!activePracticeModal) return;
+    const overlayOpen = Boolean(activePracticeModal || aboutModalOpen || mobileOpen);
+    if (!overlayOpen) return;
     const { body, documentElement } = document;
     const prevBodyOverflow = body.style.overflow;
     const prevHtmlOverflow = documentElement.style.overflow;
@@ -343,7 +637,16 @@ export default function LawFirmLanding() {
       body.style.overflow = prevBodyOverflow;
       documentElement.style.overflow = prevHtmlOverflow;
     };
-  }, [activePracticeModal]);
+  }, [activePracticeModal, aboutModalOpen, mobileOpen]);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [mobileOpen]);
 
   
 
@@ -463,16 +766,40 @@ export default function LawFirmLanding() {
   };
 
   // --- Gestos do carrossel ---
+  const isInteractiveTarget = (target: EventTarget | null) => {
+    if (!(target instanceof HTMLElement)) return false;
+    return Boolean(
+      target.closest(
+        "button, a, input, textarea, select, [role='button'], [role='link'], [data-carousel-interactive]"
+      )
+    );
+  };
+
+  const extractClientX = (e: any) => {
+    if (typeof e.clientX === "number") return e.clientX;
+    if (e.touches && e.touches[0]) return e.touches[0].clientX;
+    if (e.changedTouches && e.changedTouches[0]) return e.changedTouches[0].clientX;
+    return 0;
+  };
+
   const onPointerDown = (e: any) => {
+    if (isInteractiveTarget(e.target)) {
+      setIsDragging(false);
+      setDragDelta(0);
+      return;
+    }
     setIsDragging(true);
-    const x = e.clientX ?? (e.touches ? e.touches[0]?.clientX : 0) ?? 0;
-    setDragStartX(x);
+    setDragStartX(extractClientX(e));
     setDragDelta(0);
-    try { e.currentTarget?.setPointerCapture?.(e.pointerId); } catch {}
+    if (typeof e.pointerId === "number") {
+      try {
+        e.currentTarget?.setPointerCapture?.(e.pointerId);
+      } catch {}
+    }
   };
   const onPointerMove = (e: any) => {
     if (!isDragging) return;
-    const x = e.clientX ?? (e.touches ? e.touches[0]?.clientX : 0) ?? 0;
+    const x = extractClientX(e);
     setDragDelta(x - dragStartX);
   };
   const onPointerUp = () => {
@@ -605,24 +932,83 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
       {fixHeader && <div style={{height: headerH}} aria-hidden></div>}
       {/* Menu mobile */}
       
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {mobileOpen && (
-          <motion.nav
+          <motion.aside
             key="mobile-nav"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden border-b bg-white/95 backdrop-blur-sm px-4 sm:px-6 overflow-hidden"
-            style={{ borderColor: COLORS.border }}
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.24, ease: "easeInOut" }}
+            className="md:hidden fixed inset-x-0 bottom-0 z-[9998]"
+            style={{ top: headerOffset }}
           >
-            <div className="py-3 flex flex-col gap-1">
-              <button onClick={() => { scrollToId('#sobre'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Sobre</button>
-              <button onClick={() => { scrollToId('#areas'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Áreas</button>
-              <button onClick={() => { scrollToId('#equipe'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Equipe</button>
-              <button onClick={() => { scrollToId('#contato'); setMobileOpen(false); }} className="text-left py-2 cursor-pointer transition-colors hover:text-[#c19a6b]">Contato</button>
-            </div>
-          </motion.nav>
+            <motion.div
+              aria-hidden
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0 bg-black/35 backdrop-blur-[2px]"
+              onClick={() => setMobileOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="relative mx-4 mb-6 overflow-hidden rounded-2xl border shadow-xl"
+              style={{ borderColor: COLORS.border, background: "rgba(255,255,255,0.96)" }}
+            >
+              <header
+                className="px-6 py-5 border-b"
+                style={{ borderColor: COLORS.border, background: "rgba(255,255,255,0.82)" }}
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: COLORS.inkSoft }}>
+                  Menu
+                </p>
+                <p className="mt-1 text-lg font-semibold" style={{ color: COLORS.ink }}>
+                  Navegue pelo site
+                </p>
+              </header>
+              <nav
+                role="navigation"
+                aria-label="Navegação principal mobile"
+                className="flex flex-col"
+              >
+                {[
+                  { label: "Sobre", target: "#sobre" },
+                  { label: "Áreas", target: "#areas" },
+                  { label: "Equipe", target: "#equipe" },
+                  { label: "Contato", target: "#contato" },
+                ].map((item, index, array) => (
+                  <button
+                    key={item.target}
+                    onClick={() => {
+                      scrollToId(item.target);
+                      setMobileOpen(false);
+                    }}
+                    className="group flex items-center justify-between gap-4 px-6 py-4 text-left text-base font-medium transition duration-200 hover:bg-[rgba(193,154,107,0.08)] hover:text-[#c19a6b]"
+                    style={{
+                      color: COLORS.ink,
+                      borderBottom:
+                        index === array.length - 1 ? "none" : `1px solid ${COLORS.border}`,
+                      background: "transparent",
+                    }}
+                  >
+                    <span>{item.label}</span>
+                    <span
+                      className="text-xs font-semibold uppercase tracking-[0.28em] transition-transform duration-200 group-hover:translate-x-1"
+                      style={{ color: COLORS.accent }}
+                      aria-hidden
+                    >
+                      Ver
+                    </span>
+                  </button>
+                ))}
+              </nav>
+            </motion.div>
+          </motion.aside>
         )}
       </AnimatePresence>
 
@@ -649,10 +1035,29 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
               <div className="mt-8 text-sm" style={{ color: COLORS.inkSoft }}>
                 Entre em contato pelos canais abaixo ou agende uma consulta na seção de contato.
               </div>
-            </motion.div>
-            <motion.div initial={{opacity:0,scale:.95}} whileInView={{opacity:1,scale:1}} viewport={{amount:0.3}} transition={{duration:.7}} className="flex justify-center">
-              <img src={CONFIG.PORTRAIT_URL} alt="Foto da Responsável" className="rounded-2xl shadow-2xl w-full max-w-sm sm:max-w-md lg:max-w-lg object-cover" style={{ aspectRatio: '3 / 4' }} />
-            </motion.div>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button
+                  className="cursor-pointer rounded-xl px-6 py-3 text-sm font-semibold shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:shadow-md"
+                  style={{ background: COLORS.black, color: COLORS.bg1 }}
+                  onClick={() => setAboutModalOpen(true)}
+                >
+                  Sobre
+                </Button>
+            </div>
+          </motion.div>
+            <img
+              src={fallbackAsset(CONFIG.PORTRAIT_URL)}
+              alt="Foto da Responsável"
+              loading="lazy"
+              className="mx-auto w-full max-w-[240px] sm:max-w-[300px] lg:max-w-[340px] rounded-[28px] ring-1 ring-[rgba(193,154,107,0.38)] shadow-[0_28px_52px_rgba(17,17,17,0.22)]"
+              style={{
+                aspectRatio: '3 / 4',
+                objectFit: 'contain',
+                background: 'transparent',
+                padding: '12px',
+                boxShadow: '0 28px 52px rgba(17,17,17,0.22), 0 12px 30px rgba(193,154,107,0.25)'
+              }}
+            />
           </div>
         </div>
       </section>
@@ -668,12 +1073,19 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
           </h2>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {practiceCards.map((item, i) => (
-              <motion.div key={item.title} initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} viewport={{amount:0.2}} transition={{delay:i*.08}}>
+              <motion.div
+                key={item.title}
+                initial={{opacity:0,y:30}}
+                whileInView={{opacity:1,y:0}}
+                viewport={{amount:0.2}}
+                transition={{delay:i*.08}}
+                className="h-full"
+              >
                 <Card
                   role="button"
                   tabIndex={0}
                   aria-haspopup={item.modal ? 'dialog' : undefined}
-                  className="rounded-2xl border bg-white/90 shadow-md transition hover:-translate-y-[2px] hover:shadow-xl"
+                  className="flex h-full flex-col rounded-2xl border bg-white/90 shadow-md transition hover:-translate-y-[2px] hover:shadow-xl"
                   style={{ border: `1px solid ${COLORS.border}` }}
                   onClick={() => {
                     if (item.modal) setActivePracticeModal(item.modal);
@@ -686,11 +1098,13 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                     }
                   }}
                 >
-                  <CardContent className="flex flex-col items-center gap-4 p-6 text-center">
+                  <CardContent className="flex h-full flex-col items-center gap-4 p-6 text-center">
                     {cardIcon(item.icon)}
-                    <h3 className="text-xl font-semibold" style={{ color: COLORS.ink }}>{item.title}</h3>
-                    <p className="text-sm" style={{ color: COLORS.inkSoft }}>{item.desc}</p>
-                    <span className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: COLORS.accent }}>
+                    <div className="flex flex-col items-center gap-3">
+                      <h3 className="text-xl font-semibold" style={{ color: COLORS.ink }}>{item.title}</h3>
+                      <p className="text-sm" style={{ color: COLORS.inkSoft }}>{item.desc}</p>
+                    </div>
+                    <span className="mt-auto text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: COLORS.accent }}>
                       {item.modal ? 'Saiba mais' : 'Solicitar contato'}
                     </span>
                   </CardContent>
@@ -856,6 +1270,104 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
         )}
       </AnimatePresence>
 
+      <AnimatePresence>
+        {aboutModalOpen && (
+          <motion.div
+            key="about-modal"
+            className="fixed inset-0 z-[11500] flex items-center justify-center px-4 py-8 md:py-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <button
+              type="button"
+              aria-label="Fechar modal Sobre"
+              className="absolute inset-0 bg-black/65"
+              onClick={() => setAboutModalOpen(false)}
+            ></button>
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={aboutModalTitleId}
+              aria-describedby={aboutModalDescriptionId}
+              className="relative flex w-full max-w-4xl flex-col overflow-hidden rounded-[36px] bg-white shadow-2xl"
+              style={{ maxHeight: "min(92vh, 820px)", height: "min(92vh, 820px)" }}
+              initial={{ scale: 0.94, opacity: 0, y: 30 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.94, opacity: 0, y: 30 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+            >
+              <div className="absolute -top-36 -right-24 h-80 w-80 rounded-full bg-[rgba(193,154,107,0.22)] blur-3xl" aria-hidden></div>
+              <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 20% 20%, rgba(193,154,107,.55) 0, transparent 60%)" }} aria-hidden></div>
+              <button
+                type="button"
+                aria-label="Fechar modal Sobre"
+                className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full border bg-white/85 text-sm text-[#111111] shadow-sm backdrop-blur transition hover:bg-white md:right-5 md:top-5"
+                style={{ borderColor: COLORS.border }}
+                onClick={() => setAboutModalOpen(false)}
+              >
+                <X size={18} />
+              </button>
+              <div className="relative z-10 flex min-h-0 flex-1 flex-col">
+                <div className="relative bg-gradient-to-r from-[#1b1712] via-[#2f2418] to-[#735030] px-7 py-10 text-white sm:px-10">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em]">
+                    Sobre a advogada
+                  </span>
+                  <h3 id={aboutModalTitleId} className="mt-5 text-3xl font-bold sm:text-[34px]">
+                    {aboutModalContent.name}
+                  </h3>
+                  <p className="mt-2 text-sm font-semibold text-white/85 sm:text-base">{aboutModalContent.role}</p>
+                  <p className="mt-1 text-sm text-white/70">{aboutModalContent.registration}</p>
+                  <p className="mt-4 max-w-2xl text-sm text-white/85 sm:text-base">{aboutModalContent.tagline}</p>
+                </div>
+                <div
+                  id={aboutModalDescriptionId}
+                  className="flex-1 space-y-8 overflow-y-auto px-6 py-8 sm:px-10 min-h-0"
+                  style={{ color: COLORS.inkSoft }}
+                >
+                  <div className="space-y-4 text-sm leading-relaxed sm:text-base">
+                    {aboutModalContent.summary.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <div className="rounded-3xl border bg-[#fdf8f1] p-6 shadow-sm" style={{ borderColor: COLORS.border }}>
+                      <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                        Formação e titulações
+                      </h4>
+                      <ul className="mt-4 space-y-3 text-sm leading-relaxed sm:text-base">
+                        {aboutModalContent.formations.map((item) => (
+                          <li key={item} className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 h-5 w-5" style={{ color: COLORS.accent }} />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="rounded-3xl border bg-white p-6 shadow-sm" style={{ borderColor: COLORS.border }}>
+                      <h4 className="text-lg font-semibold" style={{ color: COLORS.ink }}>
+                        Como conduz o atendimento
+                      </h4>
+                      <ul className="mt-4 space-y-3 text-sm leading-relaxed sm:text-base">
+                        {aboutModalContent.pillars.map((pillar) => (
+                          <li key={pillar.title}>
+                            <span className="block font-semibold" style={{ color: COLORS.ink }}>{pillar.title}</span>
+                            <span>{pillar.text}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="rounded-3xl border bg-white p-6 text-sm leading-relaxed shadow-sm sm:text-base" style={{ borderColor: COLORS.border }}>
+                    <p>{aboutModalContent.closing}</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* NOSSA EQUIPE (carrossel) */}
       <section id="equipe" className="relative py-16 md:py-24" style={{ background: `linear-gradient(180deg, ${COLORS.bg2} 0%, #0f0f0f 100%)`, color:'#fff' }}>
         {/* textura */}
@@ -874,40 +1386,82 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                  style={{ transform: `translateX(calc(-${teamIndex*100}% + ${dragDelta}px))` }}
                  onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}
                  onTouchStart={onPointerDown} onTouchMove={onPointerMove} onTouchEnd={onPointerUp}>
-              {team.map((m, idx) => (
-                <div key={idx} className="min-w-full">
-                  <div className="grid md:grid-cols-2 gap-10 items-stretch p-6">
-                    <div className="flex justify-center">
-                      <div className="rounded-2xl p-2" style={{ background: `linear-gradient(135deg, ${COLORS.accent}40, ${COLORS.accent2}26)` }}>
-                        <div className="relative w-[240px] sm:w-[280px] md:w-[320px] lg:w-[360px]">
-                          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[26px] bg-white shadow-xl">
-                            <img
-                              src={m.photo}
-                              alt={m.name}
-                              loading={m.name==='Júlia Bellussi' ? 'eager' : undefined}
-                              referrerPolicy={m.name==='Júlia Bellussi' ? 'no-referrer' : undefined}
-                              crossOrigin={m.name==='Júlia Bellussi' ? 'anonymous' : undefined}
-                              onError={(e)=>{ const el=e.currentTarget as HTMLImageElement; if(m.name==='Júlia Bellussi'){ if(!el.dataset.triedcdn){ el.dataset.triedcdn='1'; el.src = CONFIG.TEAM_PHOTO_JULIA; } else if(!el.dataset.triedclean){ el.dataset.triedclean='1'; el.src = fallbackAsset(CONFIG.TEAM_PHOTO_JULIA); } } else { if(!el.dataset.fallback){ el.dataset.fallback='1'; el.src = fallbackAsset(m.photo); } } }}
-                              className="h-full w-full object-contain p-3 sm:p-4"
-                              style={{ background: '#ffffff' }}
-                            />
-                          </div>
+              {team.map((m, idx) => {
+                const isEdimara = m.name === 'Edimara Duran';
+                return (
+                  <div key={idx} className="min-w-full">
+                    <div className="grid items-stretch gap-10 p-6 md:grid-cols-2">
+                      <div className="flex justify-center">
+                        <div
+                          className={`group relative aspect-[3/4] w-full max-w-[240px] sm:max-w-[280px] md:max-w-[320px] lg:max-w-[340px] overflow-hidden rounded-[28px] shadow-[0_26px_54px_rgba(17,17,17,0.24)] ring-1 ${isEdimara ? 'ring-[rgba(193,154,107,0.55)]' : 'ring-[rgba(255,255,255,0.14)]'}`}
+                          style={{
+                            background: isEdimara
+                              ? 'radial-gradient(circle at 18% 18%, rgba(193,154,107,0.26) 0%, rgba(17,17,17,0.78) 100%)'
+                              : 'transparent',
+                          }}
+                        >
+                          {isEdimara && (
+                            <div
+                              aria-hidden
+                              className="pointer-events-none absolute inset-0 opacity-70"
+                              style={{
+                                background:
+                                  'linear-gradient(140deg, rgba(255,255,255,0.14) 0%, rgba(193,154,107,0.25) 28%, rgba(17,17,17,0.65) 100%)',
+                                mixBlendMode: 'screen',
+                              }}
+                            ></div>
+                          )}
+                          <img
+                            src={m.photo}
+                            alt={m.name}
+                            loading={m.name==='Júlia Bellussi' ? 'eager' : undefined}
+                            referrerPolicy={m.name==='Júlia Bellussi' ? 'no-referrer' : undefined}
+                            crossOrigin={m.name==='Júlia Bellussi' ? 'anonymous' : undefined}
+                            onError={(e)=>{ const el=e.currentTarget as HTMLImageElement; if(m.name==='Júlia Bellussi'){ if(!el.dataset.triedcdn){ el.dataset.triedcdn='1'; el.src = CONFIG.TEAM_PHOTO_JULIA; } else if(!el.dataset.triedclean){ el.dataset.triedclean='1'; el.src = fallbackAsset(CONFIG.TEAM_PHOTO_JULIA); } } else { if(!el.dataset.fallback){ el.dataset.fallback='1'; el.src = fallbackAsset(m.photo); } } }}
+                            className="relative z-10 h-full w-full object-contain transition duration-500 ease-out group-hover:scale-[1.03] group-hover:saturate-[1.18]"
+                            style={{
+                              display: 'block',
+                              filter: isEdimara ? 'drop-shadow(0 20px 26px rgba(0,0,0,0.38))' : undefined,
+                              padding: isEdimara ? '10px' : undefined,
+                            }}
+                          />
                         </div>
                       </div>
-                    </div>
-                    <div className="flex flex-col justify-center h-full md:pr-4">
-                      <h3 className="text-2xl font-bold">{m.name}</h3>
-                      <p className="mt-1 text-white/70">{m.oab}</p>
-                      <p className="mt-4 text-white/80 max-w-prose">{m.name === 'Júlia Bellussi' ? 'Especialista em Direito Previdenciário, com foco em planejamentos de aposentadoria, análise de contribuições e estratégias para garantir o acesso aos direitos dos clientes.' : 'Atuação dedicada em Direito de Família, Sucessões e Direito Civil. Atendimento humano, estratégico e transparente para cada caso.'}</p>
-                      <div className="mt-6 flex flex-col sm:flex-row gap-3 sm:items-center">
-                        <div className="flex items-center gap-3">
+                      <motion.div
+                        initial={{opacity:0,y:24}}
+                        whileInView={{opacity:1,y:0}}
+                        viewport={{amount:0.6}}
+                        transition={{duration:.6}}
+                        className="flex flex-col justify-center gap-6 md:pr-4"
+                      >
+                        <div className="space-y-2">
+                          <span className="text-xs font-semibold uppercase tracking-[0.32em] text-white/60">{m.oab}</span>
+                          <h3 className="text-2xl font-bold text-white md:text-[28px]">{m.name}</h3>
+                          <p className="text-sm leading-relaxed text-white/75">
+                            {isEdimara
+                              ? 'CEO e sócia-fundadora do escritório, com atuação estratégica à frente das áreas de Família, Sucessões, Consumidor e demandas cíveis.'
+                              : 'Advogada associada que soma ao time com atuação dedicada nas frentes consultivas e contenciosas.'}
+                          </p>
+                        </div>
+                        {isEdimara ? (
+                          <ul className="space-y-2 text-sm text-white/75">
+                            <li>• Inscrita na OAB/SP 526.456 e graduada em Direito pelo Centro Universitário de Santa Fé do Sul – Unifunec.</li>
+                            <li>• Pós-graduada em Direito de Família e Sucessões, Direito do Consumidor e especialista em Prática em Direito Sucessório.</li>
+                            <li>• Lidera um atendimento 100% online, acolhedor e personalizado para clientes em todo o Brasil.</li>
+                          </ul>
+                        ) : (
+                          <p className="text-sm text-white/70">
+                            Especialista em planejamento previdenciário, construindo análises detalhadas para identificar o melhor cenário de aposentadoria dos clientes.
+                          </p>
+                        )}
+                        <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center">
                           <a
                             href={waLink()}
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="Chamar no WhatsApp"
                             title="Chamar no WhatsApp"
-                            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border transition-all duration-200 hover:-translate-y-[1px] hover:shadow-sm hover:bg-black/90 px-5"
+                            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border px-5 transition-all duration-200 hover:-translate-y-[1px] hover:bg-black/90 hover:shadow-sm"
                             style={{
                               background: COLORS.black,
                               borderColor: "rgba(17,17,17,0.85)",
@@ -918,18 +1472,24 @@ h1,h2,h3,.font-display{font-family:'Playfair Display', serif; letter-spacing:.2p
                             <span className="text-sm font-medium tracking-wide">Chamar no WhatsApp</span>
                           </a>
                           <Button
-                            className="cursor-pointer transition-all duration-200 hover:opacity-100 hover:bg-[rgba(193,154,107,.12)] hover:border-[rgba(193,154,107,.8)] hover:shadow-sm hover:-translate-y-[1px] min-h-[44px] px-5 rounded-xl border-2"
+                            className="cursor-pointer min-h-[44px] rounded-xl border-2 px-5 transition-all duration-200 hover:-translate-y-[1px] hover:border-[rgba(193,154,107,.8)] hover:bg-[rgba(193,154,107,.12)] hover:shadow-sm"
                             style={{ background: "transparent", color: COLORS.accent, borderColor: COLORS.accent }}
-                            onClick={() => scrollToId('#sobre')}
+                            onClick={() => {
+                              if (isEdimara) {
+                                setAboutModalOpen(true);
+                              } else {
+                                scrollToId('#sobre');
+                              }
+                            }}
                           >
                             Sobre
                           </Button>
                         </div>
-                      </div>
+                      </motion.div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           <div className="flex items-center justify-center gap-2 mt-4">
